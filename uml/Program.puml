@@ -1,0 +1,9 @@
+@startuml
+
+class Program
+
+Program : +MainLock : Object
+
+Program : +main(args: String[]): void
+
+@enduml

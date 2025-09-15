@@ -1,0 +1,11 @@
+@startuml
+
+class MusicThread extends Thread
+
+MusicThread : - musicPath: File
+MusicThread : - loop : boolean
+MusicThread : - clip : Clip
+
+
+
+@enduml
