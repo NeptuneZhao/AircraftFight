@@ -6,11 +6,11 @@ import javax.swing.*;
 
 public class Game extends JPanel
 {
-	public static final String MUSIC_PATH = "resources/bgm.wav";
-
 	public static JPanel StartGame(int difficulty, boolean isMusic)
 	{
 		MusicThread.musicOn(isMusic);
+		System.out.println(isMusic);
+		System.out.println("Music Started.");
 
 		return switch (difficulty)
 		{

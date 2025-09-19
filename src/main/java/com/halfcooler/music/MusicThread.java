@@ -12,7 +12,7 @@ public class MusicThread extends Thread
     private final boolean loop;
     private Clip clip;
 
-    public MusicThread(File path, boolean loop)
+    private MusicThread(File path, boolean loop)
     {
         this.musicPath = path;
         this.loop = loop;

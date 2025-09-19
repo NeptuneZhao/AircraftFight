@@ -2,7 +2,6 @@ package com.halfcooler;
 
 import com.halfcooler.game.Game;
 import com.halfcooler.menu.StartsMenu;
-import com.halfcooler.music.MusicThread;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,6 +10,7 @@ import java.awt.*;
 public class Program
 {
 	public static final Object MainLock = new Object();
+	public static final int WIDTH = 480, HEIGHT = 640;
 
 	public static void main(String[] args)
 	{
@@ -22,7 +22,7 @@ public class Program
 		JPanel startPanel = startsMenu.getPanel();
 		frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		frame.setContentPane(startPanel);
-		frame.setBounds(100, 100, 480, 640);
+		frame.setBounds(100, 100, WIDTH, HEIGHT);
 		frame.setVisible(true);
 
 		// Start waiting, a stupid method to change the menu to the game loop.
@@ -46,6 +46,6 @@ public class Program
 		JPanel gamePanel = Game.StartGame(startsMenu.getDifficulty(), startsMenu.isMusicOn());
 
 		// 退出阶段
-		MusicThread.musicOff();
+		// MusicThread.musicOff();
 	}
 }
