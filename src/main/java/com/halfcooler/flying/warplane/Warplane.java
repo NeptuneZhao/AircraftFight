@@ -39,4 +39,5 @@ public abstract class Warplane extends Flying
 
 	public abstract List<Bullet> getShots();
 
+	public abstract int getScore();
 }

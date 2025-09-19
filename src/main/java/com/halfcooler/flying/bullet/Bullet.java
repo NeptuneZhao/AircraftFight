@@ -23,10 +23,10 @@ public abstract class Bullet extends Flying
 	{
 		super.goForward();
 
-		if (locationX <= 0 || locationX >= Program.WIDTH)
+		if (this.locationX <= 0 || this.locationX >= Program.WIDTH)
 			this.setVanish();
 
-		if ( (speedY > 0 && locationY >= Program.HEIGHT) || locationY <= 0)
+		if ( (this.speedY > 0 && this.locationY >= Program.HEIGHT) || this.locationY <= 0)
 			this.setVanish();
 	}
 }

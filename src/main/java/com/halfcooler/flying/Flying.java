@@ -16,7 +16,7 @@ public abstract class Flying
 	protected int imageWidth = -1, imageHeight = -1;
 
 	// Alive Flag
-	protected boolean isFlying = false;
+	protected boolean isFlying = true;
 
 	public int getX()
 	{
@@ -40,11 +40,15 @@ public abstract class Flying
 
 	public int getWidth()
 	{
+		if (this.imageWidth == -1)
+			this.imageWidth = this.getImage().getWidth();
 		return this.imageWidth;
 	}
 
 	public int getHeight()
 	{
+		if (this.imageHeight == -1)
+			this.imageHeight = this.getImage().getHeight();
 		return this.imageHeight;
 	}
 
@@ -67,13 +71,12 @@ public abstract class Flying
 		this.locationY += this.speedY;
 	}
 
-	public boolean goCrash(Flying flying)
+	public boolean isCrash(Flying flying)
 	{
 		if (flying == null)
 			throw new InvalidParameterException("Parameter flying is null.");
 
 		// 缩放因子
-		// TODO: ???
 		int factorMe = this instanceof Warplane ? 2 : 1;
 		int factorHe = flying instanceof Warplane ? 2 : 1;
 
@@ -103,6 +106,11 @@ public abstract class Flying
 	public boolean getFlying()
 	{
 		return this.isFlying;
+	}
+
+	public boolean getNotFlying()
+	{
+		return !this.isFlying;
 	}
 
 	public void setVanish()

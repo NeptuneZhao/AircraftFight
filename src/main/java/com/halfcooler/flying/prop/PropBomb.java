@@ -5,9 +5,10 @@ import com.halfcooler.flying.warplane.*;
 
 import java.util.List;
 
-public class PropHealth extends Prop
+public class PropBomb extends Prop
 {
-	public PropHealth(Warplane plane)
+
+	public PropBomb(Warplane plane)
 	{
 		super(plane);
 	}
@@ -15,6 +16,13 @@ public class PropHealth extends Prop
 	@Override
 	public void takeEffect(WarplaneHero hero, List<Warplane> enemies, List<Bullet> bullets)
 	{
-		hero.ChangeHealth(250);
+		for (Warplane enemy : enemies)
+		{
+			if (!(enemy instanceof WarplaneBoss))
+				enemy.setVanish();
+		}
+
+		for (Bullet bullet : bullets)
+			bullet.setVanish();
 	}
 }

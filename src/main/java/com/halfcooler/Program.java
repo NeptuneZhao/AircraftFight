@@ -5,7 +5,6 @@ import com.halfcooler.menu.StartsMenu;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.*;
 
 public class Program
 {
@@ -43,7 +42,11 @@ public class Program
 		frame.remove(startPanel);
 
 		// 阶段 2: 游戏主循环
-		JPanel gamePanel = Game.StartGame(startsMenu.getDifficulty(), startsMenu.isMusicOn());
+		Game gamePanel = Game.StartGame(startsMenu.getDifficulty(), startsMenu.isMusicOn());
+		frame.setContentPane(gamePanel);
+		frame.setTitle("Game");
+		frame.setVisible(true);
+		gamePanel.Loop();
 
 		// 退出阶段
 		// MusicThread.musicOff();

@@ -2,6 +2,7 @@ package com.halfcooler.utils;
 
 import com.halfcooler.flying.bullet.*;
 import com.halfcooler.flying.warplane.*;
+import com.halfcooler.flying.prop.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -10,26 +11,43 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+// 写完了!
 public final class ImageManager
 {
 	private static final Map<String, BufferedImage> Map = new HashMap<>();
 
-	public static BufferedImage BackgroundImg, HeroImg, HeroBulletImg, EnemyImg, EnemyBulletImg;
+	public static BufferedImage
+			BackgroundImg,
+			HeroImg, BulletHeroImg,
+			EnemyImg, BulletEnemyImg,
+			EliteImg, BossImg,
+			PropBombImg, PropBulletImg, PropHealthImg;
+
 
 	static
 	{
 		try
 		{
-			BackgroundImg = ImageIO.read(new FileInputStream("src/main/resources/images/bg.png"));
+			BackgroundImg = ImageIO.read(new FileInputStream("src/main/resources/images/bg.jpg"));
 			HeroImg = ImageIO.read(new FileInputStream("src/main/resources/images/hero.png"));
-			HeroBulletImg = ImageIO.read(new FileInputStream("src/main/resources/images/hero_bullet.png"));
+			BulletHeroImg = ImageIO.read(new FileInputStream("src/main/resources/images/bullet_hero.png"));
 			EnemyImg = ImageIO.read(new FileInputStream("src/main/resources/images/enemy.png"));
-			EnemyBulletImg = ImageIO.read(new FileInputStream("src/main/resources/images/enemy_bullet.png"));
+			BulletEnemyImg = ImageIO.read(new FileInputStream("src/main/resources/images/bullet_enemy.png"));
+			EliteImg = ImageIO.read(new FileInputStream("src/main/resources/images/elite.png"));
+			BossImg = ImageIO.read(new FileInputStream("src/main/resources/images/boss.png"));
+			PropBombImg = ImageIO.read(new FileInputStream("src/main/resources/images/prop_bomb.png"));
+			PropBulletImg = ImageIO.read(new FileInputStream("src/main/resources/images/prop_bullet.png"));
+			PropHealthImg = ImageIO.read(new FileInputStream("src/main/resources/images/prop_health.png"));
 
 			Map.put(WarplaneHero.class.getName(), HeroImg);
 			Map.put(WarplaneEnemy.class.getName(), EnemyImg);
-			Map.put(BulletHero.class.getName(), HeroBulletImg);
-			Map.put(BulletEnemy.class.getName(), EnemyBulletImg);
+			Map.put(BulletHero.class.getName(), BulletHeroImg);
+			Map.put(BulletEnemy.class.getName(), BulletEnemyImg);
+			Map.put(WarplaneElite.class.getName(), EliteImg);
+			Map.put(WarplaneBoss.class.getName(), BossImg);
+			Map.put(PropBomb.class.getName(), PropBombImg);
+			Map.put(PropBullet.class.getName(), PropBulletImg);
+			Map.put(PropHealth.class.getName(), PropHealthImg);
 
 		}
 		catch (IOException e)

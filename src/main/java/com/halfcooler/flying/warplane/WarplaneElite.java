@@ -3,6 +3,7 @@ package com.halfcooler.flying.warplane;
 import com.halfcooler.Program;
 import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.flying.bullet.BulletEnemy;
+import com.halfcooler.flying.prop.PropGenerator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,13 +47,12 @@ public class WarplaneElite extends Warplane
 	public void setVanish()
 	{
 		super.setVanish();
-		// 实验 1:3 - 精英敌机坠毁后随机产生某种向下飞行的道具（或不产生）
-		// 20250919
-		// 产生概率
-		double rand = Math.random();
-		if (rand < 0.2)
-		{
+		PropGenerator.GenerateProp(this);
+	}
 
-		}
+	@Override
+	public int getScore()
+	{
+		return 30;
 	}
 }

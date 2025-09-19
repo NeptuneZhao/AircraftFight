@@ -19,6 +19,12 @@ public class WarplaneHero extends Warplane
 	}
 
 	@Override
+	public int getScore()
+	{
+		return 0;
+	}
+
+	@Override
 	public List<Bullet> getShots()
 	{
 		List<Bullet> shots = new LinkedList<>();
