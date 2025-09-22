@@ -3,9 +3,15 @@ package com.halfcooler.flying.bullet;
 import com.halfcooler.Program;
 import com.halfcooler.flying.Flying;
 
+/// <summary>
+/// 你好，欢迎来的抽象的子弹 <br>
+/// 子弹是飞行物的一种 <br>
+/// 其实，加血道具是伤害为负的子弹 <br>
+/// </summary>
+/// @see com.halfcooler.flying.Flying
 public abstract class Bullet extends Flying
 {
-	private int power = 10;
+	private final int power;
 
 	public int getPower()
 	{

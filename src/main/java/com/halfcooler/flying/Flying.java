@@ -52,10 +52,6 @@ public abstract class Flying
 		return this.imageHeight;
 	}
 
-	public Flying()
-	{
-	}
-
 	public Flying(int locationX, int locationY, int speedX, int speedY)
 	{
 		this.locationX = locationX;
@@ -71,6 +67,9 @@ public abstract class Flying
 		this.locationY += this.speedY;
 	}
 
+	/// 碰撞检测
+	/// @param flying 另一个飞行物
+	/// @return 是否碰撞
 	public boolean isCrash(Flying flying)
 	{
 		if (flying == null)
@@ -108,6 +107,10 @@ public abstract class Flying
 		return this.isFlying;
 	}
 
+	/// 是否已经消失 <br>
+	/// 你问我为什么不直接用 getFlying()？ <br>
+	/// 谓词不允许调用方法体
+	/// @see java.util.List#removeIf(java.util.function.Predicate)
 	public boolean getNotFlying()
 	{
 		return !this.isFlying;

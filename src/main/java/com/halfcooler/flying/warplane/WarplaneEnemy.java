@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 import com.halfcooler.Program;
 import com.halfcooler.flying.bullet.Bullet;
-import com.halfcooler.flying.prop.PropGenerator;
 
 public class WarplaneEnemy extends Warplane
 {
@@ -25,13 +24,6 @@ public class WarplaneEnemy extends Warplane
 	public List<Bullet> getShots()
 	{
 		return new LinkedList<>();
-	}
-
-	@Override
-	public void setVanish()
-	{
-		super.setVanish();
-		PropGenerator.GenerateProp(this);
 	}
 
 	@Override

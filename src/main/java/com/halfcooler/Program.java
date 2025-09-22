@@ -24,7 +24,7 @@ public class Program
 		frame.setBounds(100, 100, WIDTH, HEIGHT);
 		frame.setVisible(true);
 
-		// Start waiting, a stupid method to change the menu to the game loop.
+		// 同步锁借鉴自 https://github.com/ZSTIH/2022_HITSZ_IOSC-Labs
 		synchronized (MainLock)
 		{
 			while (startPanel.isVisible())

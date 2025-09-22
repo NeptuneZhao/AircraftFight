@@ -1,184 +1,166 @@
 @startuml
 
-!theme plain
-top to bottom direction
-skinparam linetype ortho
-
-class node33 as ".gitignore"
 class Bullet {
-   getPower(): int
-   Bullet(int, int, int, int, int):
-   goForward(): void
+  - power: int
+   power: int
+  + goForward(): void
+  + Bullet(int, int, int, int, int):
+}
+class BulletEnemy {
+  + BulletEnemy(int, int, int, int, int):
+}
+class BulletHero {
+  + BulletHero(int, int, int, int, int):
 }
 class Flying {
+  # isFlying: boolean
+  # speedX: int
+  # image: BufferedImage
+  # speedY: int
+   y: int
+   width: int
+   notFlying: boolean
+   height: int
    image: BufferedImage
+   speedX: int
    isFlying: boolean
-   getX(): int
-   getNotFlying(): boolean
-   isCrash(Flying): boolean
-   Flying(int, int, int, int):
-   getImage(): BufferedImage
-   goCrash(Flying): boolean
-   Flying():
-   setVanish(): void
-   getSpeedX(): int
-   goForward(): void
-   setLocation(double, double): void
-   getFlying(): boolean
-   getSpeedY(): int
-   getHeight(): int
-   getY(): int
-   getWidth(): int
+   speedY: int
+   x: int
+  + goForward(): void
+  + setVanish(): void
+  + isCrash(Flying): boolean
+  + setLocation(double, double): void
+  + Flying():
+  + Flying(int, int, int, int):
 }
 class Game {
-   score: int
-   warplaneHero: WarplaneHero
-   maxEnemies: int
-   timeInterval: int
-   cycleTime: int
-   allEnemyBullets: List<Bullet>
-   time: int
-   gameOver: boolean
-   heroBullets: List<Bullet>
-   cycleDuration: int
-   scheduler: ScheduledExecutorService
-   backgroundTop: int
-   allEnemies: List<Warplane>
-   props: List<Prop>
-   timeCycled(): boolean
-   Loop(): void
-   Game(int):
-   crashEvent(): void
-   PaintImageWithPositionRevised(Graphics, List<Flying>): void
-   paint(Graphics): void
-   StartGame(int, boolean): Game
-   PaintScoreAndHealth(Graphics): void
+  - PaintImageWithPositionRevised(Graphics, List<Flying>): void
+  - PaintScoreAndHealth(Graphics): void
+  + StartGame(int, boolean): Game
+  - timeCycled(): boolean
+  - crashEvent(): void
+  + paint(Graphics): void
+  + Loop(): void
+  + Game(int):
 }
-class GameEasy
-class GameHard
-class GameNormal
 class ImageManager {
-   PropBombImg: BufferedImage
-   PropBulletImg: BufferedImage
-   BulletHeroImg: BufferedImage
-   EliteImg: BufferedImage
-   EnemyBulletImg: BufferedImage
-   HeroBulletImg: BufferedImage
-   BackgroundImg: BufferedImage
-   PropHealthImg: BufferedImage
-   BossImg: BufferedImage
-   BulletEnemyImg: BufferedImage
-   getImage(Object): BufferedImage
-   getImage(String): BufferedImage
+  + getImage(String): BufferedImage
+  + getImage(Object): BufferedImage
+  + ImageManager():
 }
-class MouseController
 class MouseController {
-   SetControl(Game, WarplaneHero): void
+  + SetControl(Game, WarplaneHero): void
+  + MouseController():
+}
+class MusicThread {
+  - cleanUp(): void
+  + run(): void
+  + musicOn(boolean): void
+  + musicOff(): void
+  - stopPlaying(): void
+  - MusicThread(File, boolean):
 }
 class Program {
-   main(String[]): void
+  + main(String[]): void
+  + Program():
 }
-class node10 as "Program.puml"
 class Prop {
-   Prop(Warplane):
-   takeEffect(WarplaneHero, List<Warplane>, List<Bullet>): void
-   goForward(): void
+  + takeEffect(WarplaneHero, List<Warplane>, List<Bullet>): void
+  + GenerateProp(Warplane): Prop?
+  + goForward(): void
+  + Prop(Warplane):
 }
 class PropBomb {
-   takeEffect(WarplaneHero, List<Warplane>, List<Bullet>): void
-   PropBomb(Warplane):
+  + takeEffect(WarplaneHero, List<Warplane>, List<Bullet>): void
+  + PropBomb(Warplane):
 }
 class PropBullet {
-   takeEffect(WarplaneHero, List<Warplane>, List<Bullet>): void
-   PropBullet(Warplane):
-}
-class PropGenerator {
-   GenerateProp(Warplane): Prop
+  + takeEffect(WarplaneHero, List<Warplane>, List<Bullet>): void
+  + PropBullet(Warplane):
 }
 class PropHealth {
-   takeEffect(WarplaneHero, List<Warplane>, List<Bullet>): void
-   PropHealth(Warplane):
+  + takeEffect(WarplaneHero, List<Warplane>, List<Bullet>): void
+  + PropHealth(Warplane):
 }
 class Record {
-   difficulty: String
+  - difficulty: String
+  - time: String
+  - score: int
+  - userName: String
    time: String
+   difficulty: String
    score: int
    userName: String
-   getUserName(): String
-   getDifficulty(): String
-   getTime(): String
-   getScore(): int
-   Record(String, String, int, String):
+  + Record(String, String, int, String):
 }
-class RecordExport {
-   getAllRecords(): List<Record>
-   deleteRecord(Record): void
-   addRecord(Record): void
+interface RecordExport << interface >> {
+   allRecords: List<Record>
+  + addRecord(Record): void
+  + deleteRecord(Record): void
 }
 class RecordImplement {
-   records: List<Record>
-   f: File
-   addRecord(Record): void
-   getAllRecords(): List<Record>
-   writeToFile(): void
-   deleteRecord(Record): void
-   RecordImplement():
+   allRecords: List<Record>
+  + addRecord(Record): void
+  + writeToFile(): void
+  + deleteRecord(Record): void
+  + RecordImplement():
+}
+class StartsMenu {
+  - musicOn: boolean
+  - panel: JPanel
+  - difficulty: int
+   panel: JPanel
+   difficulty: int
+   musicOn: boolean
+  - onButtonClicked(): void
+  + $$$getRootComponent$$$(): JComponent
+  - $$$setupUI$$$(): void
+  + StartsMenu():
 }
 class Warplane {
-   Warplane(int, int, int, int, int):
-   ChangeHealth(int): void
-   getScore(): int
-   getHealth(): int
+  # health: int
+   score: int
+   health: int
+   shots: List<Bullet>
+  + ChangeHealth(int): void
+  + Warplane(int, int, int, int, int):
 }
 class WarplaneBoss {
-   getShots(): List<Bullet>
-   getScore(): int
-   WarplaneBoss(int, int, int, int, int):
-   setVanish(): void
-   goForward(): void
+   score: int
+   shots: List<Bullet>
+  + goForward(): void
+  + WarplaneBoss(int, int, int, int, int):
 }
 class WarplaneElite {
-   setVanish(): void
-   goForward(): void
-   WarplaneElite(int, int, int, int, int):
-   getShots(): List<Bullet>
-   getScore(): int
+   score: int
+   shots: List<Bullet>
+  + goForward(): void
+  + WarplaneElite(int, int, int, int, int):
 }
 class WarplaneEnemy {
-   getScore(): int
-   goForward(): void
-   WarplaneEnemy(int, int, int, int, int):
-   getShots(): List<Bullet>
-   setVanish(): void
+   score: int
+   shots: List<Bullet>
+  + goForward(): void
+  + WarplaneEnemy(int, int, int, int, int):
 }
-class WarplaneGenerator
 class WarplaneHero {
-   getScore(): int
-   getShots(): List<Bullet>
-   WarplaneHero(int, int, int, int, int):
-   goForward(): void
+   score: int
+   shots: List<Bullet>
+  + goForward(): void
+  + WarplaneHero(int, int, int, int, int):
 }
-class node32 as "build.gradle.kts"
-class node19 as "copilot.data.migration.ask.xml"
-class node0 as "copilot.data.migration.ask2agent.xml"
-class node20 as "gradle-wrapper.jar"
-class node22 as "gradle-wrapper.properties" {
-   validateDistributionUrl:
-   networkTimeout:
-}
-class node6 as "gradle.xml"
-class gradlew
-class node29 as "gradlew.bat"
-class node7 as "misc.xml"
-class node18 as "settings.gradle.kts"
 
-GameEasy           ^-[#595959,plain]-  Game              : "removed"
-GameHard           ^-[#595959,plain]-  Game              : "removed"
-GameNormal         ^-[#595959,plain]-  Game              : "removed"
-Prop               ^-[#595959,plain]-  Flying
-PropBomb           ^-[#595959,plain]-  Prop
-PropBullet         ^-[#595959,plain]-  Prop
-PropHealth         ^-[#595959,plain]-  Prop
-RecordImplement    ^-[#595959,dashed]-  RecordExport
-WarplaneBoss       ^-[#595959,plain]-  Warplane
+Bullet           -[#000082,plain]-^  Flying
+BulletEnemy      -[#000082,plain]-^  Bullet
+BulletHero       -[#000082,plain]-^  Bullet
+Prop             -[#000082,plain]-^  Flying
+PropBomb         -[#000082,plain]-^  Prop
+PropBullet       -[#000082,plain]-^  Prop
+PropHealth       -[#000082,plain]-^  Prop
+RecordImplement  -[#008200,dashed]-^  RecordExport
+Warplane         -[#000082,plain]-^  Flying
+WarplaneBoss     -[#000082,plain]-^  Warplane
+WarplaneElite    -[#000082,plain]-^  Warplane
+WarplaneEnemy    -[#000082,plain]-^  Warplane
+WarplaneHero     -[#000082,plain]-^  Warplane
 @enduml

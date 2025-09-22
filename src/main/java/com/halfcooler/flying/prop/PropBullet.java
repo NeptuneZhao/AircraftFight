@@ -16,6 +16,10 @@ public class PropBullet extends Prop
 	@Override
 	public void takeEffect(WarplaneHero hero, List<Warplane> enemies, java.util.List<Bullet> bullets)
 	{
+		// 插桩测试
+		System.out.println("PropBullet takeEffect");
+
 		// 英雄机加子弹
+
 	}
 }

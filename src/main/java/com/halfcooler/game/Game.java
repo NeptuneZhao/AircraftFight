@@ -84,7 +84,8 @@ public class Game extends JPanel
 		return false;
 	}
 
-	// HAS BUG
+	/// 碰撞检测 <br>
+	/// 产生道具
 	private void crashEvent()
 	{
 		// 子弹打自己
@@ -123,6 +124,9 @@ public class Game extends JPanel
 					{
 						score += enemy.getScore();
 						// 敌机死了, 有概率掉落道具
+						Prop prop = Prop.GenerateProp(enemy);
+						if (prop != null)
+							props.add(prop);
 					}
 				}
 
@@ -137,7 +141,7 @@ public class Game extends JPanel
 				}
 			}
 
-			// 我吃道具
+			// 我吃撞到的道具
 			for (Prop prop : props)
 			{
 				if (!prop.getFlying())
@@ -145,37 +149,40 @@ public class Game extends JPanel
 
 				if (warplaneHero.isCrash(prop))
 				{
-					props.remove(prop);
 					prop.takeEffect(warplaneHero, allEnemies, allEnemyBullets);
+					prop.setVanish();
 				}
 			}
 		}
 
 	}
 
-	/// 游戏的主循环.
+	/// 游戏的主循环
 	public void Loop()
 	{
 		Runnable gameTask = () ->
 		{
-			System.out.printf("Hero Position: (%d, %d), 1st Enemy Position: (%d, %d), isCrash: %s%n",
-				this.warplaneHero.getX(), this.warplaneHero.getY(),
+			/*  插桩测试
+				System.out.printf("Hero Position: (%d, %d), 1st Enemy Position: (%d, %d), isCrash: %s%n",
+			 	this.warplaneHero.getX(), this.warplaneHero.getY(),
 				this.allEnemies.isEmpty() ? -1 : this.allEnemies.getFirst().getX(),
 				this.allEnemies.isEmpty() ? -1 : this.allEnemies.getFirst().getY(),
-				this.allEnemies.isEmpty() ? -1 : this.warplaneHero.isCrash(this.allEnemies.getFirst()) ? 1 : 0
-			);
+				this.allEnemies.isEmpty() ? -1 : this.warplaneHero.isCrash(this.allEnemies.getFirst()) ? 1 : 0);
+			*/
+
 			this.time += this.timeInterval;
 
 			if (timeCycled())
 			{
-				// System.out.println("Cycle!");
 				// 产生敌机
 				if (this.allEnemies.size() < this.maxEnemies)
 				{
 					this.allEnemies.add(new WarplaneEnemy(
-						(int) (Math.random() * (Program.WIDTH - ImageManager.EnemyImg.getWidth())),
-						(int) (Math.random() * Program.HEIGHT / 20), 0, 5, 30));
-
+						(int) (Math.random() * (Program.WIDTH - ImageManager.EnemyImg.getWidth())), // x
+						(int) (Math.random() * Program.HEIGHT / 20), // y
+						0, // speedX
+						5, // speedY
+						30)); // health
 				}
 				// 射击
 				for (Warplane enemy : this.allEnemies)
@@ -189,9 +196,14 @@ public class Game extends JPanel
 				bullet.goForward();
 			for (Bullet bullet: this.allEnemyBullets)
 				bullet.goForward();
-				// 飞机移动
+
+			// 敌机移动
 			for (Warplane enemy : this.allEnemies)
 				enemy.goForward();
+
+			// 道具移动
+			for (Prop prop : this.props)
+				prop.goForward();
 
 			// 撞击检测
 			crashEvent();

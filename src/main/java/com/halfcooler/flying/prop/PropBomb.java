@@ -7,7 +7,6 @@ import java.util.List;
 
 public class PropBomb extends Prop
 {
-
 	public PropBomb(Warplane plane)
 	{
 		super(plane);
@@ -16,6 +15,9 @@ public class PropBomb extends Prop
 	@Override
 	public void takeEffect(WarplaneHero hero, List<Warplane> enemies, List<Bullet> bullets)
 	{
+		// 插桩测试
+		System.out.println("PropBomb takeEffect");
+
 		for (Warplane enemy : enemies)
 		{
 			if (!(enemy instanceof WarplaneBoss))

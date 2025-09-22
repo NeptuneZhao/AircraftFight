@@ -30,7 +30,7 @@ public class WarplaneHero extends Warplane
 		List<Bullet> shots = new LinkedList<>();
 
 		// 英雄机: 就射一次
-		shots.add(new BulletHero(this.getX(), this.getY() - 2, 0, this.getSpeedY() - 5, 30));
+		shots.add( new BulletHero(this.getX(), this.getY() - 2, 0, this.getSpeedY() - 5, 30) );
 
 		return shots;
 	}
