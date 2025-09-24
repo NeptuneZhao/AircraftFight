@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface RecordExport
 {
-	List<Record> getAllRecords();
+	List<Record> GetAllRecords();
 
-	void addRecord(Record gameRecord);
+	void AddRecord(Record gameRecord);
 
-	void deleteRecord(Record gameRecord);
+	void DeleteRecord(Record gameRecord);
 }

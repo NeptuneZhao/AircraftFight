@@ -18,7 +18,7 @@ public abstract class Prop extends Flying
 	/// 现在：由游戏主循环构造
 	public Prop(Warplane plane)
 	{
-		super(plane.getX(), plane.getY(), 0, plane.getSpeedY());
+		super(plane.GetX(), plane.GetY(), 0, plane.GetSpeedY());
 	}
 
 	// 产生的概率以后再调
@@ -68,14 +68,14 @@ public abstract class Prop extends Flying
 	}
 
 	@Override
-	public void goForward()
+	public void GoForward()
 	{
-		super.goForward();
+		super.GoForward();
 
 		if (locationY >= Program.HEIGHT)
-			this.setVanish();
+			this.SetVanish();
 	}
 
-	public abstract void takeEffect(WarplaneHero hero, List<Warplane> enemies, List<Bullet> bullets);
+	public abstract void TakeEffect(WarplaneHero hero, List<Warplane> enemies, List<Bullet> bullets);
 
 }

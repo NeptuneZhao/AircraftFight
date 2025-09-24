@@ -1,6 +1,5 @@
 package com.halfcooler.flying.warplane;
 
-import java.util.LinkedList;
 import java.util.List;
 import com.halfcooler.Program;
 import com.halfcooler.flying.bullet.Bullet;
@@ -13,17 +12,17 @@ public class WarplaneEnemy extends Warplane
 	}
 
 	@Override
-	public void goForward()
+	public void GoForward()
 	{
-		super.goForward();
+		super.GoForward();
 		if (locationY >= Program.HEIGHT)
-			setVanish();
+			SetVanish();
 	}
 
 	@Override
-	public List<Bullet> getShots()
+	public List<Bullet> GetShots()
 	{
-		return new LinkedList<>();
+		return List.of();
 	}
 
 	@Override

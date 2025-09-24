@@ -28,6 +28,16 @@
 
 原框架使用了 `org.apache.commons.lang3.concurrent.BasicThreadFactory` 来创建线程池并进行管理，本项目将其进行了替换，改为使用 Java 自带的 `java.util.concurrent.Executors` 及其他相关类。
 
+## 编译规范
+
+大括号风格: Allman
+命名风格: 驼峰(公开成员大写开头，私有成员小写开头)
+缩进: 1 制表符
+行尾: LF
+编码: UTF-8
+
+
+
 ## 实验内容
 
 ### 实验 1

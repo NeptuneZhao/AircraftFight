@@ -7,18 +7,18 @@ import java.util.List;
 public class RecordImplement implements RecordExport
 {
 	private final List<Record> records;
-	private final File f = new File("data/gameRecords.txt");
+	private final File file = new File("data/gameRecords.txt");
 
 	public RecordImplement() throws IOException
 	{
 		records = new ArrayList<>();
-		if (!f.exists())
+		if (!file.exists())
 		{
-			if (!f.createNewFile())
-				throw new IOException("Cannot create file: " + f.getAbsolutePath());
+			if (!file.createNewFile())
+				throw new IOException("Cannot create file: " + file.getAbsolutePath());
 		}
 
-		FileInputStream fip = new FileInputStream(f);
+		FileInputStream fip = new FileInputStream(file);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(fip));
 
 		String[] lineFromFile;
@@ -31,14 +31,14 @@ public class RecordImplement implements RecordExport
 		reader.close();
 	}
 
-	public void writeToFile() throws IOException
+	public void WriteToFile() throws IOException
 	{
-		FileOutputStream fop = new FileOutputStream(f);
+		FileOutputStream fop = new FileOutputStream(file);
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fop));
 		if (records != null) {
 			for (Record gameRecord : records) {
 				String lineToFile;
-				lineToFile = gameRecord.getUserName() + ',' + gameRecord.getTime() + ',' + gameRecord.getScore() + ',' + gameRecord.getDifficulty() + '\n';
+				lineToFile = gameRecord.userName() + ',' + gameRecord.time() + ',' + gameRecord.score() + ',' + gameRecord.difficulty() + '\n';
 				writer.write(lineToFile);
 			}
 		}
@@ -47,19 +47,19 @@ public class RecordImplement implements RecordExport
 	}
 
 	@Override
-	public List<Record> getAllRecords()
+	public List<Record> GetAllRecords()
 	{
 		return this.records;
 	}
 
 	@Override
-	public void addRecord(Record record)
+	public void AddRecord(Record record)
 	{
 		this.records.add(record);
 	}
 
 	@Override
-	public void deleteRecord(Record record)
+	public void DeleteRecord(Record record)
 	{
 		this.records.remove(record);
 	}

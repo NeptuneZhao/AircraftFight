@@ -23,7 +23,7 @@ public final class MouseController
 				if (x < 0 || x > Program.WIDTH || y < 0 || y > Program.HEIGHT)
 					return;
 
-				warplaneHero.setLocation(x, y);
+				warplaneHero.SetLocation(x, y);
 			}
 		};
 

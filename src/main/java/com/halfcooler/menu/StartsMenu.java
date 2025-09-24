@@ -23,36 +23,36 @@ public class StartsMenu extends JFrame
 
 		$$$setupUI$$$();
 
-		this.difficultyEasyButton.addActionListener((ActionEvent ae) ->
+		this.difficultyEasyButton.addActionListener( (ActionEvent ignored) ->
 		{
 			this.difficulty = 0;
 			this.onButtonClicked();
 		});
 
-		this.difficultyNormalButton.addActionListener((ActionEvent ae) ->
+		this.difficultyNormalButton.addActionListener( (ActionEvent ignored) ->
 		{
 			this.difficulty = 1;
 			this.onButtonClicked();
 		});
 
-		this.difficultyHardButton.addActionListener((ActionEvent ae) ->
+		this.difficultyHardButton.addActionListener( (ActionEvent ignored) ->
 		{
 			this.difficulty = 2;
 			this.onButtonClicked();
 		});
 	}
 
-	public JPanel getPanel()
+	public JPanel GetPanel()
 	{
 		return this.panel;
 	}
 
-	public int getDifficulty()
+	public int GetDifficulty()
 	{
 		return this.difficulty;
 	}
 
-	public boolean isMusicOn()
+	public boolean IsMusicOn()
 	{
 		return this.musicOn;
 	}

@@ -25,14 +25,14 @@ public abstract class Bullet extends Flying
 	}
 
 	@Override
-	public void goForward()
+	public void GoForward()
 	{
-		super.goForward();
+		super.GoForward();
 
 		if (this.locationX <= 0 || this.locationX >= Program.WIDTH)
-			this.setVanish();
+			this.SetVanish();
 
 		if ( (this.speedY > 0 && this.locationY >= Program.HEIGHT) || this.locationY <= 0)
-			this.setVanish();
+			this.SetVanish();
 	}
 }

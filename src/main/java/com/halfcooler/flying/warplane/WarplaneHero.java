@@ -2,6 +2,7 @@ package com.halfcooler.flying.warplane;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.flying.bullet.BulletHero;
 
@@ -13,7 +14,7 @@ public class WarplaneHero extends Warplane
 	}
 
 	@Override
-	public void goForward()
+	public void GoForward()
 	{
 		// 鼠标控制
 	}
@@ -25,12 +26,12 @@ public class WarplaneHero extends Warplane
 	}
 
 	@Override
-	public List<Bullet> getShots()
+	public List<Bullet> GetShots()
 	{
 		List<Bullet> shots = new LinkedList<>();
 
 		// 英雄机: 就射一次
-		shots.add( new BulletHero(this.getX(), this.getY() - 2, 0, this.getSpeedY() - 5, 30) );
+		shots.add( new BulletHero(this.GetX(), this.GetY() - 2, 0, this.GetSpeedY() - 5, 30) );
 
 		return shots;
 	}

@@ -12,6 +12,8 @@ public class MusicThread extends Thread
     private final boolean loop;
     private Clip clip;
 
+	public static boolean IsMusicOn;
+
     private MusicThread(File path, boolean loop)
     {
         this.musicPath = path;
@@ -35,7 +37,7 @@ public class MusicThread extends Thread
             ais = AudioSystem.getAudioInputStream(musicPath);
             AudioFormat baseFormat = ais.getFormat();
 
-			// 可能有用的转换为 PCM
+			// 可能有用 转换为 PCM
             AudioFormat targetFormat = new AudioFormat(
 				AudioFormat.Encoding.PCM_SIGNED,
                 baseFormat.getSampleRate(),
@@ -107,23 +109,21 @@ public class MusicThread extends Thread
 
     private void cleanUp()
     {
-        if (clip != null)
-		{
-			clip.close();
-        }
+        if (clip != null) clip.close();
     }
 
-	private static final MusicThread theInstance = new MusicThread(new File("src/main/resources/bgm.wav"), true);
+	public static final MusicThread BackgroundMusicInstance = new MusicThread(new File("src/main/resources/bgm.wav"), true);
+	public static final MusicThread GameOverMusicInstance = new MusicThread(new File("src/main/resources/game_over.wav"), false);
 
-	public static void musicOn(boolean isMusicOn)
+	public static void MusicOn(MusicThread instance)
 	{
-		if (isMusicOn) theInstance.start();
+		if (IsMusicOn) instance.start();
 	}
 
 	/// @see MusicThread#stopPlaying()
-	public static void musicOff()
+	public static void MusicOff(MusicThread instance)
 	{
-		if (theInstance.isAlive()) theInstance.stopPlaying();
+		if (instance.isAlive()) instance.stopPlaying();
 	}
 
 }

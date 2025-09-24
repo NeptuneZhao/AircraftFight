@@ -18,7 +18,7 @@ public class Program
 		frame.setResizable(false);
 
 		StartsMenu startsMenu = new StartsMenu();
-		JPanel startPanel = startsMenu.getPanel();
+		JPanel startPanel = startsMenu.GetPanel();
 		frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		frame.setContentPane(startPanel);
 		frame.setBounds(100, 100, WIDTH, HEIGHT);
@@ -42,13 +42,12 @@ public class Program
 		frame.remove(startPanel);
 
 		// 阶段 2: 游戏主循环
-		Game gamePanel = Game.StartGame(startsMenu.getDifficulty(), startsMenu.isMusicOn());
+		Game gamePanel = Game.StartGame(startsMenu.GetDifficulty(), startsMenu.IsMusicOn());
 		frame.setContentPane(gamePanel);
 		frame.setTitle("Game");
 		frame.setVisible(true);
 		gamePanel.Loop();
 
 		// 退出阶段
-		// MusicThread.musicOff();
 	}
 }

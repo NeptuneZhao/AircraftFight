@@ -17,34 +17,40 @@ public final class ImageManager
 	private static final Map<String, BufferedImage> Map = new HashMap<>();
 
 	public static BufferedImage
-			BackgroundImg,
-			HeroImg, BulletHeroImg,
-			EnemyImg, BulletEnemyImg,
-			EliteImg, BossImg,
-			PropBombImg, PropBulletImg, PropHealthImg;
-
+		BackgroundImg,
+		HeroImg, BulletHeroImg,
+		EnemyImg, BulletEnemyImg,
+		EliteImg, BossImg,
+		PropBombImg, PropBulletImg, PropHealthImg;
 
 	static
 	{
 		try
 		{
 			BackgroundImg = ImageIO.read(new FileInputStream("src/main/resources/images/bg.jpg"));
+
 			HeroImg = ImageIO.read(new FileInputStream("src/main/resources/images/hero.png"));
 			BulletHeroImg = ImageIO.read(new FileInputStream("src/main/resources/images/bullet_hero.png"));
+
 			EnemyImg = ImageIO.read(new FileInputStream("src/main/resources/images/enemy.png"));
 			BulletEnemyImg = ImageIO.read(new FileInputStream("src/main/resources/images/bullet_enemy.png"));
+
 			EliteImg = ImageIO.read(new FileInputStream("src/main/resources/images/elite.png"));
 			BossImg = ImageIO.read(new FileInputStream("src/main/resources/images/boss.png"));
+
 			PropBombImg = ImageIO.read(new FileInputStream("src/main/resources/images/prop_bomb.png"));
 			PropBulletImg = ImageIO.read(new FileInputStream("src/main/resources/images/prop_bullet.png"));
 			PropHealthImg = ImageIO.read(new FileInputStream("src/main/resources/images/prop_health.png"));
 
 			Map.put(WarplaneHero.class.getName(), HeroImg);
-			Map.put(WarplaneEnemy.class.getName(), EnemyImg);
 			Map.put(BulletHero.class.getName(), BulletHeroImg);
+
+			Map.put(WarplaneEnemy.class.getName(), EnemyImg);
 			Map.put(BulletEnemy.class.getName(), BulletEnemyImg);
+
 			Map.put(WarplaneElite.class.getName(), EliteImg);
 			Map.put(WarplaneBoss.class.getName(), BossImg);
+
 			Map.put(PropBomb.class.getName(), PropBombImg);
 			Map.put(PropBullet.class.getName(), PropBulletImg);
 			Map.put(PropHealth.class.getName(), PropHealthImg);
@@ -56,13 +62,13 @@ public final class ImageManager
 		}
 	}
 
-	public static BufferedImage getImage(String className)
+	public static BufferedImage GetImage(String className)
 	{
 		return Map.get(className);
 	}
 
-	public static BufferedImage getImage(Object e)
+	public static BufferedImage GetImage(Object e)
 	{
-		return e == null ? null : getImage(e.getClass().getName());
+		return e == null ? null : GetImage(e.getClass().getName());
 	}
 }

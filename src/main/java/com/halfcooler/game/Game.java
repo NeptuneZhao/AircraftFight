@@ -24,14 +24,14 @@ public class Game extends JPanel
 	private int backgroundTop = 0;
 	private final ScheduledExecutorService scheduler;
 
-	private final int timeInterval = 16;
+	private final int timeInterval = 15;
 	private final WarplaneHero warplaneHero;
 	private final List<Warplane> allEnemies;
 	private final List<Bullet> allEnemyBullets;
 	private final List<Bullet> heroBullets;
 	private final List<Prop> props;
 
-	private final int maxEnemies = 5;
+	private final int maxEnemies = 8;
 	private final int cycleDuration;
 	private int score = 0, time = 0;
 	private int cycleTime = 0;
@@ -40,11 +40,12 @@ public class Game extends JPanel
 
 	public Game(int difficulty)
 	{
+		// final
 		switch (difficulty)
 		{
-			case 0 -> cycleDuration = 800;
-			case 1 -> cycleDuration = 600;
-			case 2 -> cycleDuration = 30;
+			case 0 -> cycleDuration = 600;
+			case 1 -> cycleDuration = 300;
+			case 2 -> cycleDuration = 100;
 			default -> throw new IllegalArgumentException("Invalid difficulty");
 		}
 
@@ -67,9 +68,10 @@ public class Game extends JPanel
 		MouseController.SetControl(this, warplaneHero);
 	}
 
-	public static Game StartGame(int difficulty, boolean isMusic)
+	public static Game StartGame(int difficulty, boolean musicOn)
 	{
-		MusicThread.musicOn(isMusic);
+		MusicThread.IsMusicOn = musicOn;
+		MusicThread.MusicOn(MusicThread.BackgroundMusicInstance);
 		return new Game(difficulty);
 	}
 
@@ -91,36 +93,36 @@ public class Game extends JPanel
 		// 子弹打自己
 		for (Bullet bullet : allEnemyBullets)
 		{
-			if (!bullet.getFlying())
+			if (bullet.GetNotFlying())
 				continue;
 
-			if (!warplaneHero.getFlying())
+			if (warplaneHero.GetNotFlying())
 				return;
 
-			if (warplaneHero.isCrash(bullet))
+			if (warplaneHero.IsCrash(bullet))
 			{
 				warplaneHero.ChangeHealth(-bullet.getPower());
-				bullet.setVanish();
+				bullet.SetVanish();
 			}
 		}
 
 		// 子弹打敌机
 		for (Bullet bullet : heroBullets)
 		{
-			if (!bullet.getFlying())
+			if (bullet.GetNotFlying())
 				continue;
 
 			for (Warplane enemy : allEnemies)
 			{
-				if (!enemy.getFlying())
+				if (enemy.GetNotFlying())
 					continue;
 
-				if (enemy.isCrash(bullet))
+				if (enemy.IsCrash(bullet))
 				{
 					enemy.ChangeHealth(-bullet.getPower());
-					bullet.setVanish();
+					bullet.SetVanish();
 
-					if (!enemy.getFlying())
+					if (enemy.GetNotFlying())
 					{
 						score += enemy.getScore();
 						// 敌机死了, 有概率掉落道具
@@ -131,26 +133,26 @@ public class Game extends JPanel
 				}
 
 				// 敌机撞自己, GAME OVER
-				if (!warplaneHero.getFlying())
+				if (warplaneHero.GetNotFlying())
 					return;
 
-				if (warplaneHero.isCrash(enemy) || enemy.isCrash(warplaneHero))
+				if (warplaneHero.IsCrash(enemy) || enemy.IsCrash(warplaneHero))
 				{
-					warplaneHero.setVanish();
-					enemy.setVanish();
+					warplaneHero.SetVanish();
+					enemy.SetVanish();
 				}
 			}
 
 			// 我吃撞到的道具
 			for (Prop prop : props)
 			{
-				if (!prop.getFlying())
+				if (prop.GetNotFlying())
 					continue;
 
-				if (warplaneHero.isCrash(prop))
+				if (warplaneHero.IsCrash(prop))
 				{
-					prop.takeEffect(warplaneHero, allEnemies, allEnemyBullets);
-					prop.setVanish();
+					prop.TakeEffect(warplaneHero, allEnemies, allEnemyBullets);
+					prop.SetVanish();
 				}
 			}
 		}
@@ -181,46 +183,49 @@ public class Game extends JPanel
 						(int) (Math.random() * (Program.WIDTH - ImageManager.EnemyImg.getWidth())), // x
 						(int) (Math.random() * Program.HEIGHT / 20), // y
 						0, // speedX
-						5, // speedY
+						Math.random() < 0.01 ? 50 : 5, // speedY
 						30)); // health
 				}
 				// 射击
 				for (Warplane enemy : this.allEnemies)
-					this.allEnemyBullets.addAll(enemy.getShots());
+					this.allEnemyBullets.addAll(enemy.GetShots());
 
-				this.heroBullets.addAll(this.warplaneHero.getShots());
+				this.heroBullets.addAll(this.warplaneHero.GetShots());
 			}
 
 			// 子弹移动
 			for (Bullet bullet: this.heroBullets)
-				bullet.goForward();
+				bullet.GoForward();
 			for (Bullet bullet: this.allEnemyBullets)
-				bullet.goForward();
+				bullet.GoForward();
 
 			// 敌机移动
 			for (Warplane enemy : this.allEnemies)
-				enemy.goForward();
+				enemy.GoForward();
 
 			// 道具移动
 			for (Prop prop : this.props)
-				prop.goForward();
+				prop.GoForward();
 
 			// 撞击检测
 			crashEvent();
 
 			// 后处理
-			this.allEnemyBullets.removeIf(Flying::getNotFlying);
-			this.heroBullets.removeIf(Flying::getNotFlying);
-			this.allEnemies.removeIf(Flying::getNotFlying);
-			this.props.removeIf(Flying::getNotFlying);
+			this.allEnemyBullets.removeIf(Flying::GetNotFlying);
+			this.heroBullets.removeIf(Flying::GetNotFlying);
+			this.allEnemies.removeIf(Flying::GetNotFlying);
+			this.props.removeIf(Flying::GetNotFlying);
 
 			repaint();
 
-			if (!this.warplaneHero.getFlying() || this.warplaneHero.getHealth() <= 0)
+			if (this.warplaneHero.GetNotFlying() || this.warplaneHero.getHealth() <= 0)
 			{
 				this.scheduler.shutdown();
 				gameOver = true;
 				System.out.println("Game Over");
+
+				MusicThread.MusicOff(MusicThread.BackgroundMusicInstance);
+				MusicThread.MusicOn(MusicThread.GameOverMusicInstance);
 			}
 		};
 		this.scheduler.scheduleWithFixedDelay(gameTask, this.timeInterval, this.timeInterval, TimeUnit.MILLISECONDS);
@@ -253,9 +258,9 @@ public class Game extends JPanel
 
 		for (Flying flying : flyingList)
 		{
-			BufferedImage image = flying.getImage();
+			BufferedImage image = flying.GetImage();
 			assert image != null : flyingList.getClass().getName() + " image is null.";
-			g.drawImage(image, flying.getX() - image.getWidth() / 2, flying.getY() - image.getHeight() / 2, null);
+			g.drawImage(image, flying.GetX() - image.getWidth() / 2, flying.GetY() - image.getHeight() / 2, null);
 		}
 	}
 

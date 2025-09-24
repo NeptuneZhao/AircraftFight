@@ -4,6 +4,7 @@ import com.halfcooler.flying.bullet.Bullet;
 
 import java.util.List;
 
+/// Not completed
 public class WarplaneBoss extends Warplane
 {
 
@@ -13,7 +14,7 @@ public class WarplaneBoss extends Warplane
 	}
 
 	@Override
-	public List<Bullet> getShots()
+	public List<Bullet> GetShots()
 	{
 		return List.of();
 	}
@@ -25,7 +26,7 @@ public class WarplaneBoss extends Warplane
 	}
 
 	@Override
-	public void goForward()
+	public void GoForward()
 	{
 
 	}

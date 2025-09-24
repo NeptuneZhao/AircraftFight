@@ -15,25 +15,25 @@ public class WarplaneElite extends Warplane
 	}
 
 	@Override
-	public void goForward()
+	public void GoForward()
 	{
-		super.goForward();
+		super.GoForward();
 		if (locationY >= Program.HEIGHT)
-			setVanish();
+			SetVanish();
 	}
 
 	// 实验 1:2 - 精英敌机按设定周期直射子弹
 	// 20250919
 	// 周期交给 Game
 	@Override
-	public List<Bullet> getShots()
+	public List<Bullet> GetShots()
 	{
 		List<Bullet> shots = new LinkedList<>();
 
 		// TODO 设置精英机发射次数 & 伤害
 		// 构造子弹绝对得用外部类, 你就信我 20250919
 		for (int i = 0; i < 1; i++)
-			shots.add( new BulletEnemy(this.getX(), this.getY(), 0, this.getSpeedY(), 30) );
+			shots.add( new BulletEnemy(this.GetX(), this.GetY(), 0, this.GetSpeedY(), 30) );
 
 		return shots;
 	}

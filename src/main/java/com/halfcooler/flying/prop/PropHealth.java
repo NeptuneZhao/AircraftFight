@@ -13,7 +13,7 @@ public class PropHealth extends Prop
 	}
 
 	@Override
-	public void takeEffect(WarplaneHero hero, List<Warplane> enemies, List<Bullet> bullets)
+	public void TakeEffect(WarplaneHero hero, List<Warplane> enemies, List<Bullet> bullets)
 	{
 		// 插桩测试
 		System.out.println("PropHealth takeEffect");
