@@ -3,12 +3,16 @@ package com.halfcooler.flying.warplane;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.halfcooler.Program;
 import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.flying.bullet.BulletHero;
+import com.halfcooler.utils.ImageManager;
 
 public class WarplaneHero extends Warplane
 {
-	public WarplaneHero(int x, int y, int speedX, int speedY, int health)
+	public static WarplaneHero Instance = new WarplaneHero(Program.WIDTH / 2, Program.HEIGHT - ImageManager.HeroImg.getHeight(), 0, 0, 100);
+
+	private WarplaneHero(int x, int y, int speedX, int speedY, int health)
 	{
 		super(x, y, speedX, speedY, health);
 	}

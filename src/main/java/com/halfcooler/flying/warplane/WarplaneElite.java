@@ -33,7 +33,7 @@ public class WarplaneElite extends Warplane
 		// TODO 设置精英机发射次数 & 伤害
 		// 构造子弹绝对得用外部类, 你就信我 20250919
 		for (int i = 0; i < 1; i++)
-			shots.add( new BulletEnemy(this.GetX(), this.GetY(), 0, this.GetSpeedY(), 30) );
+			shots.add( new BulletEnemy(this.GetX(), this.GetY(), 0, this.GetSpeedY()+5, 1) );
 
 		return shots;
 	}

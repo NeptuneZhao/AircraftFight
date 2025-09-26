@@ -5,6 +5,7 @@ import com.halfcooler.flying.bullet.Bullet;
 
 import java.util.List;
 
+/// 哎, 该死的工厂模式
 public abstract class Warplane extends Flying
 {
 

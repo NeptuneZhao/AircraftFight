@@ -25,7 +25,7 @@ public class Game extends JPanel
 	private final ScheduledExecutorService scheduler;
 
 	private final int timeInterval = 15;
-	private final WarplaneHero warplaneHero;
+	private final WarplaneHero warplaneHero = WarplaneHero.Instance;
 	private final List<Warplane> allEnemies;
 	private final List<Bullet> allEnemyBullets;
 	private final List<Bullet> heroBullets;
@@ -49,7 +49,6 @@ public class Game extends JPanel
 			default -> throw new IllegalArgumentException("Invalid difficulty");
 		}
 
-		warplaneHero = new WarplaneHero(Program.WIDTH / 2, Program.HEIGHT - ImageManager.HeroImg.getHeight(), 0, 0, 100);
 		System.out.println("Hero plane created.");
 		allEnemies = new LinkedList<>();
 		heroBullets = new LinkedList<>();
@@ -179,7 +178,7 @@ public class Game extends JPanel
 				// 产生敌机
 				if (this.allEnemies.size() < this.maxEnemies)
 				{
-					this.allEnemies.add(new WarplaneEnemy(
+					this.allEnemies.add(new WarplaneElite(
 						(int) (Math.random() * (Program.WIDTH - ImageManager.EnemyImg.getWidth())), // x
 						(int) (Math.random() * Program.HEIGHT / 20), // y
 						0, // speedX
