@@ -1,10 +1,16 @@
 
+import java.util.*
+
+
 plugins {
     id("java")
 }
 
 group = "com.halfcooler"
-version = "1.4"
+
+val versionFile = file("version.properties")
+val props = Properties().apply { load(versionFile.inputStream()) }
+version = "${props["major"]}.${props["minor"]}.${props["patch"]}.${props["build"]}"
 
 repositories {
     mavenCentral()
