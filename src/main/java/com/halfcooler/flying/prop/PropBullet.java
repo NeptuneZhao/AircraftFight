@@ -1,7 +1,8 @@
 package com.halfcooler.flying.prop;
 
 import com.halfcooler.flying.bullet.Bullet;
-import com.halfcooler.flying.warplane.*;
+import com.halfcooler.flying.warplane.Warplane;
+import com.halfcooler.flying.warplane.WarplaneHero;
 
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -12,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 /// <summary>
 /// 测试通过
 /// </summary>
+
 public class PropBullet extends Prop
 {
 	public static int ActiveThread = 0;

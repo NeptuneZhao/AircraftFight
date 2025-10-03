@@ -70,13 +70,13 @@ public abstract class Warplane extends Flying
 			(int) (Math.random() * (Program.WIDTH - ImageManager.EliteImg.getWidth())), // x
 			(int) (Math.random() * Program.HEIGHT / 20), // y
 			0, // speedX
-			Math.random() < 0.01 ? 50 : 3, // speedY
+			Math.random() < 0.01 ? 50 : 5, // speedY
 			30);
 		else return new WarplanePlus(
 			(int) (Math.random() * (Program.WIDTH - ImageManager.PlusImg.getWidth())), // x
 			(int) (Math.random() * Program.HEIGHT / 20), // y
 			0, // speedX
-			Math.random() < 0.01 ? 50 : 5, // speedY
+			Math.random() < 0.01 ? 50 : 3, // speedY
 			60);
 
 	}

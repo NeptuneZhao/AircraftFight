@@ -27,7 +27,7 @@
       </component>
       <component id="4f66c" class="javax.swing.JCheckBox" binding="musicCheckBox">
         <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
           <gridbag weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties>
@@ -41,6 +41,32 @@
         </constraints>
         <properties>
           <text value="Hard Mode"/>
+        </properties>
+      </component>
+      <component id="430a2" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <model>
+            <item value="V-Sync"/>
+            <item value="45"/>
+            <item value="60"/>
+            <item value="90"/>
+            <item value="120"/>
+          </model>
+        </properties>
+      </component>
+      <component id="c5fed" class="javax.swing.JLabel" binding="fpsLabel">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <horizontalAlignment value="0"/>
+          <horizontalTextPosition value="0"/>
+          <text value="Fps Settings"/>
         </properties>
       </component>
     </children>

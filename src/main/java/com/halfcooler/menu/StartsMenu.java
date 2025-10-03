@@ -5,6 +5,7 @@ import com.halfcooler.Program;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Objects;
 
 // Debug Pass
 public class StartsMenu extends JFrame
@@ -14,28 +15,31 @@ public class StartsMenu extends JFrame
 	private JButton difficultyNormalButton;
 	private JButton difficultyHardButton;
 	private JCheckBox musicCheckBox;
+	private JComboBox<String> comboBox1;
+	private JLabel fpsLabel;
 
 	private int difficulty = 0;
 	private boolean musicOn = false;
+	private int fps = 0;
 
 	public StartsMenu()
 	{
 
 		$$$setupUI$$$();
 
-		this.difficultyEasyButton.addActionListener( (ActionEvent ignored) ->
+		this.difficultyEasyButton.addActionListener((ActionEvent ignored) ->
 		{
 			this.difficulty = 0;
 			this.onButtonClicked();
 		});
 
-		this.difficultyNormalButton.addActionListener( (ActionEvent ignored) ->
+		this.difficultyNormalButton.addActionListener((ActionEvent ignored) ->
 		{
 			this.difficulty = 1;
 			this.onButtonClicked();
 		});
 
-		this.difficultyHardButton.addActionListener( (ActionEvent ignored) ->
+		this.difficultyHardButton.addActionListener((ActionEvent ignored) ->
 		{
 			this.difficulty = 2;
 			this.onButtonClicked();
@@ -57,10 +61,20 @@ public class StartsMenu extends JFrame
 		return this.musicOn;
 	}
 
+	/// @see java.awt.DisplayMode#getRefreshRate()
+	/// @return default 60
+	public int GetFps()
+	{
+		return this.fps == 0 ? 60 : this.fps;
+	}
+
 	private void onButtonClicked()
 	{
 		this.panel.setVisible(false);
 		this.musicOn = musicCheckBox.isSelected();
+		this.fps = this.comboBox1.getSelectedItem() == "V-Sync" ?
+			GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate() :
+			Integer.parseInt((String) Objects.requireNonNull(this.comboBox1.getSelectedItem()));
 
 		synchronized (Program.MainLock)
 		{
@@ -100,7 +114,7 @@ public class StartsMenu extends JFrame
 		musicCheckBox.setText("Music On");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
-		gbc.gridy = 3;
+		gbc.gridy = 5;
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		panel.add(musicCheckBox, gbc);
@@ -112,6 +126,26 @@ public class StartsMenu extends JFrame
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		panel.add(difficultyHardButton, gbc);
+		comboBox1 = new JComboBox<String>();
+		final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
+		defaultComboBoxModel1.addElement("V-Sync");
+		defaultComboBoxModel1.addElement("45");
+		defaultComboBoxModel1.addElement("60");
+		defaultComboBoxModel1.addElement("90");
+		defaultComboBoxModel1.addElement("120");
+		comboBox1.setModel(defaultComboBoxModel1);
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 4;
+		panel.add(comboBox1, gbc);
+		fpsLabel = new JLabel();
+		fpsLabel.setHorizontalAlignment(0);
+		fpsLabel.setHorizontalTextPosition(0);
+		fpsLabel.setText("Fps Settings");
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		panel.add(fpsLabel, gbc);
 	}
 
 	/**

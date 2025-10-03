@@ -3,8 +3,7 @@ package com.halfcooler;
 import com.halfcooler.game.Game;
 import com.halfcooler.menu.StartsMenu;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class Program
 {
@@ -42,7 +41,7 @@ public class Program
 		frame.remove(startPanel);
 
 		// 阶段 2: 游戏主循环
-		Game gamePanel = Game.StartGame(startsMenu.GetDifficulty(), startsMenu.IsMusicOn());
+		Game gamePanel = Game.StartGame(startsMenu.GetDifficulty(), startsMenu.IsMusicOn(), startsMenu.GetFps());
 		frame.setContentPane(gamePanel);
 		frame.setTitle("Game");
 		frame.setVisible(true);

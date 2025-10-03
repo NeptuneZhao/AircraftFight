@@ -2,12 +2,13 @@ package com.halfcooler.game;
 
 import com.halfcooler.Program;
 import com.halfcooler.flying.Flying;
+import com.halfcooler.flying.bullet.Bullet;
+import com.halfcooler.flying.prop.Prop;
+import com.halfcooler.flying.warplane.Warplane;
+import com.halfcooler.flying.warplane.WarplaneHero;
 import com.halfcooler.music.MusicPlayer;
-import com.halfcooler.utils.MouseController;
-import com.halfcooler.flying.bullet.*;
-import com.halfcooler.flying.prop.*;
-import com.halfcooler.flying.warplane.*;
 import com.halfcooler.utils.ImageManager;
+import com.halfcooler.utils.MouseController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,7 +26,7 @@ public class Game extends JPanel
 	private int backgroundTop = 0;
 	private final ScheduledExecutorService gameLoopScheduler, renderScheduler;
 
-	private final int timeInterval = 15;
+	private final int timeInterval;
 	private final WarplaneHero warplaneHero = WarplaneHero.Instance;
 	private final List<Warplane> allEnemies;
 	private final List<Bullet> allEnemyBullets;
@@ -39,14 +40,14 @@ public class Game extends JPanel
 
 	private boolean gameOver = false;
 
-	public Game(int difficulty)
+	public Game(int difficulty, int fps)
 	{
 		// final
 		switch (difficulty)
 		{
-			case 0 -> cycleDuration = 600;
-			case 1 -> cycleDuration = 300;
-			case 2 -> cycleDuration = 100;
+			case 0 -> cycleDuration = 750;
+			case 1 -> cycleDuration = 600;
+			case 2 -> cycleDuration = 300;
 			default -> throw new IllegalArgumentException("Invalid difficulty");
 		}
 
@@ -62,13 +63,27 @@ public class Game extends JPanel
 			return t;
 		});
 
+		int fpsInterval = 1000 / fps;
+
+		/* 常用 fps 设置
+		 * > 90fps -> 11ms (20ms)
+		 *   60fps -> 16ms (25ms)
+		 *   45fps -> 22ms (30ms)
+		 */
+		this.timeInterval = switch (fpsInterval)
+		{
+			case 16 -> 25;
+			case 22 -> 30;
+			default -> 20;
+		};
+
 		MouseController.SetControl(this, warplaneHero);
 	}
 
-	public static Game StartGame(int difficulty, boolean musicOn)
+	public static Game StartGame(int difficulty, boolean musicOn, int fps)
 	{
 		MusicPlayer.PlayBgm(musicOn);
-		return new Game(difficulty);
+		return new Game(difficulty, fps);
 	}
 
 	private boolean timeCycled()
@@ -217,7 +232,7 @@ public class Game extends JPanel
 		};
 		this.gameLoopScheduler.scheduleWithFixedDelay(gameTask, this.timeInterval, this.timeInterval, TimeUnit.MILLISECONDS);
 
-		int fpsInterval = 1000 / 160;
+		int fpsInterval = 1000 / 90;
 		this.renderScheduler.scheduleWithFixedDelay(this::repaint, fpsInterval, fpsInterval, TimeUnit.MILLISECONDS);
 	}
 
