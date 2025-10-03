@@ -4,6 +4,9 @@ import com.halfcooler.game.Game;
 import com.halfcooler.menu.StartsMenu;
 
 import javax.swing.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Properties;
 
 public class Program
 {
@@ -12,6 +15,9 @@ public class Program
 
 	public static void main(String[] args)
 	{
+		// Debug 模式下自动更新版本号
+		onBuilding();
+
 		// 阶段 1: 开始菜单
 		JFrame frame = new JFrame("StartMenu");
 		frame.setResizable(false);
@@ -43,10 +49,58 @@ public class Program
 		// 阶段 2: 游戏主循环
 		Game gamePanel = Game.StartGame(startsMenu.GetDifficulty(), startsMenu.IsMusicOn(), startsMenu.GetFps());
 		frame.setContentPane(gamePanel);
-		frame.setTitle("Game");
+		// Title 设置为 "Game - [Difficulty] - [Music On/Off], Version: a.b.c.d"
+		// 版本号从 version.properties 中读取
+		Properties props = new Properties();
+		try (FileInputStream fis = new FileInputStream("version.properties"))
+		{
+			props.load(fis);
+		}
+		catch (Exception e)
+		{
+			System.err.println("Failed to load version properties: " + e.getMessage());
+		}
+		String version = props.getProperty("major") + "." + props.getProperty("minor") + "." + props.getProperty("build") + "." + props.getProperty("patch");
+		frame.setTitle(String.format("Game [%s], Music %s, Ver: %s", startsMenu.GetDifficulty(), startsMenu.IsMusicOn() ? "On" : "Off", version));
 		frame.setVisible(true);
 		gamePanel.Loop();
 
 		// 退出阶段
+	}
+
+	private static void onBuilding()
+	{
+		Properties props = new Properties();
+		try (FileInputStream fis = new FileInputStream("version.properties"))
+		{
+			props.load(fis);
+		}
+		catch (Exception e)
+		{
+			System.err.println("Failed to load version properties: " + e.getMessage());
+			return;
+		}
+
+		int build = Integer.parseInt(props.getProperty("build"));
+		int patch = Integer.parseInt(props.getProperty("patch")) + 1;
+
+		if (patch > 9)
+		{
+			patch = 0;
+			build++;
+		}
+
+		props.setProperty("build", Integer.toString(build));
+		props.setProperty("patch", Integer.toString(patch));
+
+		try (FileOutputStream fos = new FileOutputStream("version.properties"))
+		{
+			props.store(fos, "Auto-updated build and patch number");
+		}
+		catch (Exception e)
+		{
+			System.err.println("Failed to update version properties: " + e.getMessage());
+		}
+
 	}
 }
