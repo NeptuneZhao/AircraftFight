@@ -1,7 +1,6 @@
 
 import java.util.*
 
-
 plugins {
     id("java")
 }

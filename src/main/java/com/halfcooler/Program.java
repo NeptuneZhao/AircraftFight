@@ -66,6 +66,22 @@ public class Program
 		gamePanel.Loop();
 
 		// 退出阶段
+		synchronized (MainLock)
+		{
+			// 等待英雄机死
+			try
+			{
+				MainLock.wait();
+			}
+			catch (InterruptedException e)
+			{
+				System.err.println("Main thread interrupted: " + e.getMessage());
+			}
+			finally
+			{
+				System.out.println("Game over test pass.");
+			}
+		}
 	}
 
 	private static void onBuilding()

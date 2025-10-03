@@ -26,7 +26,7 @@ public class Game extends JPanel
 	private int backgroundTop = 0;
 	private final ScheduledExecutorService gameLoopScheduler, renderScheduler;
 
-	private final int timeInterval;
+	private final int timeInterval, fpsInterval;
 	private final WarplaneHero warplaneHero = WarplaneHero.Instance;
 	private final List<Warplane> allEnemies;
 	private final List<Bullet> allEnemyBullets;
@@ -38,7 +38,37 @@ public class Game extends JPanel
 	private int score = 0, time = 0;
 	private int cycleTime = 0;
 
-	private boolean gameOver = false;
+	@Override
+	public void paint(Graphics g)
+	{
+		super.paint(g);
+
+		g.drawImage(ImageManager.BackgroundImg, 0, this.backgroundTop - Program.HEIGHT, null);
+		g.drawImage(ImageManager.BackgroundImg, 0, this.backgroundTop, null);
+		this.backgroundTop = this.backgroundTop == Program.HEIGHT ? 0 : this.backgroundTop + 1;
+
+		// 逻辑: 先画子弹和道具, 后画飞机
+		synchronized (this.allEnemyBullets)
+		{
+			paintImage(g, new ArrayList<>(this.allEnemyBullets));
+		}
+		synchronized (this.heroBullets)
+		{
+			paintImage(g, new ArrayList<>(this.heroBullets));
+		}
+		synchronized (this.props)
+		{
+			paintImage(g, new ArrayList<>(this.props));
+		}
+		synchronized (this.allEnemies)
+		{
+			paintImage(g, new ArrayList<>(this.allEnemies));
+		}
+
+		paintImage(g, List.of(this.warplaneHero));
+
+		PaintScoreAndHealth(g);
+	}
 
 	public Game(int difficulty, int fps)
 	{
@@ -63,14 +93,14 @@ public class Game extends JPanel
 			return t;
 		});
 
-		int fpsInterval = 1000 / fps;
+		this.fpsInterval = 1000 / fps;
 
 		/* 常用 fps 设置
 		 * > 90fps -> 11ms (20ms)
 		 *   60fps -> 16ms (25ms)
 		 *   45fps -> 22ms (30ms)
 		 */
-		this.timeInterval = switch (fpsInterval)
+		this.timeInterval = switch (this.fpsInterval)
 		{
 			case 16 -> 25;
 			case 22 -> 30;
@@ -95,6 +125,68 @@ public class Game extends JPanel
 			return true;
 		}
 		return false;
+	}
+
+	/// 游戏的主循环<br>
+	/// 我们所向披靡! 我跟上一个捍卫者学的
+	public void Loop()
+	{
+		Runnable gameTask = () ->
+		{
+			/*  插桩测试
+				System.out.printf("Hero Position: (%d, %d), 1st Enemy Position: (%d, %d), isCrash: %s%n",
+			 	this.warplaneHero.getX(), this.warplaneHero.getY(),
+				this.allEnemies.isEmpty() ? -1 : this.allEnemies.getFirst().getX(),
+				this.allEnemies.isEmpty() ? -1 : this.allEnemies.getFirst().getY(),
+				this.allEnemies.isEmpty() ? -1 : this.warplaneHero.isCrash(this.allEnemies.getFirst()) ? 1 : 0);
+			*/
+
+			this.time += this.timeInterval;
+
+			if (timeCycled())
+			{
+				// 产生敌机
+				if (this.allEnemies.size() < this.maxEnemies)
+					this.allEnemies.add(Warplane.GenerateWarplane());
+				// 射击
+				for (Warplane enemy : this.allEnemies)
+					this.allEnemyBullets.addAll(enemy.GetShots());
+
+				this.heroBullets.addAll(this.warplaneHero.GetShots());
+			}
+
+			// 记住, 你所做的一切都是为了那该死的测试
+			// 如果有 partial, 我愿意这样做
+			// C# 神力, 小子
+			this.moveEvent();
+			this.crashEvent();
+			this.postRemoveEvent();
+			this.gameOverEvent();
+		};
+		this.gameLoopScheduler.scheduleWithFixedDelay(gameTask, this.timeInterval, this.timeInterval, TimeUnit.MILLISECONDS);
+		this.renderScheduler.scheduleWithFixedDelay(this::repaint, this.fpsInterval, this.fpsInterval, TimeUnit.MILLISECONDS);
+	}
+
+	private void paintImage(Graphics g, List<? extends Flying> flyingList)
+	{
+		if (flyingList.isEmpty())
+			return;
+
+		for (Flying flying : flyingList)
+		{
+			BufferedImage image = flying.GetImage();
+			assert image != null : flyingList.getClass().getName() + " image is null.";
+			g.drawImage(image, flying.GetX() - image.getWidth() / 2, flying.GetY() - image.getHeight() / 2, null);
+		}
+	}
+
+	private void PaintScoreAndHealth(Graphics g)
+	{
+		int x = 10, y = 25;
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Segoe UI", Font.ITALIC, 20));
+		g.drawString("Score: " + this.score, x, y);
+		g.drawString("Health: " + this.warplaneHero.GetHealth(), x, y + 20);
 	}
 
 	/// 碰撞检测 <br>
@@ -170,124 +262,46 @@ public class Game extends JPanel
 
 	}
 
-	/// 游戏的主循环
-	public void Loop()
+	/// 为了能够站在这里, 那个帝王放弃的不仅仅是电池
+	private void moveEvent()
 	{
-		Runnable gameTask = () ->
+		// 子弹移动
+		for (Bullet bullet: this.heroBullets)
+			bullet.GoForward();
+		for (Bullet bullet: this.allEnemyBullets)
+			bullet.GoForward();
+
+		// 敌机移动
+		for (Warplane enemy : this.allEnemies)
+			enemy.GoForward();
+
+		// 道具移动
+		for (Prop prop : this.props)
+			prop.GoForward();
+	}
+
+	/// 让开, 阿杰·切来了
+	private void postRemoveEvent()
+	{
+		this.allEnemyBullets.removeIf(Flying::GetNotFlying);
+		this.heroBullets.removeIf(Flying::GetNotFlying);
+		this.allEnemies.removeIf(Flying::GetNotFlying);
+		this.props.removeIf(Flying::GetNotFlying);
+	}
+
+	/// 要么闪耀光芒, 要么逐渐消失, 随你
+	private void gameOverEvent()
+	{
+		if (this.warplaneHero.GetNotFlying() || this.warplaneHero.GetHealth() <= 0)
 		{
-			/*  插桩测试
-				System.out.printf("Hero Position: (%d, %d), 1st Enemy Position: (%d, %d), isCrash: %s%n",
-			 	this.warplaneHero.getX(), this.warplaneHero.getY(),
-				this.allEnemies.isEmpty() ? -1 : this.allEnemies.getFirst().getX(),
-				this.allEnemies.isEmpty() ? -1 : this.allEnemies.getFirst().getY(),
-				this.allEnemies.isEmpty() ? -1 : this.warplaneHero.isCrash(this.allEnemies.getFirst()) ? 1 : 0);
-			*/
-
-			this.time += this.timeInterval;
-
-			if (timeCycled())
+			this.gameLoopScheduler.shutdown();
+			this.renderScheduler.shutdown();
+			MusicPlayer.PlayGameOver();
+			synchronized (Program.MainLock)
 			{
-				// 产生敌机
-				if (this.allEnemies.size() < this.maxEnemies)
-					this.allEnemies.add(Warplane.GenerateWarplane());
-				// 射击
-				for (Warplane enemy : this.allEnemies)
-					this.allEnemyBullets.addAll(enemy.GetShots());
-
-				this.heroBullets.addAll(this.warplaneHero.GetShots());
+				Program.MainLock.notify();
 			}
-
-			// 子弹移动
-			for (Bullet bullet: this.heroBullets)
-				bullet.GoForward();
-			for (Bullet bullet: this.allEnemyBullets)
-				bullet.GoForward();
-
-			// 敌机移动
-			for (Warplane enemy : this.allEnemies)
-				enemy.GoForward();
-
-			// 道具移动
-			for (Prop prop : this.props)
-				prop.GoForward();
-
-			// 撞击检测
-			crashEvent();
-
-			// 后处理
-			this.allEnemyBullets.removeIf(Flying::GetNotFlying);
-			this.heroBullets.removeIf(Flying::GetNotFlying);
-			this.allEnemies.removeIf(Flying::GetNotFlying);
-			this.props.removeIf(Flying::GetNotFlying);
-
-			if (this.warplaneHero.GetNotFlying() || this.warplaneHero.GetHealth() <= 0)
-			{
-				this.gameLoopScheduler.shutdown();
-				this.renderScheduler.shutdown();
-				gameOver = true;
-				System.out.println("Game Over");
-
-				MusicPlayer.PlayGameOver();
-			}
-		};
-		this.gameLoopScheduler.scheduleWithFixedDelay(gameTask, this.timeInterval, this.timeInterval, TimeUnit.MILLISECONDS);
-
-		int fpsInterval = 1000 / 90;
-		this.renderScheduler.scheduleWithFixedDelay(this::repaint, fpsInterval, fpsInterval, TimeUnit.MILLISECONDS);
-	}
-
-	@Override
-	public void paint(Graphics g)
-	{
-		super.paint(g);
-
-		g.drawImage(ImageManager.BackgroundImg, 0, this.backgroundTop - Program.HEIGHT, null);
-		g.drawImage(ImageManager.BackgroundImg, 0, this.backgroundTop, null);
-		this.backgroundTop = this.backgroundTop == Program.HEIGHT ? 0 : this.backgroundTop + 1;
-
-		// 逻辑: 先画子弹和道具, 后画飞机
-		synchronized (this.allEnemyBullets)
-		{
-			paintImage(g, new ArrayList<>(this.allEnemyBullets));
 		}
-		synchronized (this.heroBullets)
-		{
-			paintImage(g, new ArrayList<>(this.heroBullets));
-		}
-		synchronized (this.props)
-		{
-			paintImage(g, new ArrayList<>(this.props));
-		}
-		synchronized (this.allEnemies)
-		{
-			paintImage(g, new ArrayList<>(this.allEnemies));
-		}
-
-		paintImage(g, List.of(this.warplaneHero));
-
-		PaintScoreAndHealth(g);
-	}
-
-	private void paintImage(Graphics g, List<? extends Flying> flyingList)
-	{
-		if (flyingList.isEmpty())
-			return;
-
-		for (Flying flying : flyingList)
-		{
-			BufferedImage image = flying.GetImage();
-			assert image != null : flyingList.getClass().getName() + " image is null.";
-			g.drawImage(image, flying.GetX() - image.getWidth() / 2, flying.GetY() - image.getHeight() / 2, null);
-		}
-	}
-
-	private void PaintScoreAndHealth(Graphics g)
-	{
-		int x = 10, y = 25;
-		g.setColor(Color.WHITE);
-		g.setFont(new Font("Segoe UI", Font.ITALIC, 20));
-		g.drawString("Score: " + this.score, x, y);
-		g.drawString("Health: " + this.warplaneHero.GetHealth(), x, y + 20);
 	}
 
 }

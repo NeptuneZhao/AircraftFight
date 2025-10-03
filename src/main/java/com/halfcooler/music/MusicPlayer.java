@@ -10,6 +10,7 @@ public final class MusicPlayer
 	private static MusicThread CurrentBgm, CurrentBossBgm;
 	private static boolean playingBgmFlag, playingBossFlag;
 
+	/// 嗨, 大家好! 嗨, 家人们! 如果你需要我, 咱们只是隔着一个屏幕而已
 	public static void PlayBgm(boolean on)
 	{
 		IsMusicOn = on;

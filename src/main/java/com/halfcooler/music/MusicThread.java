@@ -17,6 +17,7 @@ public class MusicThread extends Thread
         setDaemon(true);
     }
 
+	/// 能够看到铁驭的风采, 你该感激涕零
     @Override
     public void run()
     {
