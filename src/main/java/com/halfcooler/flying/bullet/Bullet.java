@@ -1,7 +1,7 @@
 package com.halfcooler.flying.bullet;
 
 import com.halfcooler.Program;
-import com.halfcooler.flying.Flying;
+import com.halfcooler.flying.*;
 
 /// <summary>
 /// 你好，欢迎来的抽象的子弹 <br>
@@ -35,4 +35,5 @@ public abstract class Bullet extends Flying
 		if ( (this.speedY > 0 && this.locationY >= Program.HEIGHT) || this.locationY <= 0)
 			this.SetVanish();
 	}
+
 }

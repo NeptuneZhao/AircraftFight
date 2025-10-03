@@ -20,7 +20,7 @@ public final class ImageManager
 		BackgroundImg,
 		HeroImg, BulletHeroImg,
 		EnemyImg, BulletEnemyImg,
-		EliteImg, BossImg,
+		EliteImg, PlusImg, BossImg,
 		PropBombImg, PropBulletImg, PropHealthImg;
 
 	static
@@ -36,6 +36,7 @@ public final class ImageManager
 			BulletEnemyImg = ImageIO.read(new FileInputStream("src/main/resources/images/bullet_enemy.png"));
 
 			EliteImg = ImageIO.read(new FileInputStream("src/main/resources/images/elite.png"));
+			PlusImg = ImageIO.read(new FileInputStream("src/main/resources/images/plus.png"));
 			BossImg = ImageIO.read(new FileInputStream("src/main/resources/images/boss.png"));
 
 			PropBombImg = ImageIO.read(new FileInputStream("src/main/resources/images/prop_bomb.png"));
@@ -49,6 +50,7 @@ public final class ImageManager
 			Map.put(BulletEnemy.class.getName(), BulletEnemyImg);
 
 			Map.put(WarplaneElite.class.getName(), EliteImg);
+			Map.put(WarplanePlus.class.getName(), PlusImg);
 			Map.put(WarplaneBoss.class.getName(), BossImg);
 
 			Map.put(PropBomb.class.getName(), PropBombImg);

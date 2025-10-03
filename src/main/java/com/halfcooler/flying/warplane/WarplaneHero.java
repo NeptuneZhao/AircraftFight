@@ -1,16 +1,16 @@
 package com.halfcooler.flying.warplane;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import com.halfcooler.Program;
 import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.flying.bullet.BulletHero;
+import com.halfcooler.flying.prop.PropBullet;
 import com.halfcooler.utils.ImageManager;
 
 public class WarplaneHero extends Warplane
 {
-	public static WarplaneHero Instance = new WarplaneHero(Program.WIDTH / 2, Program.HEIGHT - ImageManager.HeroImg.getHeight(), 0, 0, 100);
+	public static WarplaneHero Instance = new WarplaneHero(Program.WIDTH / 2, Program.HEIGHT - ImageManager.HeroImg.getHeight(), 0, 0, 1000);
 
 	private WarplaneHero(int x, int y, int speedX, int speedY, int health)
 	{
@@ -18,13 +18,10 @@ public class WarplaneHero extends Warplane
 	}
 
 	@Override
-	public void GoForward()
-	{
-		// 鼠标控制
-	}
+	public void GoForward() { }
 
 	@Override
-	public int getScore()
+	public int GetScore()
 	{
 		return 0;
 	}
@@ -32,11 +29,8 @@ public class WarplaneHero extends Warplane
 	@Override
 	public List<Bullet> GetShots()
 	{
-		List<Bullet> shots = new LinkedList<>();
-
-		// 英雄机: 就射一次
-		shots.add( new BulletHero(this.GetX(), this.GetY() - 2, 0, this.GetSpeedY() - 5, 30) );
-
-		return shots;
+		return List.copyOf(BulletHero.ParallelInstance(this, PropBullet.ActiveThread + 1));
 	}
+
+
 }

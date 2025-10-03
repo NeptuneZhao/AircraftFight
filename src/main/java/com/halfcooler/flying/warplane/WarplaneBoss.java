@@ -20,7 +20,7 @@ public class WarplaneBoss extends Warplane
 	}
 
 	@Override
-	public int getScore()
+	public int GetScore()
 	{
 		return 200;
 	}

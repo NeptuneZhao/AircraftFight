@@ -2,16 +2,17 @@ package com.halfcooler.game;
 
 import com.halfcooler.Program;
 import com.halfcooler.flying.Flying;
+import com.halfcooler.music.MusicPlayer;
 import com.halfcooler.utils.MouseController;
 import com.halfcooler.flying.bullet.*;
 import com.halfcooler.flying.prop.*;
 import com.halfcooler.flying.warplane.*;
-import com.halfcooler.music.MusicThread;
 import com.halfcooler.utils.ImageManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -22,7 +23,7 @@ public class Game extends JPanel
 {
 	// public final RecordImplement Recorder;
 	private int backgroundTop = 0;
-	private final ScheduledExecutorService scheduler;
+	private final ScheduledExecutorService gameLoopScheduler, renderScheduler;
 
 	private final int timeInterval = 15;
 	private final WarplaneHero warplaneHero = WarplaneHero.Instance;
@@ -31,7 +32,7 @@ public class Game extends JPanel
 	private final List<Bullet> heroBullets;
 	private final List<Prop> props;
 
-	private final int maxEnemies = 8;
+	private final int maxEnemies = 5;
 	private final int cycleDuration;
 	private int score = 0, time = 0;
 	private int cycleTime = 0;
@@ -49,16 +50,13 @@ public class Game extends JPanel
 			default -> throw new IllegalArgumentException("Invalid difficulty");
 		}
 
-		System.out.println("Hero plane created.");
 		allEnemies = new LinkedList<>();
 		heroBullets = new LinkedList<>();
 		allEnemyBullets = new LinkedList<>();
 		props = new LinkedList<>();
 
-		// this.scheduler = new ScheduledThreadPoolExecutor(1, new BasicThreadFactory.Builder().namingPattern("game-action-%d").daemon(true).build());
-		this.scheduler = Executors.newSingleThreadScheduledExecutor(runnable ->
+		this.gameLoopScheduler = this.renderScheduler = Executors.newSingleThreadScheduledExecutor(runnable ->
 		{
-			System.out.println("Thread started.");
 			Thread t = new Thread(runnable);
 			t.setDaemon(true);
 			return t;
@@ -69,8 +67,7 @@ public class Game extends JPanel
 
 	public static Game StartGame(int difficulty, boolean musicOn)
 	{
-		MusicThread.IsMusicOn = musicOn;
-		MusicThread.MusicOn(MusicThread.BackgroundMusicInstance);
+		MusicPlayer.PlayBgm(musicOn);
 		return new Game(difficulty);
 	}
 
@@ -123,7 +120,7 @@ public class Game extends JPanel
 
 					if (enemy.GetNotFlying())
 					{
-						score += enemy.getScore();
+						score += enemy.GetScore();
 						// 敌机死了, 有概率掉落道具
 						Prop prop = Prop.GenerateProp(enemy);
 						if (prop != null)
@@ -177,14 +174,7 @@ public class Game extends JPanel
 			{
 				// 产生敌机
 				if (this.allEnemies.size() < this.maxEnemies)
-				{
-					this.allEnemies.add(new WarplaneElite(
-						(int) (Math.random() * (Program.WIDTH - ImageManager.EnemyImg.getWidth())), // x
-						(int) (Math.random() * Program.HEIGHT / 20), // y
-						0, // speedX
-						Math.random() < 0.01 ? 50 : 5, // speedY
-						30)); // health
-				}
+					this.allEnemies.add(Warplane.GenerateWarplane());
 				// 射击
 				for (Warplane enemy : this.allEnemies)
 					this.allEnemyBullets.addAll(enemy.GetShots());
@@ -215,19 +205,20 @@ public class Game extends JPanel
 			this.allEnemies.removeIf(Flying::GetNotFlying);
 			this.props.removeIf(Flying::GetNotFlying);
 
-			repaint();
-
-			if (this.warplaneHero.GetNotFlying() || this.warplaneHero.getHealth() <= 0)
+			if (this.warplaneHero.GetNotFlying() || this.warplaneHero.GetHealth() <= 0)
 			{
-				this.scheduler.shutdown();
+				this.gameLoopScheduler.shutdown();
+				this.renderScheduler.shutdown();
 				gameOver = true;
 				System.out.println("Game Over");
 
-				MusicThread.MusicOff(MusicThread.BackgroundMusicInstance);
-				MusicThread.MusicOn(MusicThread.GameOverMusicInstance);
+				MusicPlayer.PlayGameOver();
 			}
 		};
-		this.scheduler.scheduleWithFixedDelay(gameTask, this.timeInterval, this.timeInterval, TimeUnit.MILLISECONDS);
+		this.gameLoopScheduler.scheduleWithFixedDelay(gameTask, this.timeInterval, this.timeInterval, TimeUnit.MILLISECONDS);
+
+		int fpsInterval = 1000 / 160;
+		this.renderScheduler.scheduleWithFixedDelay(this::repaint, fpsInterval, fpsInterval, TimeUnit.MILLISECONDS);
 	}
 
 	@Override
@@ -240,17 +231,29 @@ public class Game extends JPanel
 		this.backgroundTop = this.backgroundTop == Program.HEIGHT ? 0 : this.backgroundTop + 1;
 
 		// 逻辑: 先画子弹和道具, 后画飞机
-		PaintImageWithPositionRevised(g, this.allEnemyBullets);
-		PaintImageWithPositionRevised(g, this.heroBullets);
-		PaintImageWithPositionRevised(g, this.props);
+		synchronized (this.allEnemyBullets)
+		{
+			paintImage(g, new ArrayList<>(this.allEnemyBullets));
+		}
+		synchronized (this.heroBullets)
+		{
+			paintImage(g, new ArrayList<>(this.heroBullets));
+		}
+		synchronized (this.props)
+		{
+			paintImage(g, new ArrayList<>(this.props));
+		}
+		synchronized (this.allEnemies)
+		{
+			paintImage(g, new ArrayList<>(this.allEnemies));
+		}
 
-		PaintImageWithPositionRevised(g, this.allEnemies);
-		PaintImageWithPositionRevised(g, List.of(this.warplaneHero));
+		paintImage(g, List.of(this.warplaneHero));
 
 		PaintScoreAndHealth(g);
 	}
 
-	private void PaintImageWithPositionRevised(Graphics g, List<? extends Flying> flyingList)
+	private void paintImage(Graphics g, List<? extends Flying> flyingList)
 	{
 		if (flyingList.isEmpty())
 			return;
@@ -269,7 +272,7 @@ public class Game extends JPanel
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Segoe UI", Font.ITALIC, 20));
 		g.drawString("Score: " + this.score, x, y);
-		g.drawString("Health: " + this.warplaneHero.getHealth(), x, y + 20);
+		g.drawString("Health: " + this.warplaneHero.GetHealth(), x, y + 20);
 	}
 
 }

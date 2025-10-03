@@ -8,33 +8,28 @@ import java.util.concurrent.CountDownLatch;
 /// Debug Pass on 2025/09/10
 public class MusicThread extends Thread
 {
-    private final File musicPath;
-    private final boolean loop;
+    private final File music;
     private Clip clip;
 
-	public static boolean IsMusicOn;
-
-    private MusicThread(File path, boolean loop)
+    public MusicThread(File music)
     {
-        this.musicPath = path;
-        this.loop = loop;
-        setName("MusicThread-" + path.getName());
+        this.music = music;
         setDaemon(true);
     }
 
     @Override
     public void run()
     {
-        if (musicPath == null || !musicPath.exists() || !musicPath.isFile())
+        if (music == null || !music.exists() || !music.isFile())
 		{
-            System.err.println("File not found: " + musicPath);
+            System.err.println("File not found: " + music);
             return;
         }
 
         AudioInputStream ais = null;
         try
         {
-            ais = AudioSystem.getAudioInputStream(musicPath);
+            ais = AudioSystem.getAudioInputStream(music);
             AudioFormat baseFormat = ais.getFormat();
 
 			// 可能有用 转换为 PCM
@@ -60,9 +55,7 @@ public class MusicThread extends Thread
                     finishedLatch.countDown();
             });
 
-            if (loop) clip.loop(Clip.LOOP_CONTINUOUSLY);
-			else clip.start();
-
+			clip.start();
 	        finishedLatch.await();
 
         }
@@ -112,18 +105,11 @@ public class MusicThread extends Thread
         if (clip != null) clip.close();
     }
 
-	public static final MusicThread BackgroundMusicInstance = new MusicThread(new File("src/main/resources/bgm.wav"), true);
-	public static final MusicThread GameOverMusicInstance = new MusicThread(new File("src/main/resources/game_over.wav"), false);
-
-	public static void MusicOn(MusicThread instance)
-	{
-		if (IsMusicOn) instance.start();
-	}
-
 	/// @see MusicThread#stopPlaying()
-	public static void MusicOff(MusicThread instance)
+	public void musicOff()
 	{
-		if (instance.isAlive()) instance.stopPlaying();
+		if (this.isAlive()) this.stopPlaying();
 	}
+
 
 }
