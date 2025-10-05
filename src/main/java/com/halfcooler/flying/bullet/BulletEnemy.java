@@ -1,7 +1,10 @@
 package com.halfcooler.flying.bullet;
 
-import com.halfcooler.flying.warplane.*;
+import com.halfcooler.flying.warplane.WarplaneBoss;
+import com.halfcooler.flying.warplane.WarplaneElite;
+import com.halfcooler.flying.warplane.WarplanePlus;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,8 +28,25 @@ public class BulletEnemy extends Bullet
 	public static List<BulletEnemy> ScatterInstance(WarplanePlus plus)
 	{
 		return List.of(
-			new BulletEnemy(plus.GetX() - 15, plus.GetY(), 0, plus.GetSpeedY() + 5, 30),
+			new BulletEnemy(plus.GetX() - 30, plus.GetY(), 0, plus.GetSpeedY() + 5, 30),
 			new BulletEnemy(plus.GetX(), plus.GetY(), 0, plus.GetSpeedY() + 5, 30),
-			new BulletEnemy(plus.GetX() + 15, plus.GetY(), 0, plus.GetSpeedY() + 5, 30));
+			new BulletEnemy(plus.GetX() + 30, plus.GetY(), 0, plus.GetSpeedY() + 5, 30));
+	}
+
+	/// 20 个子弹... 就没中间了...<br>
+	/// 这是 19 个
+	public static List<BulletEnemy> RingInstance(WarplaneBoss boss)
+	{
+		var list = new ArrayList<BulletEnemy>();
+		for (int i = -9; i <= 9; i++)
+		{
+			list.add(new BulletEnemy(
+				boss.GetX() + (int)(180 * Math.sin(i * Math.PI / 18)),
+				boss.GetY() + (int)(180 * Math.cos(i * Math.PI / 18)),
+				0,
+				boss.GetSpeedY() + 5,
+				45));
+		}
+		return list;
 	}
 }

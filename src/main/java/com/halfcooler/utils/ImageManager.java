@@ -1,8 +1,11 @@
 package com.halfcooler.utils;
 
-import com.halfcooler.flying.bullet.*;
+import com.halfcooler.flying.bullet.BulletEnemy;
+import com.halfcooler.flying.bullet.BulletHero;
+import com.halfcooler.flying.prop.PropBomb;
+import com.halfcooler.flying.prop.PropBullet;
+import com.halfcooler.flying.prop.PropHealth;
 import com.halfcooler.flying.warplane.*;
-import com.halfcooler.flying.prop.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

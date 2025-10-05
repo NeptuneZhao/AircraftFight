@@ -1,7 +1,8 @@
 package com.halfcooler.flying.prop;
 
 import com.halfcooler.flying.bullet.Bullet;
-import com.halfcooler.flying.warplane.*;
+import com.halfcooler.flying.warplane.Warplane;
+import com.halfcooler.flying.warplane.WarplaneHero;
 
 import java.util.List;
 

@@ -5,6 +5,7 @@ import com.halfcooler.flying.Flying;
 import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.flying.prop.Prop;
 import com.halfcooler.flying.warplane.Warplane;
+import com.halfcooler.flying.warplane.WarplaneBoss;
 import com.halfcooler.flying.warplane.WarplaneHero;
 import com.halfcooler.music.MusicPlayer;
 import com.halfcooler.utils.ImageManager;
@@ -28,6 +29,7 @@ public class Game extends JPanel
 
 	private final int timeInterval, fpsInterval;
 	private final WarplaneHero warplaneHero = WarplaneHero.Instance;
+	private WarplaneBoss boss = null;
 	private final List<Warplane> allEnemies;
 	private final List<Bullet> allEnemyBullets;
 	private final List<Bullet> heroBullets;
@@ -36,15 +38,24 @@ public class Game extends JPanel
 	private final int maxEnemies = 5;
 	private final int cycleDuration;
 	private int score = 0, time = 0;
-	private int cycleTime = 0;
+	private int cycleTime = 0, cycleEnemyBulletTime = 0;
+
+	public int GetScore()
+	{
+		return score;
+	}
+
+	public int GetMillisecond()
+	{
+		return time;
+	}
 
 	@Override
 	public void paint(Graphics g)
 	{
 		super.paint(g);
-
-		g.drawImage(ImageManager.BackgroundImg, 0, this.backgroundTop - Program.HEIGHT, null);
-		g.drawImage(ImageManager.BackgroundImg, 0, this.backgroundTop, null);
+		g.drawImage(ImageManager.BackgroundImg, 0, this.backgroundTop - Program.HEIGHT, Program.WIDTH, Program.HEIGHT, null);
+		g.drawImage(ImageManager.BackgroundImg, 0, this.backgroundTop, Program.WIDTH, Program.HEIGHT, null);
 		this.backgroundTop = this.backgroundTop == Program.HEIGHT ? 0 : this.backgroundTop + 1;
 
 		// 逻辑: 先画子弹和道具, 后画飞机
@@ -67,7 +78,7 @@ public class Game extends JPanel
 
 		paintImage(g, List.of(this.warplaneHero));
 
-		PaintScoreAndHealth(g);
+		paintScoreHealth(g);
 	}
 
 	public Game(int difficulty, int fps)
@@ -75,9 +86,9 @@ public class Game extends JPanel
 		// final
 		switch (difficulty)
 		{
-			case 0 -> cycleDuration = 750;
-			case 1 -> cycleDuration = 600;
-			case 2 -> cycleDuration = 300;
+			case 0 -> cycleDuration = 900;
+			case 1 -> cycleDuration = 700;
+			case 2 -> cycleDuration = 500;
 			default -> throw new IllegalArgumentException("Invalid difficulty");
 		}
 
@@ -116,17 +127,6 @@ public class Game extends JPanel
 		return new Game(difficulty, fps);
 	}
 
-	private boolean timeCycled()
-	{
-		this.cycleTime += this.timeInterval;
-		if (this.cycleTime > this.cycleDuration)
-		{
-			this.cycleTime %= this.cycleDuration;
-			return true;
-		}
-		return false;
-	}
-
 	/// 游戏的主循环<br>
 	/// 我们所向披靡! 我跟上一个捍卫者学的
 	public void Loop()
@@ -142,15 +142,22 @@ public class Game extends JPanel
 			*/
 
 			this.time += this.timeInterval;
+			WarplaneBoss.LastInterval += this.timeInterval;
 
-			if (timeCycled())
+			// Boss 事件
+			// 生
+			boss = WarplaneBoss.GenerateBoss();
+			if (boss != null)
+				this.allEnemies.add(boss);
+
+			if (timeCycled(0))
 			{
 				// 产生敌机
 				if (this.allEnemies.size() < this.maxEnemies)
 					this.allEnemies.add(Warplane.GenerateWarplane());
 				// 射击
-				for (Warplane enemy : this.allEnemies)
-					this.allEnemyBullets.addAll(enemy.GetShots());
+				if (timeCycled(1))
+					for (Warplane enemy : this.allEnemies) this.allEnemyBullets.addAll(enemy.GetShots());
 
 				this.heroBullets.addAll(this.warplaneHero.GetShots());
 			}
@@ -167,6 +174,33 @@ public class Game extends JPanel
 		this.renderScheduler.scheduleWithFixedDelay(this::repaint, this.fpsInterval, this.fpsInterval, TimeUnit.MILLISECONDS);
 	}
 
+	private boolean timeCycled(int type)
+	{
+		this.cycleTime += this.timeInterval;
+		this.cycleEnemyBulletTime += this.timeInterval;
+		switch (type)
+		{
+			case 0 ->
+			{
+				if (this.cycleTime > this.cycleDuration)
+				{
+					this.cycleTime %= this.cycleDuration;
+					return true;
+				}
+			}
+			case 1 ->
+			{
+				if (this.cycleEnemyBulletTime > this.cycleDuration * 2)
+				{
+					this.cycleEnemyBulletTime %= this.cycleDuration * 2;
+					return true;
+				}
+			}
+			default -> throw new IllegalArgumentException("Invalid type");
+		}
+		return false;
+	}
+
 	private void paintImage(Graphics g, List<? extends Flying> flyingList)
 	{
 		if (flyingList.isEmpty())
@@ -180,7 +214,7 @@ public class Game extends JPanel
 		}
 	}
 
-	private void PaintScoreAndHealth(Graphics g)
+	private void paintScoreHealth(Graphics g)
 	{
 		int x = 10, y = 25;
 		g.setColor(Color.WHITE);
@@ -227,11 +261,12 @@ public class Game extends JPanel
 
 					if (enemy.GetNotFlying())
 					{
+						if (enemy instanceof WarplaneBoss)
+							WarplaneBoss.BossDeathEvent();
+
 						score += enemy.GetScore();
-						// 敌机死了, 有概率掉落道具
-						Prop prop = Prop.GenerateProp(enemy);
-						if (prop != null)
-							props.add(prop);
+						WarplaneBoss.LastScore += enemy.GetScore();
+						props.addAll(Prop.GenerateProp(enemy));
 					}
 				}
 

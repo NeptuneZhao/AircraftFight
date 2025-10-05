@@ -6,6 +6,7 @@ import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.utils.ImageManager;
 
 import java.util.List;
+import java.util.Random;
 
 /// 哎, 该死的工厂模式
 public abstract class Warplane extends Flying
@@ -45,14 +46,14 @@ public abstract class Warplane extends Flying
 	@Override
 	public void GoForward()
 	{
-		this.locationX += !(this.locationX <= 0 || this.locationX >= Program.WIDTH) ? this.speedX : -this.speedX;
+		this.locationX += !(this.locationX <= ImageManager.GetImage(this).getWidth() || this.locationX >= Program.WIDTH - ImageManager.GetImage(this).getWidth()) ? this.speedX : -this.speedX;
 		this.locationY += this.speedY;
 
 		if (locationY >= Program.HEIGHT)
 			this.SetVanish();
 	}
 
-	public abstract List<Bullet> GetShots();
+	public abstract List<? extends Bullet> GetShots();
 
 	public abstract int GetScore();
 
@@ -60,21 +61,22 @@ public abstract class Warplane extends Flying
 	public static Warplane GenerateWarplane()
 	{
 		double rand = Math.random();
+		Random randGen = new Random();
 		if (rand < 0.7) return new WarplaneEnemy(
-			(int) (Math.random() * (Program.WIDTH - ImageManager.EnemyImg.getWidth())), // x
-			(int) (Math.random() * Program.HEIGHT / 20), // y
+			randGen.nextInt(Program.WIDTH - ImageManager.EnemyImg.getWidth() / 2), // x
+			0, // y
 			0, // speedX
 			Math.random() < 0.01 ? 50 : 5, // speedY
 			30);
 		else if (rand < 0.85) return new WarplaneElite(
-			(int) (Math.random() * (Program.WIDTH - ImageManager.EliteImg.getWidth())), // x
-			(int) (Math.random() * Program.HEIGHT / 20), // y
+			randGen.nextInt(Program.WIDTH - ImageManager.EliteImg.getWidth() / 2), // x
+			0, // y
 			0, // speedX
 			Math.random() < 0.01 ? 50 : 5, // speedY
 			30);
 		else return new WarplanePlus(
-			(int) (Math.random() * (Program.WIDTH - ImageManager.PlusImg.getWidth())), // x
-			(int) (Math.random() * Program.HEIGHT / 20), // y
+			randGen.nextInt(Program.WIDTH - ImageManager.PlusImg.getWidth() / 2), // x
+			0, // y
 			0, // speedX
 			Math.random() < 0.01 ? 50 : 3, // speedY
 			60);

@@ -1,7 +1,7 @@
 package com.halfcooler.flying.bullet;
 
 import com.halfcooler.Program;
-import com.halfcooler.flying.*;
+import com.halfcooler.flying.Flying;
 
 /// <summary>
 /// 你好，欢迎来的抽象的子弹 <br>

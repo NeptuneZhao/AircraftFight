@@ -5,7 +5,9 @@ import com.halfcooler.Program;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.lang.reflect.Method;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 // Debug Pass
 public class StartsMenu extends JFrame
@@ -61,8 +63,8 @@ public class StartsMenu extends JFrame
 		return this.musicOn;
 	}
 
-	/// @see java.awt.DisplayMode#getRefreshRate()
 	/// @return default 60
+	/// @see DisplayMode#getRefreshRate()
 	public int GetFps()
 	{
 		return this.fps == 0 ? 60 : this.fps;
@@ -94,7 +96,7 @@ public class StartsMenu extends JFrame
 		panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		difficultyEasyButton = new JButton();
-		difficultyEasyButton.setText("Easy Mode");
+		this.$$$loadButtonText$$$(difficultyEasyButton, this.$$$getMessageFromBundle$$$("language", "mode.easy"));
 		GridBagConstraints gbc;
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
@@ -103,7 +105,7 @@ public class StartsMenu extends JFrame
 		gbc.weighty = 1.0;
 		panel.add(difficultyEasyButton, gbc);
 		difficultyNormalButton = new JButton();
-		difficultyNormalButton.setText("Normal Mode");
+		this.$$$loadButtonText$$$(difficultyNormalButton, this.$$$getMessageFromBundle$$$("language", "mode.normal"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
@@ -111,7 +113,7 @@ public class StartsMenu extends JFrame
 		gbc.weighty = 1.0;
 		panel.add(difficultyNormalButton, gbc);
 		musicCheckBox = new JCheckBox();
-		musicCheckBox.setText("Music On");
+		this.$$$loadButtonText$$$(musicCheckBox, this.$$$getMessageFromBundle$$$("language", "mode.music"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 5;
@@ -119,7 +121,7 @@ public class StartsMenu extends JFrame
 		gbc.weighty = 1.0;
 		panel.add(musicCheckBox, gbc);
 		difficultyHardButton = new JButton();
-		difficultyHardButton.setText("Hard Mode");
+		this.$$$loadButtonText$$$(difficultyHardButton, this.$$$getMessageFromBundle$$$("language", "mode.hard"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 2;
@@ -127,7 +129,7 @@ public class StartsMenu extends JFrame
 		gbc.weighty = 1.0;
 		panel.add(difficultyHardButton, gbc);
 		comboBox1 = new JComboBox<String>();
-		final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
+		final DefaultComboBoxModel<String> defaultComboBoxModel1 = new DefaultComboBoxModel<>();
 		defaultComboBoxModel1.addElement("V-Sync");
 		defaultComboBoxModel1.addElement("45");
 		defaultComboBoxModel1.addElement("60");
@@ -141,11 +143,96 @@ public class StartsMenu extends JFrame
 		fpsLabel = new JLabel();
 		fpsLabel.setHorizontalAlignment(0);
 		fpsLabel.setHorizontalTextPosition(0);
-		fpsLabel.setText("Fps Settings");
+		this.$$$loadLabelText$$$(fpsLabel, this.$$$getMessageFromBundle$$$("language", "mode.fps"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 3;
 		panel.add(fpsLabel, gbc);
+	}
+
+	private static Method $$$cachedGetBundleMethod$$$ = null;
+
+	private String $$$getMessageFromBundle$$$(String path, String key)
+	{
+		ResourceBundle bundle;
+		try
+		{
+			Class<?> thisClass = this.getClass();
+			if ($$$cachedGetBundleMethod$$$ == null)
+			{
+				Class<?> dynamicBundleClass = thisClass.getClassLoader().loadClass("com.intellij.DynamicBundle");
+				$$$cachedGetBundleMethod$$$ = dynamicBundleClass.getMethod("getBundle", String.class, Class.class);
+			}
+			bundle = (ResourceBundle) $$$cachedGetBundleMethod$$$.invoke(null, path, thisClass);
+		} catch (Exception e)
+		{
+			bundle = ResourceBundle.getBundle(path);
+		}
+		return bundle.getString(key);
+	}
+
+	/**
+	 * @noinspection ALL
+	 */
+	private void $$$loadLabelText$$$(JLabel component, String text)
+	{
+		StringBuffer result = new StringBuffer();
+		boolean haveMnemonic = false;
+		char mnemonic = '\0';
+		int mnemonicIndex = -1;
+		for (int i = 0; i < text.length(); i++)
+		{
+			if (text.charAt(i) == '&')
+			{
+				i++;
+				if (i == text.length()) break;
+				if (!haveMnemonic && text.charAt(i) != '&')
+				{
+					haveMnemonic = true;
+					mnemonic = text.charAt(i);
+					mnemonicIndex = result.length();
+				}
+			}
+			result.append(text.charAt(i));
+		}
+		component.setText(result.toString());
+		if (haveMnemonic)
+		{
+			component.setDisplayedMnemonic(mnemonic);
+			component.setDisplayedMnemonicIndex(mnemonicIndex);
+		}
+	}
+
+	/**
+	 * @noinspection ALL
+	 */
+	private void $$$loadButtonText$$$(AbstractButton component, String text)
+	{
+		StringBuffer result = new StringBuffer();
+		boolean haveMnemonic = false;
+		char mnemonic = '\0';
+		int mnemonicIndex = -1;
+		for (int i = 0; i < text.length(); i++)
+		{
+			if (text.charAt(i) == '&')
+			{
+				i++;
+				if (i == text.length()) break;
+				if (!haveMnemonic && text.charAt(i) != '&')
+				{
+					haveMnemonic = true;
+					mnemonic = text.charAt(i);
+					mnemonicIndex = result.length();
+				}
+			}
+			result.append(text.charAt(i));
+		}
+		component.setText(result.toString());
+		if (haveMnemonic)
+		{
+			component.setMnemonic(mnemonic);
+			component.setDisplayedMnemonicIndex(mnemonicIndex);
+		}
 	}
 
 	/**

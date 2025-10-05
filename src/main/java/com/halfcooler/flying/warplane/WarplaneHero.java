@@ -1,16 +1,16 @@
 package com.halfcooler.flying.warplane;
 
-import java.util.List;
-
 import com.halfcooler.Program;
 import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.flying.bullet.BulletHero;
 import com.halfcooler.flying.prop.PropBullet;
 import com.halfcooler.utils.ImageManager;
 
+import java.util.List;
+
 public class WarplaneHero extends Warplane
 {
-	public static WarplaneHero Instance = new WarplaneHero(Program.WIDTH / 2, Program.HEIGHT - ImageManager.HeroImg.getHeight(), 0, 0, 1000);
+	public static WarplaneHero Instance = new WarplaneHero(Program.WIDTH / 2, Program.HEIGHT - ImageManager.HeroImg.getHeight(), 0, 0, 1000000);
 
 	private WarplaneHero(int x, int y, int speedX, int speedY, int health)
 	{
@@ -27,9 +27,9 @@ public class WarplaneHero extends Warplane
 	}
 
 	@Override
-	public List<Bullet> GetShots()
+	public List<? extends Bullet> GetShots()
 	{
-		return List.copyOf(BulletHero.ParallelInstance(this, PropBullet.ActiveThread + 1));
+		return BulletHero.ParallelInstance(this, PropBullet.ActiveThread + 1);
 	}
 
 

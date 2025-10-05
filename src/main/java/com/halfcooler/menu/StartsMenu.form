@@ -13,7 +13,7 @@
           <gridbag weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties>
-          <text value="Easy Mode"/>
+          <text resource-bundle="language" key="mode.easy"/>
         </properties>
       </component>
       <component id="42f12" class="javax.swing.JButton" binding="difficultyNormalButton">
@@ -22,7 +22,7 @@
           <gridbag weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties>
-          <text value="Normal Mode"/>
+          <text resource-bundle="language" key="mode.normal"/>
         </properties>
       </component>
       <component id="4f66c" class="javax.swing.JCheckBox" binding="musicCheckBox">
@@ -31,7 +31,7 @@
           <gridbag weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties>
-          <text value="Music On"/>
+          <text resource-bundle="language" key="mode.music"/>
         </properties>
       </component>
       <component id="a6c5c" class="javax.swing.JButton" binding="difficultyHardButton">
@@ -40,7 +40,7 @@
           <gridbag weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties>
-          <text value="Hard Mode"/>
+          <text resource-bundle="language" key="mode.hard"/>
         </properties>
       </component>
       <component id="430a2" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
@@ -66,7 +66,7 @@
         <properties>
           <horizontalAlignment value="0"/>
           <horizontalTextPosition value="0"/>
-          <text value="Fps Settings"/>
+          <text resource-bundle="language" key="mode.fps"/>
         </properties>
       </component>
     </children>

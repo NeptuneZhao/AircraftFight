@@ -37,11 +37,6 @@ public abstract class Flying
 		return this.locationY;
 	}
 
-	public int GetSpeedX()
-	{
-		return this.speedX;
-	}
-
 	public int GetSpeedY()
 	{
 		return this.speedY;

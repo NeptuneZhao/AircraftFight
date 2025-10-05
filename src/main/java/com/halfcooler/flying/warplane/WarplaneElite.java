@@ -2,7 +2,7 @@ package com.halfcooler.flying.warplane;
 
 
 import com.halfcooler.flying.bullet.Bullet;
-import com.halfcooler.flying.bullet.BulletEnemy;
+import com.halfcooler.flying.bullet.type.BulletTypeElite;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ public class WarplaneElite extends Warplane
 	// 20250919
 	// 周期交给 Game
 	@Override
-	public List<Bullet> GetShots()
+	public List<? extends Bullet> GetShots()
 	{
-		return List.copyOf(BulletEnemy.DirectInstance(this));
+		return new BulletTypeElite().Shoots(this);
 	}
 
 	@Override

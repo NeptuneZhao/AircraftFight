@@ -1,7 +1,9 @@
 package com.halfcooler.flying.warplane;
 
-import java.util.List;
 import com.halfcooler.flying.bullet.Bullet;
+import com.halfcooler.flying.bullet.type.BulletTypeEnemy;
+
+import java.util.List;
 
 public class WarplaneEnemy extends Warplane
 {
@@ -11,9 +13,9 @@ public class WarplaneEnemy extends Warplane
 	}
 
 	@Override
-	public List<Bullet> GetShots()
+	public List<? extends Bullet> GetShots()
 	{
-		return List.of();
+		return new BulletTypeEnemy().Shoots(this);
 	}
 
 	@Override
