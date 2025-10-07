@@ -10,11 +10,11 @@ import java.util.List;
 
 public class WarplaneHero extends Warplane
 {
-	public static WarplaneHero Instance = new WarplaneHero(Program.WIDTH / 2, Program.HEIGHT - ImageManager.HeroImg.getHeight(), 0, 0, 1000000);
+	public static final WarplaneHero Instance = new WarplaneHero(Program.WIDTH / 2, Program.HEIGHT - ImageManager.HeroImg.getHeight(), 0, 0);
 
-	private WarplaneHero(int x, int y, int speedX, int speedY, int health)
+	private WarplaneHero(int x, int y, int speedX, int speedY)
 	{
-		super(x, y, speedX, speedY, health);
+		super(x, y, speedX, speedY);
 	}
 
 	@Override

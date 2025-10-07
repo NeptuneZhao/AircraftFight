@@ -7,9 +7,9 @@ import java.util.List;
 
 public class WarplaneEnemy extends Warplane
 {
-	public WarplaneEnemy(int x, int y, int speedX, int speedY, int health)
+	public WarplaneEnemy(int x, int y, int speedX, int speedY)
 	{
-		super(x, y, speedX, speedY, health);
+		super(x, y, speedX, speedY);
 	}
 
 	@Override

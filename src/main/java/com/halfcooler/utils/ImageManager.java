@@ -19,12 +19,18 @@ public final class ImageManager
 {
 	private static final Map<String, BufferedImage> Map = new HashMap<>();
 
-	public static BufferedImage
-		BackgroundImg,
-		HeroImg, BulletHeroImg,
-		EnemyImg, BulletEnemyImg,
-		EliteImg, PlusImg, BossImg,
-		PropBombImg, PropBulletImg, PropHealthImg;
+	public static final BufferedImage
+		BackgroundImg;
+	public static final BufferedImage HeroImg;
+	public static final BufferedImage BulletHeroImg;
+	public static final BufferedImage EnemyImg;
+	public static final BufferedImage BulletEnemyImg;
+	public static final BufferedImage EliteImg;
+	public static final BufferedImage PlusImg;
+	public static final BufferedImage BossImg;
+	public static final BufferedImage PropBombImg;
+	public static final BufferedImage PropBulletImg;
+	public static final BufferedImage PropHealthImg;
 
 	static
 	{

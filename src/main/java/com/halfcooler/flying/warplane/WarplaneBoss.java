@@ -14,9 +14,9 @@ public class WarplaneBoss extends Warplane
 	public static int LastInterval = 0, LastScore = 0;
 	private static boolean generateFlag = false, isAlive = false;
 
-	private WarplaneBoss(int x, int y, int speedX, int speedY, int health)
+	private WarplaneBoss(int x, int y, int speedX, int speedY)
 	{
-		super(x, y, speedX, speedY, health);
+		super(x, y, speedX, speedY);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class WarplaneBoss extends Warplane
 		if (generateFlag && !isAlive)
 		{
 			isAlive = true;
-			return new WarplaneBoss(Program.WIDTH / 2, (int) (Math.random() * Program.HEIGHT / 20) + 90, 0, 5, 300);
+			return new WarplaneBoss(Program.WIDTH / 2, (int) (Math.random() * Program.HEIGHT / 20) + 90, 0, 5);
 		}
 		// 游戏主循环那边添加 null 检查
 		else return null;

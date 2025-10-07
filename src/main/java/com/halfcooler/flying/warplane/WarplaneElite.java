@@ -8,9 +8,9 @@ import java.util.List;
 
 public class WarplaneElite extends Warplane
 {
-	public WarplaneElite(int x, int y, int speedX, int speedY, int health)
+	public WarplaneElite(int x, int y, int speedX, int speedY)
 	{
-		super(x, y, speedX, speedY, health);
+		super(x, y, speedX, speedY);
 	}
 
 	// 实验 1:2 - 精英敌机按设定周期直射子弹

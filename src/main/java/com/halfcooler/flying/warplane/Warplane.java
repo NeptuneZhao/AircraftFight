@@ -3,6 +3,7 @@ package com.halfcooler.flying.warplane;
 import com.halfcooler.Program;
 import com.halfcooler.flying.Flying;
 import com.halfcooler.flying.bullet.Bullet;
+import com.halfcooler.game.statistics.Status;
 import com.halfcooler.utils.ImageManager;
 
 import java.util.List;
@@ -14,12 +15,10 @@ public abstract class Warplane extends Flying
 	private final int maxHealth;
 	private int health;
 
-	public Warplane(int locX, int locY, int speedX, int speedY, int health)
+	public Warplane(int locX, int locY, int speedX, int speedY)
 	{
 		super(locX, locY, speedX, speedY);
-
-		this.maxHealth = health;
-		this.health = health;
+		this.maxHealth = this.health = Status.GetHealth(this);
 	}
 
 	public int GetHealth()
@@ -63,21 +62,17 @@ public abstract class Warplane extends Flying
 			randGen.nextInt(Program.WIDTH - ImageManager.EnemyImg.getWidth() / 2), // x
 			0, // y
 			0, // speedX
-			Math.random() < 0.01 ? 50 : 5, // speedY
-			30);
+			Math.random() < 0.01 ? 50 : 5);
 		else if (rand < 0.85) return new WarplaneElite(
 			randGen.nextInt(Program.WIDTH - ImageManager.EliteImg.getWidth() / 2), // x
 			0, // y
 			0, // speedX
-			Math.random() < 0.01 ? 50 : 5, // speedY
-			30);
+			Math.random() < 0.01 ? 50 : 5);
 		else return new WarplanePlus(
 			randGen.nextInt(Program.WIDTH - ImageManager.PlusImg.getWidth() / 2), // x
 			0, // y
 			0, // speedX
-			Math.random() < 0.01 ? 50 : 3, // speedY
-			60);
-
+			Math.random() < 0.01 ? 50 : 3);
 	}
 
 }
