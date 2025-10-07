@@ -3,6 +3,7 @@ package com.halfcooler.flying.bullet;
 import com.halfcooler.flying.warplane.WarplaneBoss;
 import com.halfcooler.flying.warplane.WarplaneElite;
 import com.halfcooler.flying.warplane.WarplanePlus;
+import com.halfcooler.game.statistics.Status;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,15 +23,15 @@ public class BulletEnemy extends Bullet
 
 	public static List<BulletEnemy> DirectInstance(WarplaneElite elite)
 	{
-		return Collections.singletonList(new BulletEnemy(elite.GetX(), elite.GetY(), 0, elite.GetSpeedY() + 5, 30));
+		return Collections.singletonList(new BulletEnemy(elite.GetX(), elite.GetY(), 0, elite.GetSpeedY() + 5, Status.GetDamage(elite)));
 	}
 
 	public static List<BulletEnemy> ScatterInstance(WarplanePlus plus)
 	{
 		return List.of(
-			new BulletEnemy(plus.GetX() - 30, plus.GetY(), 0, plus.GetSpeedY() + 5, 30),
-			new BulletEnemy(plus.GetX(), plus.GetY(), 0, plus.GetSpeedY() + 5, 30),
-			new BulletEnemy(plus.GetX() + 30, plus.GetY(), 0, plus.GetSpeedY() + 5, 30));
+			new BulletEnemy(plus.GetX() - 30, plus.GetY(), 0, plus.GetSpeedY() + 5, Status.GetDamage(plus)),
+			new BulletEnemy(plus.GetX(), plus.GetY(), 0, plus.GetSpeedY() + 5, Status.GetDamage(plus)),
+			new BulletEnemy(plus.GetX() + 30, plus.GetY(), 0, plus.GetSpeedY() + 5, Status.GetDamage(plus)));
 	}
 
 	/// 20 个子弹... 就没中间了...<br>
@@ -45,7 +46,7 @@ public class BulletEnemy extends Bullet
 				boss.GetY() + (int)(180 * Math.cos(i * Math.PI / 18)),
 				0,
 				boss.GetSpeedY() + 5,
-				45));
+				Status.GetDamage(boss)));
 		}
 		return list;
 	}

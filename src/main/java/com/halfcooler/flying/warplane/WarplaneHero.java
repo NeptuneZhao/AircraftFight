@@ -21,12 +21,6 @@ public class WarplaneHero extends Warplane
 	public void GoForward() { }
 
 	@Override
-	public int GetScore()
-	{
-		return 0;
-	}
-
-	@Override
 	public List<? extends Bullet> GetShots()
 	{
 		return BulletHero.ParallelInstance(this, PropBullet.ActiveThread + 1);

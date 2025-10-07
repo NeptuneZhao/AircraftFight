@@ -26,12 +26,6 @@ public class WarplaneBoss extends Warplane
 	}
 
 	@Override
-	public int GetScore()
-	{
-		return 200;
-	}
-
-	@Override
 	public void GoForward()
 	{
 		int speedX = (int) (25 * Math.sin(2 * Math.random() * Math.PI));
@@ -43,7 +37,7 @@ public class WarplaneBoss extends Warplane
 	public static WarplaneBoss GenerateBoss()
 	{
 		// 每次 timeInterval 都调用这个
-		if (!generateFlag && (LastInterval > 1000 * 2 || LastScore > 5000))
+		if (!generateFlag && (LastInterval > 1000 * 120 || LastScore > 5000))
 		{
 			MusicPlayer.PlayBossMusic();
 			generateFlag = true;
@@ -54,7 +48,7 @@ public class WarplaneBoss extends Warplane
 		if (generateFlag && !isAlive)
 		{
 			isAlive = true;
-			return new WarplaneBoss(Program.WIDTH / 2, (int) (Math.random() * Program.HEIGHT / 20) + 90, 0, 5, 150);
+			return new WarplaneBoss(Program.WIDTH / 2, (int) (Math.random() * Program.HEIGHT / 20) + 90, 0, 5, 300);
 		}
 		// 游戏主循环那边添加 null 检查
 		else return null;
