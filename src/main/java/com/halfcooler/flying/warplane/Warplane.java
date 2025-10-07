@@ -26,7 +26,7 @@ public abstract class Warplane extends Flying
 		return this.health;
 	}
 
-	/// 注意是血量变化
+	/// 注意是血量变化, 本方法已包含归零死亡
 	/// @param amount 加血就是正, 掉血就是负
 	public void ChangeHealth(int amount)
 	{

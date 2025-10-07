@@ -49,7 +49,7 @@ public class Program
 		// 阶段 2: 游戏主循环
 		Game gamePanel = Game.StartGame(startsMenu.GetDifficulty(), startsMenu.IsMusicOn(), startsMenu.GetFps());
 		frame.setContentPane(gamePanel);
-		// Title 设置为 "Game - [Difficulty] - [Music On/Off], Version: a.b.c.d"
+		// "Game - [Difficulty] - [Music On/Off], Version: a.b.c.d"
 		// 版本号从 version.properties 中读取
 		Properties props = new Properties();
 		try (FileInputStream fis = new FileInputStream("version.properties"))
@@ -77,10 +77,6 @@ public class Program
 			{
 				System.err.println("Main thread interrupted: " + e.getMessage());
 			}
-			finally
-			{
-				System.out.println("Game over test pass.");
-			}
 		}
 
 		// 死了之后弹出提示框分数和用时
@@ -88,7 +84,7 @@ public class Program
 		System.exit(0);
 	}
 
-
+	/// 调试模式下自动更新版本号
 	private static void onBuilding()
 	{
 		Properties props = new Properties();

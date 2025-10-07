@@ -154,6 +154,8 @@ public class Game extends JPanel
 		this.renderScheduler.scheduleWithFixedDelay(this::repaint, IntervalP.FpsInterval, IntervalP.FpsInterval, TimeUnit.MILLISECONDS);
 	}
 
+	/// 0 是产生循环<br>
+	/// 1 是射击循环
 	private boolean timeCycled(int type)
 	{
 		this.cycleTime += IntervalP.TimeInterval;
@@ -192,10 +194,10 @@ public class Game extends JPanel
 		// 子弹打自己
 		for (Bullet bullet : allEnemyBullets)
 		{
-			if (bullet.GetNotFlying())
+			if (!bullet.IsFlying())
 				continue;
 
-			if (warplaneHero.GetNotFlying())
+			if (!warplaneHero.IsFlying())
 				return;
 
 			if (warplaneHero.IsCrash(bullet))
@@ -208,12 +210,12 @@ public class Game extends JPanel
 		// 子弹打敌机
 		for (Bullet bullet : heroBullets)
 		{
-			if (bullet.GetNotFlying())
+			if (!bullet.IsFlying())
 				continue;
 
 			for (Warplane enemy : allEnemies)
 			{
-				if (enemy.GetNotFlying())
+				if (!enemy.IsFlying())
 					continue;
 
 				if (enemy.IsCrash(bullet))
@@ -221,7 +223,7 @@ public class Game extends JPanel
 					enemy.ChangeHealth(-bullet.getPower());
 					bullet.SetVanish();
 
-					if (enemy.GetNotFlying())
+					if (!enemy.IsFlying())
 					{
 						if (enemy instanceof WarplaneBoss)
 							WarplaneBoss.BossDeathEvent();
@@ -233,7 +235,7 @@ public class Game extends JPanel
 				}
 
 				// 敌机撞自己, GAME OVER
-				if (warplaneHero.GetNotFlying())
+				if (!warplaneHero.IsFlying())
 					return;
 
 				if (warplaneHero.IsCrash(enemy) || enemy.IsCrash(warplaneHero))
@@ -246,7 +248,7 @@ public class Game extends JPanel
 			// 我吃撞到的道具
 			for (Prop prop : props)
 			{
-				if (prop.GetNotFlying())
+				if (!prop.IsFlying())
 					continue;
 
 				if (warplaneHero.IsCrash(prop))
@@ -256,7 +258,6 @@ public class Game extends JPanel
 				}
 			}
 		}
-
 	}
 
 	/// 为了能够站在这里, 那个帝王放弃的不仅仅是电池
@@ -280,16 +281,16 @@ public class Game extends JPanel
 	/// 让开, 阿杰·切来了
 	private void postRemoveEvent()
 	{
-		this.allEnemyBullets.removeIf(Flying::GetNotFlying);
-		this.heroBullets.removeIf(Flying::GetNotFlying);
-		this.allEnemies.removeIf(Flying::GetNotFlying);
-		this.props.removeIf(Flying::GetNotFlying);
+		this.allEnemyBullets.removeIf(Flying.DeadPredicate);
+		this.heroBullets.removeIf(Flying.DeadPredicate);
+		this.allEnemies.removeIf(Flying.DeadPredicate);
+		this.props.removeIf(Flying.DeadPredicate);
 	}
 
 	/// 要么闪耀光芒, 要么逐渐消失, 随你
 	private void gameOverEvent()
 	{
-		if (this.warplaneHero.GetNotFlying() || this.warplaneHero.GetHealth() <= 0)
+		if (!this.warplaneHero.IsFlying() || this.warplaneHero.GetHealth() <= 0)
 		{
 			this.gameLoopScheduler.shutdown();
 			this.renderScheduler.shutdown();
