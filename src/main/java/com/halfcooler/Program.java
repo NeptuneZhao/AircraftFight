@@ -82,7 +82,12 @@ public class Program
 				System.out.println("Game over test pass.");
 			}
 		}
+
+		// 死了之后弹出提示框分数和用时
+		JOptionPane.showMessageDialog(frame, String.format("Game Over!\nYour Score: %d\nTime: %d ms", gamePanel.GetScore(), gamePanel.GetMillisecond()), "Game Over", JOptionPane.INFORMATION_MESSAGE);
+		System.exit(0);
 	}
+
 
 	private static void onBuilding()
 	{

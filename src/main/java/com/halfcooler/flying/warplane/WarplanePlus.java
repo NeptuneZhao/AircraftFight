@@ -17,10 +17,4 @@ public class WarplanePlus extends Warplane
 	{
 		return new BulletTypePlus().Shoots(this);
 	}
-
-	@Override
-	public int GetScore()
-	{
-		return 66;
-	}
 }

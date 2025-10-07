@@ -22,10 +22,4 @@ public class WarplaneElite extends Warplane
 		return new BulletTypeElite().Shoots(this);
 	}
 
-	@Override
-	public int GetScore()
-	{
-		return 30;
-	}
-
 }

@@ -11,7 +11,6 @@ import java.util.Random;
 /// 哎, 该死的工厂模式
 public abstract class Warplane extends Flying
 {
-
 	private final int maxHealth;
 	private int health;
 
@@ -54,8 +53,6 @@ public abstract class Warplane extends Flying
 	}
 
 	public abstract List<? extends Bullet> GetShots();
-
-	public abstract int GetScore();
 
 	/// 产生敌机
 	public static Warplane GenerateWarplane()
