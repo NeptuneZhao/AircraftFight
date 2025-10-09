@@ -3,6 +3,7 @@ package com.halfcooler.game.statistics;
 /// 基本软件包 com.halfcooler.game.statistics
 public class Interval
 {
+
 	/// 渲染间隔
 	public final int FpsInterval;
 
@@ -45,5 +46,21 @@ public class Interval
 	public int GetMaxEnemies(int timeEclipsed, int currentScore)
 	{
 		return Math.min(10, 5 + Math.max(timeEclipsed / 120000, currentScore / 1200));
+	}
+
+	private static final int baseSpeed = 3;
+
+	/// 飞行速度根据时间、分数和难度增加, 每 60 秒或 600 分 增加 1(取最大), 无上限。<br>
+	/// 这意味着你的敌机、子弹会越来越快, 你会死得很壮烈。
+	public int GetSpeedY(Class<?> c, int timeEclipsed, int currentScore)
+	{
+		int i = baseSpeed + Math.max(timeEclipsed / 60000, currentScore / 600);
+		return switch (c.getSimpleName())
+		{
+			case "BulletEnemy" -> -i * 2;
+			case "BulletHero", "WarplaneEnemy", "WarplanePlus" -> i;
+			case "WarplaneElite" -> (int) (i * 1.5);
+			default -> 0;
+		};
 	}
 }

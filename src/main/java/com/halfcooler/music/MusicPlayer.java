@@ -112,6 +112,7 @@ public final class MusicPlayer
 		CurrentBossBgm.start();
 		try
 		{
+
 			CurrentBossBgm.join();
 		}
 		catch (InterruptedException ie)

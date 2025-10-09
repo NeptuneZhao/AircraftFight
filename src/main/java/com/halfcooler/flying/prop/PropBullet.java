@@ -23,6 +23,11 @@ public class PropBullet extends Prop
 		super(plane);
 	}
 
+	public PropBullet(Warplane plane, int x)
+	{
+		super(plane, x);
+	}
+
 	@Override
 	public void TakeEffect(WarplaneHero hero, List<Warplane> enemies, List<Bullet> bullets)
 	{

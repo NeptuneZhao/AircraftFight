@@ -1,6 +1,7 @@
 package com.halfcooler.flying.warplane;
 
 
+import com.halfcooler.Program;
 import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.flying.bullet.type.BulletTypeElite;
 
@@ -8,9 +9,9 @@ import java.util.List;
 
 public class WarplaneElite extends Warplane
 {
-	public WarplaneElite(int x, int y, int speedX, int speedY)
+	public WarplaneElite(int x, int y, int time, int score)
 	{
-		super(x, y, speedX, speedY);
+		super(x, y, 0, Program.GameInstance.IntervalP.GetSpeedY(WarplaneElite.class, time, score));
 	}
 
 	// 实验 1:2 - 精英敌机按设定周期直射子弹

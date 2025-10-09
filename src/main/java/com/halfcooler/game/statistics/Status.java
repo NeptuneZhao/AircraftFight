@@ -48,4 +48,5 @@ public final class Status
 			default -> 0;
 		};
 	}
+
 }

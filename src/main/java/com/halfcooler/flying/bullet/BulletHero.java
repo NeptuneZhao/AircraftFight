@@ -15,7 +15,7 @@ public class BulletHero extends Bullet
 
 	public static List<BulletHero> ParallelInstance(WarplaneHero hero, int parallelCount)
 	{
-		int separation = 15;
+		int separation = 20;
 		List<BulletHero> bullets = new ArrayList<>();
 
 		if (parallelCount % 2 == 1) bullets.add(new BulletHero(hero.GetX(), hero.GetY(), 0, -5, Status.GetDamage(hero)));

@@ -6,7 +6,6 @@ import com.halfcooler.utils.ImageManager;
 
 import java.awt.image.BufferedImage;
 import java.security.InvalidParameterException;
-import java.util.function.Predicate;
 
 public abstract class Flying
 {
@@ -103,12 +102,10 @@ public abstract class Flying
 	/// 你问我为什么不直接用 GetFlying() <br>
 	/// 谓词不允许调用方法体
 	/// @see java.util.List#removeIf(java.util.function.Predicate)
-	public boolean IsFlying()
+	public boolean IsDead()
 	{
-		return this.isFlying;
+		return !this.isFlying;
 	}
-
-	public static Predicate<Flying> DeadPredicate = f -> !f.IsFlying();
 
 	public void SetVanish()
 	{

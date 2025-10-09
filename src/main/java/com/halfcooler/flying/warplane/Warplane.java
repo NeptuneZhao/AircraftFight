@@ -54,25 +54,13 @@ public abstract class Warplane extends Flying
 	public abstract List<? extends Bullet> GetShots();
 
 	/// 产生敌机
-	public static Warplane GenerateWarplane()
+	public static Warplane GenerateWarplane(int time, int score)
 	{
 		double rand = Math.random();
 		Random randGen = new Random();
-		if (rand < 0.7) return new WarplaneEnemy(
-			randGen.nextInt(Program.WIDTH - ImageManager.EnemyImg.getWidth() / 2), // x
-			0, // y
-			0, // speedX
-			Math.random() < 0.01 ? 50 : 5);
-		else if (rand < 0.85) return new WarplaneElite(
-			randGen.nextInt(Program.WIDTH - ImageManager.EliteImg.getWidth() / 2), // x
-			0, // y
-			0, // speedX
-			Math.random() < 0.01 ? 50 : 5);
-		else return new WarplanePlus(
-			randGen.nextInt(Program.WIDTH - ImageManager.PlusImg.getWidth() / 2), // x
-			0, // y
-			0, // speedX
-			Math.random() < 0.01 ? 50 : 3);
+		if (rand < 0.7) return new WarplaneEnemy(randGen.nextInt(Program.WIDTH - ImageManager.EnemyImg.getWidth() / 2), 0);
+		else if (rand < 0.85) return new WarplaneElite(randGen.nextInt(Program.WIDTH - ImageManager.EliteImg.getWidth() / 2), 0, time, score);
+		else return new WarplanePlus(randGen.nextInt(Program.WIDTH - ImageManager.PlusImg.getWidth() / 2), 0, time, score);
 	}
 
 }

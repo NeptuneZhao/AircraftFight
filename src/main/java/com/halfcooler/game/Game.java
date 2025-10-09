@@ -21,6 +21,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static com.halfcooler.game.GameUtilities.Write;
+
 public class Game extends JPanel
 {
 	// public final RecordImplement Recorder;
@@ -85,8 +87,8 @@ public class Game extends JPanel
 	private void paintScoreHealth(Graphics g)
 	{
 		Font f = new Font("Segoe UI", Font.ITALIC, 20);
-		GameUtilities.Write(g, "Score: " + this.score, Color.WHITE, f, 10, 25);
-		GameUtilities.Write(g, "Health: " + this.warplaneHero.GetHealth(), Color.WHITE, f, 10, 45);
+		Write(g, "Score: " + this.score, Color.WHITE, f, 10, 25);
+		Write(g, "Health: " + this.warplaneHero.GetHealth(), Color.WHITE, f, 10, 45);
 	}
 
 	public Game(int difficulty, int fps)
@@ -116,7 +118,7 @@ public class Game extends JPanel
 	}
 
 	/// 游戏的主循环<br>
-	/// 我们所向披靡! 我跟上一个捍卫者学的
+	/// 我们所向披靡!
 	public void Loop()
 	{
 		Runnable gameTask = () ->
@@ -134,7 +136,7 @@ public class Game extends JPanel
 			{
 				// 产生敌机
 				if (this.allEnemies.size() < IntervalP.GetMaxEnemies(this.time, this.score))
-					this.allEnemies.add(Warplane.GenerateWarplane());
+					this.allEnemies.add(Warplane.GenerateWarplane(this.time, this.score));
 				// 射击
 				if (timeCycled(1))
 					for (Warplane enemy : this.allEnemies) this.allEnemyBullets.addAll(enemy.GetShots());
@@ -194,10 +196,10 @@ public class Game extends JPanel
 		// 子弹打自己
 		for (Bullet bullet : allEnemyBullets)
 		{
-			if (!bullet.IsFlying())
+			if (bullet.IsDead())
 				continue;
 
-			if (!warplaneHero.IsFlying())
+			if (warplaneHero.IsDead())
 				return;
 
 			if (warplaneHero.IsCrash(bullet))
@@ -210,12 +212,12 @@ public class Game extends JPanel
 		// 子弹打敌机
 		for (Bullet bullet : heroBullets)
 		{
-			if (!bullet.IsFlying())
+			if (bullet.IsDead())
 				continue;
 
 			for (Warplane enemy : allEnemies)
 			{
-				if (!enemy.IsFlying())
+				if (enemy.IsDead())
 					continue;
 
 				if (enemy.IsCrash(bullet))
@@ -223,10 +225,12 @@ public class Game extends JPanel
 					enemy.ChangeHealth(-bullet.getPower());
 					bullet.SetVanish();
 
-					if (!enemy.IsFlying())
+					if (enemy.IsDead())
 					{
 						if (enemy instanceof WarplaneBoss)
+						{
 							WarplaneBoss.BossDeathEvent();
+						}
 						int scores = ScoreP.GetScore(enemy, allEnemies.size());
 						score += scores;
 						WarplaneBoss.LastScore += scores;
@@ -235,7 +239,7 @@ public class Game extends JPanel
 				}
 
 				// 敌机撞自己, GAME OVER
-				if (!warplaneHero.IsFlying())
+				if (warplaneHero.IsDead())
 					return;
 
 				if (warplaneHero.IsCrash(enemy) || enemy.IsCrash(warplaneHero))
@@ -248,7 +252,7 @@ public class Game extends JPanel
 			// 我吃撞到的道具
 			for (Prop prop : props)
 			{
-				if (!prop.IsFlying())
+				if (prop.IsDead())
 					continue;
 
 				if (warplaneHero.IsCrash(prop))
@@ -260,7 +264,6 @@ public class Game extends JPanel
 		}
 	}
 
-	/// 为了能够站在这里, 那个帝王放弃的不仅仅是电池
 	private void moveEvent()
 	{
 		// 子弹移动
@@ -278,19 +281,17 @@ public class Game extends JPanel
 			prop.GoForward();
 	}
 
-	/// 让开, 阿杰·切来了
 	private void postRemoveEvent()
 	{
-		this.allEnemyBullets.removeIf(Flying.DeadPredicate);
-		this.heroBullets.removeIf(Flying.DeadPredicate);
-		this.allEnemies.removeIf(Flying.DeadPredicate);
-		this.props.removeIf(Flying.DeadPredicate);
+		this.allEnemyBullets.removeIf(Flying::IsDead);
+		this.heroBullets.removeIf(Flying::IsDead);
+		this.allEnemies.removeIf(Flying::IsDead);
+		this.props.removeIf(Flying::IsDead);
 	}
 
-	/// 要么闪耀光芒, 要么逐渐消失, 随你
 	private void gameOverEvent()
 	{
-		if (!this.warplaneHero.IsFlying() || this.warplaneHero.GetHealth() <= 0)
+		if (this.warplaneHero.IsDead() || this.warplaneHero.GetHealth() <= 0)
 		{
 			this.gameLoopScheduler.shutdown();
 			this.renderScheduler.shutdown();

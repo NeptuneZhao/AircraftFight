@@ -5,6 +5,7 @@ import com.halfcooler.flying.Flying;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
+
 public final class GameUtilities
 {
 	public static void DrawImage(Graphics g, List<? extends Flying> flyingList)

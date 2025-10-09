@@ -12,7 +12,6 @@ import java.util.Objects;
 
 /// <summary>
 /// 该类表示游戏中的道具。<br>
-/// 还没有写完
 /// </summary>
 /// @see com.halfcooler.flying.Flying
 public abstract class Prop extends Flying
@@ -24,6 +23,11 @@ public abstract class Prop extends Flying
 		super(plane.GetX(), plane.GetY(), 0, plane.GetSpeedY());
 	}
 
+	public Prop(Warplane plane, int x)
+	{
+		super(x, plane.GetY(), 0, plane.GetSpeedY());
+	}
+
 	// 产生的概率以后再调
 	public static List<Prop> GenerateProp(Warplane enemy)
 	{
@@ -31,18 +35,19 @@ public abstract class Prop extends Flying
 		List<Prop> props;
 		switch (enemy)
 		{
-			case WarplaneEnemy ignored -> props = Collections.singletonList(rand < 0.2 ? new PropHealth(enemy) : rand < 0.3 ? new PropBullet(enemy) : null);
-			case WarplaneElite ignored -> props = Collections.singletonList(rand < 0.5 ? new PropHealth(enemy) : rand < 0.8 ? new PropBullet(enemy) : null);
+			case WarplaneEnemy ignored -> props = Collections.singletonList(rand < 0.1 ? new PropHealth(enemy) : rand < 0.2 ? new PropBullet(enemy) : null);
+			case WarplaneElite ignored -> props = Collections.singletonList(rand < 0.2 ? new PropHealth(enemy) : rand < 0.4 ? new PropBullet(enemy) : null);
+			case WarplanePlus ignored -> props = Collections.singletonList(rand < 0.25 ? new PropHealth(enemy) : rand < 0.5 ? new PropBullet(enemy) : null);
 			case WarplaneBoss ignored ->
 			{
 				// 60% 产生, 3 个
 				// 30% 加血, 50% 子弹, 20% 清屏
 				props = new ArrayList<>();
-				for (int i = 0; i < 3; i++)
+				for (int i = -1; i < 2; i++)
 				{
 					rand = Math.random();
 					if (Math.random() < 0.6) continue;
-					props.add(rand < 0.3 ? new PropHealth(enemy) : rand < 0.8 ? new PropBullet(enemy) : new PropBomb(enemy));
+					props.add(rand < 0.3 ? new PropHealth(enemy, enemy.GetX() + 25 * i) : rand < 0.8 ? new PropBullet(enemy, enemy.GetX() + 25 * i) : new PropBomb(enemy, enemy.GetX() + 25 * i));
 				}
 			}
 			case null, default -> props = Collections.emptyList();

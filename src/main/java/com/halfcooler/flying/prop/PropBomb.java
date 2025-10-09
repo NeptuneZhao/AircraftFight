@@ -9,9 +9,9 @@ import java.util.List;
 
 public class PropBomb extends Prop
 {
-	public PropBomb(Warplane plane)
+	public PropBomb(Warplane plane, int x)
 	{
-		super(plane);
+		super(plane, x);
 	}
 
 	@Override

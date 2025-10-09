@@ -12,6 +12,7 @@ public class Program
 {
 	public static final Object MainLock = new Object();
 	public static final int WIDTH = 480, HEIGHT = 640;
+	public static Game GameInstance = null;
 
 	public static void main(String[] args)
 	{
@@ -47,8 +48,8 @@ public class Program
 		frame.remove(startPanel);
 
 		// 阶段 2: 游戏主循环
-		Game gamePanel = Game.StartGame(startsMenu.GetDifficulty(), startsMenu.IsMusicOn(), startsMenu.GetFps());
-		frame.setContentPane(gamePanel);
+		GameInstance = Game.StartGame(startsMenu.GetDifficulty(), startsMenu.IsMusicOn(), startsMenu.GetFps());
+		frame.setContentPane(GameInstance);
 		// "Game - [Difficulty] - [Music On/Off], Version: a.b.c.d"
 		// 版本号从 version.properties 中读取
 		Properties props = new Properties();
@@ -63,7 +64,7 @@ public class Program
 		String version = props.getProperty("major") + "." + props.getProperty("minor") + "." + props.getProperty("build") + "." + props.getProperty("patch");
 		frame.setTitle(String.format("Game [%s], Music %s, Ver: %s", startsMenu.GetDifficulty(), startsMenu.IsMusicOn() ? "On" : "Off", version));
 		frame.setVisible(true);
-		gamePanel.Loop();
+		GameInstance.Loop();
 
 		// 退出阶段
 		synchronized (MainLock)
@@ -80,7 +81,7 @@ public class Program
 		}
 
 		// 死了之后弹出提示框分数和用时
-		JOptionPane.showMessageDialog(frame, String.format("Game Over!\nYour Score: %d\nTime: %d ms", gamePanel.GetScore(), gamePanel.GetMillisecond()), "Game Over", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(frame, String.format("Game Over!\nYour Score: %d\nTime: %d ms", GameInstance.GetScore(), GameInstance.GetMillisecond()), "Game Over", JOptionPane.INFORMATION_MESSAGE);
 		System.exit(0);
 	}
 
