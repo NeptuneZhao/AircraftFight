@@ -10,7 +10,7 @@
       <component id="42985" class="javax.swing.JButton" binding="difficultyEasyButton">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="1.0" weighty="1.0"/>
+          <gridbag weightx="0.0" weighty="0.5"/>
         </constraints>
         <properties>
           <text resource-bundle="language" key="mode.easy"/>
@@ -19,7 +19,7 @@
       <component id="42f12" class="javax.swing.JButton" binding="difficultyNormalButton">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="1.0" weighty="1.0"/>
+          <gridbag weightx="0.0" weighty="0.5"/>
         </constraints>
         <properties>
           <text resource-bundle="language" key="mode.normal"/>
@@ -27,8 +27,8 @@
       </component>
       <component id="4f66c" class="javax.swing.JCheckBox" binding="musicCheckBox">
         <constraints>
-          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="1.0" weighty="1.0"/>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="1.0" weighty="0.5"/>
         </constraints>
         <properties>
           <text resource-bundle="language" key="mode.music"/>
@@ -37,7 +37,7 @@
       <component id="a6c5c" class="javax.swing.JButton" binding="difficultyHardButton">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="1.0" weighty="1.0"/>
+          <gridbag weightx="0.0" weighty="0.5"/>
         </constraints>
         <properties>
           <text resource-bundle="language" key="mode.hard"/>
@@ -67,6 +67,15 @@
           <horizontalAlignment value="0"/>
           <horizontalTextPosition value="0"/>
           <text resource-bundle="language" key="mode.fps"/>
+        </properties>
+      </component>
+      <component id="48ade" class="javax.swing.JButton" binding="hallOfFameButton" default-binding="true">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.5"/>
+        </constraints>
+        <properties>
+          <text resource-bundle="language" key="record.button"/>
         </properties>
       </component>
     </children>

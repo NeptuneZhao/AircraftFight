@@ -224,6 +224,7 @@ public class Game extends JPanel
 
 					if (enemy.IsDead())
 					{
+						WarplaneHero.Instance.Total++;
 						switch (enemy)
 						{
 							case WarplaneEnemy ignored -> WarplaneHero.Instance.Enemy++;

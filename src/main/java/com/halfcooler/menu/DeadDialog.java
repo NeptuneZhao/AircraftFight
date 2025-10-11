@@ -3,14 +3,15 @@ package com.halfcooler.menu;
 import com.halfcooler.flying.warplane.WarplaneHero;
 import com.halfcooler.game.record.Record;
 import com.halfcooler.game.record.Recorder;
+import com.halfcooler.utils.ResourcesBundler;
+import com.halfcooler.utils.SwingUtilities;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.Method;
-import java.util.ResourceBundle;
+import java.util.UUID;
 
 public class DeadDialog extends JDialog
 {
@@ -36,11 +37,12 @@ public class DeadDialog extends JDialog
 	private JLabel bossLabel;
 	private JLabel bossHS;
 
-	private final WarplaneHero heroo;
+	private final WarplaneHero warplaneHero;
+	private final ResourcesBundler rb = new ResourcesBundler();
 
 	public DeadDialog(WarplaneHero hero)
 	{
-		this.heroo = hero;
+		this.warplaneHero = hero;
 		$$$setupUI$$$();
 		setContentPane(contentPane);
 		setModal(true);
@@ -64,18 +66,19 @@ public class DeadDialog extends JDialog
 		contentPane.registerKeyboardAction(_ -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
 		// 显示各项数据
-		java.util.List<com.halfcooler.game.record.Record> records = Recorder.ReadRecords();
+		java.util.List<Record> records = Recorder.ReadBinaryRecord();
 
 		// 难度
-		this.difficultyLabel.setText(switch (hero.Difficulty)
+		this.difficultyLabel.setText(rb.GetMessage(switch (hero.Difficulty)
 		{
-			case 0 -> this.$$$getMessageFromBundle$$$("language", "mode.easy");
-			case 1 -> this.$$$getMessageFromBundle$$$("language", "mode.normal");
-			case 2 -> this.$$$getMessageFromBundle$$$("language", "mode.hard");
+			case 0 -> "mode.easy";
+			case 1 -> "mode.normal";
+			case 2 -> "mode.hard";
 			default -> throw new IllegalStateException("Unexpected value: " + hero.Difficulty);
-		});
+		}));
 
-		String highScoreText = this.$$$getMessageFromBundle$$$("language", "record.high_score");
+		String highScoreText = rb.GetMessage("record.high_score");
+
 		// 时间
 		this.timeLabel.setText(String.valueOf(hero.Time));
 		this.timeHS.setText(hero.Time > records.stream().mapToInt(Record::time).max().orElse(0) ? highScoreText : "");
@@ -86,12 +89,11 @@ public class DeadDialog extends JDialog
 
 		// 伤害
 		this.damageLabel.setText(String.valueOf(hero.DamagedTotal));
-		this.damageHS.setText(hero.DamagedTotal < records.stream().mapToInt(Record::damage).max().orElse(0) ? this.$$$getMessageFromBundle$$$("language", "record.min_damage") : "");
+		this.damageHS.setText(hero.DamagedTotal < records.stream().mapToInt(Record::damage).max().orElse(0) ? rb.GetMessage("record.min_damage") : "");
 
 		// 击杀总数
-		int total = hero.Enemy + hero.Elite + hero.Plus + hero.Boss;
-		this.totalLabel.setText(String.valueOf(total));
-		this.totalHS.setText(total > records.stream().mapToInt(r -> r.enemy() + r.elite() + r.plus() + r.boss()).max().orElse(0) ? highScoreText : "");
+		this.totalLabel.setText(String.valueOf(hero.Total));
+		this.totalHS.setText(hero.Total > records.stream().mapToInt(Record::total).max().orElse(0) ? highScoreText : "");
 
 		// 击杀普通
 		this.enemyLabel.setText(String.valueOf(hero.Enemy));
@@ -118,9 +120,9 @@ public class DeadDialog extends JDialog
 		if (name.isEmpty())
 			// 生成一个UUID
 			name = "Anonymous";
-		else if (name.length() > 32)
-			name = name.substring(0, 32);
-		Recorder.SaveRecords(new Record(name, heroo.Difficulty, heroo.Time, heroo.Score, heroo.DamagedTotal, heroo.Enemy, heroo.Elite, heroo.Plus, heroo.Boss));
+		else if (name.length() > 56)
+			name = name.substring(0, 56);
+		Recorder.SaveBinaryRecord(new Record(UUID.randomUUID(), name, warplaneHero.Difficulty, warplaneHero.Time, warplaneHero.Score, warplaneHero.DamagedTotal, warplaneHero.Total, warplaneHero.Enemy, warplaneHero.Elite, warplaneHero.Plus, warplaneHero.Boss));
 		dispose();
 	}
 
@@ -179,7 +181,7 @@ public class DeadDialog extends JDialog
 		panel2.add(buttonOK, gbc);
 		final JLabel label1 = new JLabel();
 		label1.setHorizontalTextPosition(0);
-		this.$$$loadLabelText$$$(label1, this.$$$getMessageFromBundle$$$("language", "dead.name"));
+		SwingUtilities.LoadLabelText(label1, rb.GetMessage("dead.name"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -187,7 +189,7 @@ public class DeadDialog extends JDialog
 		gbc.weighty = 1.0;
 		contentPane.add(label1, gbc);
 		final JLabel label2 = new JLabel();
-		this.$$$loadLabelText$$$(label2, this.$$$getMessageFromBundle$$$("language", "dead.input_name"));
+		SwingUtilities.LoadLabelText(label2, rb.GetMessage("dead.input_name"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 2;
@@ -200,6 +202,7 @@ public class DeadDialog extends JDialog
 		gbc = new GridBagConstraints();
 		gbc.gridx = 3;
 		gbc.gridy = 2;
+		gbc.gridheight = 2;
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -220,14 +223,14 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panel3.add(difficultyLabel, gbc);
 		final JLabel label3 = new JLabel();
-		this.$$$loadLabelText$$$(label3, this.$$$getMessageFromBundle$$$("language", "record.difficulty"));
+		SwingUtilities.LoadLabelText(label3, rb.GetMessage("record.difficulty"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.WEST;
 		panel3.add(label3, gbc);
 		final JLabel label4 = new JLabel();
-		this.$$$loadLabelText$$$(label4, this.$$$getMessageFromBundle$$$("language", "record.time"));
+		SwingUtilities.LoadLabelText(label4, rb.GetMessage("record.time"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 2;
@@ -241,7 +244,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panel3.add(timeLabel, gbc);
 		final JLabel label5 = new JLabel();
-		this.$$$loadLabelText$$$(label5, this.$$$getMessageFromBundle$$$("language", "record.score"));
+		SwingUtilities.LoadLabelText(label5, rb.GetMessage("record.score"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 4;
@@ -255,7 +258,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panel3.add(scoreLabel, gbc);
 		final JLabel label6 = new JLabel();
-		this.$$$loadLabelText$$$(label6, this.$$$getMessageFromBundle$$$("language", "record.damage"));
+		SwingUtilities.LoadLabelText(label6, rb.GetMessage("record.damage"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 6;
@@ -269,7 +272,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panel3.add(damageLabel, gbc);
 		final JLabel label7 = new JLabel();
-		this.$$$loadLabelText$$$(label7, this.$$$getMessageFromBundle$$$("language", "record.killed.total"));
+		SwingUtilities.LoadLabelText(label7, rb.GetMessage("record.killed.total"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 8;
@@ -283,7 +286,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panel3.add(totalLabel, gbc);
 		final JLabel label8 = new JLabel();
-		this.$$$loadLabelText$$$(label8, this.$$$getMessageFromBundle$$$("language", "record.killed.enemy"));
+		SwingUtilities.LoadLabelText(label8, rb.GetMessage("record.killed.enemy"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 10;
@@ -297,7 +300,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panel3.add(enemyLabel, gbc);
 		final JLabel label9 = new JLabel();
-		this.$$$loadLabelText$$$(label9, this.$$$getMessageFromBundle$$$("language", "record.killed.elite"));
+		SwingUtilities.LoadLabelText(label9, rb.GetMessage("record.killed.elite"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 11;
@@ -311,7 +314,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panel3.add(eliteLabel, gbc);
 		final JLabel label10 = new JLabel();
-		this.$$$loadLabelText$$$(label10, this.$$$getMessageFromBundle$$$("language", "record.killed.plus"));
+		SwingUtilities.LoadLabelText(label10, rb.GetMessage("record.killed.plus"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 12;
@@ -374,7 +377,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panel3.add(plusHS, gbc);
 		final JLabel label11 = new JLabel();
-		this.$$$loadLabelText$$$(label11, this.$$$getMessageFromBundle$$$("language", "record.killed.boss"));
+		SwingUtilities.LoadLabelText(label11, rb.GetMessage("record.killed.boss"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 13;
@@ -444,62 +447,6 @@ public class DeadDialog extends JDialog
 		panel3.add(spacer7, gbc);
 	}
 
-	private static Method $$$cachedGetBundleMethod$$$ = null;
-
-	private String $$$getMessageFromBundle$$$(String path, String key)
-	{
-		ResourceBundle bundle;
-		try
-		{
-			Class<?> thisClass = this.getClass();
-			if ($$$cachedGetBundleMethod$$$ == null)
-			{
-				Class<?> dynamicBundleClass = thisClass.getClassLoader().loadClass("com.intellij.DynamicBundle");
-				$$$cachedGetBundleMethod$$$ = dynamicBundleClass.getMethod("getBundle", String.class, Class.class);
-			}
-			bundle = (ResourceBundle) $$$cachedGetBundleMethod$$$.invoke(null, path, thisClass);
-		} catch (Exception e)
-		{
-			bundle = ResourceBundle.getBundle(path);
-		}
-		return bundle.getString(key);
-	}
-
-	/**
-	 * @noinspection ALL
-	 */
-	private void $$$loadLabelText$$$(JLabel component, String text)
-	{
-		StringBuffer result = new StringBuffer();
-		boolean haveMnemonic = false;
-		char mnemonic = '\0';
-		int mnemonicIndex = -1;
-		for (int i = 0; i < text.length(); i++)
-		{
-			if (text.charAt(i) == '&')
-			{
-				i++;
-				if (i == text.length()) break;
-				if (!haveMnemonic && text.charAt(i) != '&')
-				{
-					haveMnemonic = true;
-					mnemonic = text.charAt(i);
-					mnemonicIndex = result.length();
-				}
-			}
-			result.append(text.charAt(i));
-		}
-		component.setText(result.toString());
-		if (haveMnemonic)
-		{
-			component.setDisplayedMnemonic(mnemonic);
-			component.setDisplayedMnemonicIndex(mnemonicIndex);
-		}
-	}
-
-	/**
-	 * @noinspection ALL
-	 */
 	public JComponent $$$getRootComponent$$$()
 	{
 		return contentPane;

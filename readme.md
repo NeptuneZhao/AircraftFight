@@ -86,3 +86,7 @@
 > 见 `flying.warplane.WarplaneBoss`
 > 
 > 设定出现判定具有分数和时间条件
+
+### 实验 4
+
+[关于各种文件的性能的讨论](https://chatgpt.com/share/68ea4ec6-4384-800e-9c03-3c36c4668011)
