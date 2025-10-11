@@ -46,7 +46,7 @@ public final class ImageManager
 
 			EliteImg = ImageIO.read(new FileInputStream("src/main/resources/images/elite.png"));
 			PlusImg = ImageIO.read(new FileInputStream("src/main/resources/images/plus.png"));
-			BossImg = ImageIO.read(new FileInputStream("src/main/resources/images/boss.png"));
+			BossImg = ImageIO.read(new FileInputStream("src/main/resources/images/Boss.png"));
 
 			PropBombImg = ImageIO.read(new FileInputStream("src/main/resources/images/prop_bomb.png"));
 			PropBulletImg = ImageIO.read(new FileInputStream("src/main/resources/images/prop_bullet.png"));

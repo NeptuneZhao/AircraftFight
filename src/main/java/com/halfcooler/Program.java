@@ -1,6 +1,8 @@
 package com.halfcooler;
 
+import com.halfcooler.flying.warplane.WarplaneHero;
 import com.halfcooler.game.Game;
+import com.halfcooler.menu.DeadDialog;
 import com.halfcooler.menu.StartsMenu;
 
 import javax.swing.*;
@@ -16,6 +18,7 @@ public class Program
 
 	public static void main(String[] args)
 	{
+
 		// Debug 模式下自动更新版本号
 		onBuilding();
 
@@ -80,8 +83,9 @@ public class Program
 			}
 		}
 
-		// 死了之后弹出提示框分数和用时
-		JOptionPane.showMessageDialog(frame, String.format("Game Over!\nYour Score: %d\nTime: %d ms", GameInstance.GetScore(), GameInstance.GetMillisecond()), "Game Over", JOptionPane.INFORMATION_MESSAGE);
+		DeadDialog dialog = new DeadDialog(WarplaneHero.Instance);
+		dialog.pack();
+		dialog.setVisible(true);
 		System.exit(0);
 	}
 

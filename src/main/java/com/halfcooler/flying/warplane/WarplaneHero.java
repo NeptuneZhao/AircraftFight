@@ -26,5 +26,6 @@ public class WarplaneHero extends Warplane
 		return BulletHero.ParallelInstance(this, PropBullet.ActiveThread + 1);
 	}
 
-
+	/// To be recorded
+	public int Difficulty = 0, Score = 0, Time = 0, DamagedTotal = 0, Enemy = 0, Elite = 0, Plus = 0, Boss = 0;
 }

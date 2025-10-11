@@ -30,6 +30,9 @@ public abstract class Warplane extends Flying
 	/// @param amount 加血就是正, 掉血就是负
 	public void ChangeHealth(int amount)
 	{
+		if (this instanceof WarplaneHero && amount < 0)
+			((WarplaneHero) this).DamagedTotal -= amount;
+
 		this.health += amount;
 
 		if (this.health <= 0)

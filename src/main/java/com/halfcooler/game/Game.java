@@ -4,9 +4,7 @@ import com.halfcooler.Program;
 import com.halfcooler.flying.Flying;
 import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.flying.prop.Prop;
-import com.halfcooler.flying.warplane.Warplane;
-import com.halfcooler.flying.warplane.WarplaneBoss;
-import com.halfcooler.flying.warplane.WarplaneHero;
+import com.halfcooler.flying.warplane.*;
 import com.halfcooler.game.statistics.Interval;
 import com.halfcooler.game.statistics.Score;
 import com.halfcooler.music.MusicPlayer;
@@ -21,15 +19,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static com.halfcooler.game.GameUtilities.Write;
-
 public class Game extends JPanel
 {
 	// public final RecordImplement Recorder;
 	private int backgroundTop = 0;
 	private final ScheduledExecutorService gameLoopScheduler, renderScheduler;
-
-	private final WarplaneHero warplaneHero = WarplaneHero.Instance;
+	
 	private WarplaneBoss boss = null;
 	private final List<Warplane> allEnemies;
 	private final List<Bullet> allEnemyBullets;
@@ -79,7 +74,7 @@ public class Game extends JPanel
 			GameUtilities.DrawImage(g, this.allEnemies);
 		}
 
-		GameUtilities.DrawImage(g, List.of(this.warplaneHero));
+		GameUtilities.DrawImage(g, List.of(WarplaneHero.Instance));
 
 		paintScoreHealth(g);
 	}
@@ -87,12 +82,14 @@ public class Game extends JPanel
 	private void paintScoreHealth(Graphics g)
 	{
 		Font f = new Font("Segoe UI", Font.ITALIC, 20);
-		Write(g, "Score: " + this.score, Color.WHITE, f, 10, 25);
-		Write(g, "Health: " + this.warplaneHero.GetHealth(), Color.WHITE, f, 10, 45);
+		GameUtilities.Write(g, "Score: " + this.score, Color.WHITE, f, 10, 25);
+		GameUtilities.Write(g, "Health: " + WarplaneHero.Instance.GetHealth(), Color.WHITE, f, 10, 45);
 	}
 
 	public Game(int difficulty, int fps)
 	{
+		WarplaneHero.Instance.Difficulty = difficulty;
+
 		this.ScoreP = new Score(difficulty);
 		this.IntervalP = new Interval(fps, difficulty);
 
@@ -108,7 +105,7 @@ public class Game extends JPanel
 			return t;
 		});
 
-		MouseController.SetControl(this, warplaneHero);
+		MouseController.SetControl(this, WarplaneHero.Instance);
 	}
 
 	public static Game StartGame(int difficulty, boolean musicOn, int fps)
@@ -141,7 +138,7 @@ public class Game extends JPanel
 				if (timeCycled(1))
 					for (Warplane enemy : this.allEnemies) this.allEnemyBullets.addAll(enemy.GetShots());
 
-				this.heroBullets.addAll(this.warplaneHero.GetShots());
+				this.heroBullets.addAll(WarplaneHero.Instance.GetShots());
 			}
 
 			// 记住, 你所做的一切都是为了那该死的测试
@@ -199,12 +196,12 @@ public class Game extends JPanel
 			if (bullet.IsDead())
 				continue;
 
-			if (warplaneHero.IsDead())
+			if (WarplaneHero.Instance.IsDead())
 				return;
 
-			if (warplaneHero.IsCrash(bullet))
+			if (WarplaneHero.Instance.IsCrash(bullet))
 			{
-				warplaneHero.ChangeHealth(-bullet.getPower());
+				WarplaneHero.Instance.ChangeHealth(-bullet.getPower());
 				bullet.SetVanish();
 			}
 		}
@@ -227,10 +224,19 @@ public class Game extends JPanel
 
 					if (enemy.IsDead())
 					{
-						if (enemy instanceof WarplaneBoss)
+						switch (enemy)
 						{
-							WarplaneBoss.BossDeathEvent();
+							case WarplaneEnemy ignored -> WarplaneHero.Instance.Enemy++;
+							case WarplaneElite ignored -> WarplaneHero.Instance.Elite++;
+							case WarplanePlus ignored -> WarplaneHero.Instance.Plus++;
+							case WarplaneBoss ignored ->
+							{
+								WarplaneHero.Instance.Boss++;
+								WarplaneBoss.BossDeathEvent();
+							}
+							default -> throw new IllegalArgumentException("Invalid type");
 						}
+
 						int scores = ScoreP.GetScore(enemy, allEnemies.size());
 						score += scores;
 						WarplaneBoss.LastScore += scores;
@@ -239,12 +245,12 @@ public class Game extends JPanel
 				}
 
 				// 敌机撞自己, GAME OVER
-				if (warplaneHero.IsDead())
+				if (WarplaneHero.Instance.IsDead())
 					return;
 
-				if (warplaneHero.IsCrash(enemy) || enemy.IsCrash(warplaneHero))
+				if (WarplaneHero.Instance.IsCrash(enemy) || enemy.IsCrash(WarplaneHero.Instance))
 				{
-					warplaneHero.SetVanish();
+					WarplaneHero.Instance.SetVanish();
 					enemy.SetVanish();
 				}
 			}
@@ -255,9 +261,9 @@ public class Game extends JPanel
 				if (prop.IsDead())
 					continue;
 
-				if (warplaneHero.IsCrash(prop))
+				if (WarplaneHero.Instance.IsCrash(prop))
 				{
-					prop.TakeEffect(warplaneHero, allEnemies, allEnemyBullets);
+					prop.TakeEffect(WarplaneHero.Instance, allEnemies, allEnemyBullets);
 					prop.SetVanish();
 				}
 			}
@@ -291,8 +297,11 @@ public class Game extends JPanel
 
 	private void gameOverEvent()
 	{
-		if (this.warplaneHero.IsDead() || this.warplaneHero.GetHealth() <= 0)
+		if (WarplaneHero.Instance.IsDead() || WarplaneHero.Instance.GetHealth() <= 0)
 		{
+			WarplaneHero.Instance.Score = this.score;
+			WarplaneHero.Instance.Time = this.time;
+
 			this.gameLoopScheduler.shutdown();
 			this.renderScheduler.shutdown();
 			MusicPlayer.PlayGameOver();
