@@ -54,7 +54,7 @@ public class StartsMenu extends JFrame
 			// TODO: Show Hall of Fame
 			this.setVisible(false);
 			HallOfFameMenu hof = new HallOfFameMenu();
-			hof.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+			hof.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			hof.setTitle("Hall of Fame");
 			hof.setSize(Program.WIDTH, Program.HEIGHT);
 			hof.setVisible(true);

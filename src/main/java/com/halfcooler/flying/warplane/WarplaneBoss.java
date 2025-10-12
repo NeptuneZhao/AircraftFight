@@ -36,8 +36,9 @@ public class WarplaneBoss extends Warplane
 	/// 好他妈复杂，脑子有点不够用了，先摆一会
 	public static WarplaneBoss GenerateBoss()
 	{
+		System.out.printf("Time: %d, Score: %d\n", LastInterval, LastScore);
 		// 每次 timeInterval 都调用这个
-		if (!generateFlag && (LastInterval > 1000 * 120 || LastScore > 3000))
+		if (!generateFlag && (LastInterval > 1000 * 90 || LastScore > 1500))
 		{
 			MusicPlayer.PlayBossMusic();
 			generateFlag = true;
