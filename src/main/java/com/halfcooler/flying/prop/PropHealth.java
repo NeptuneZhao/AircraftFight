@@ -4,6 +4,7 @@ import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.flying.warplane.Warplane;
 import com.halfcooler.flying.warplane.WarplaneHero;
 import com.halfcooler.game.statistics.Status;
+import com.halfcooler.music.MusicPlayer;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class PropHealth extends Prop
 	@Override
 	public void TakeEffect(WarplaneHero hero, List<Warplane> enemies, List<Bullet> bullets)
 	{
+		MusicPlayer.PlayGetSupplyMusic();
 		hero.ChangeHealth(Status.GetHealth(hero) / 100);
 	}
 }

@@ -125,4 +125,28 @@ public final class MusicPlayer
 			PlayBgm(IsMusicOn);
 		}
 	}
+
+	public static void PlayBulletMusic()
+	{
+		if (!IsMusicOn) return;
+		new MusicThread(new File("src/main/resources/bgm/bullet.wav")).start();
+	}
+
+	public static void PlayBulletHitMusic()
+	{
+		if (!IsMusicOn) return;
+		new MusicThread(new File("src/main/resources/bgm/bullet_hit.wav")).start();
+	}
+
+	public static void PlayBombExplosionMusic()
+	{
+		if (!IsMusicOn) return;
+		new MusicThread(new File("src/main/resources/bgm/bomb_explosion.wav")).start();
+	}
+
+	public static void PlayGetSupplyMusic()
+	{
+		if (!IsMusicOn) return;
+		new MusicThread(new File("src/main/resources/bgm/get_supply.wav")).start();
+	}
 }

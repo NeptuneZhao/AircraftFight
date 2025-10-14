@@ -3,6 +3,7 @@ package com.halfcooler.flying.prop;
 import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.flying.warplane.Warplane;
 import com.halfcooler.flying.warplane.WarplaneHero;
+import com.halfcooler.music.MusicPlayer;
 
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -34,6 +35,7 @@ public class PropBullet extends Prop
 	@Override
 	public void TakeEffect(WarplaneHero hero, List<Warplane> enemies, List<Bullet> bullets)
 	{
+		MusicPlayer.PlayGetSupplyMusic();
 		ActiveType = 0;
 		effect1();
 	}

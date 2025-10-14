@@ -8,11 +8,11 @@ import com.halfcooler.flying.warplane.*;
 import com.halfcooler.game.statistics.Interval;
 import com.halfcooler.game.statistics.Score;
 import com.halfcooler.music.MusicPlayer;
-import com.halfcooler.utils.ImageManager;
 import com.halfcooler.utils.MouseController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -26,6 +26,7 @@ public class Game extends JPanel
 	private final ScheduledExecutorService gameLoopScheduler, renderScheduler;
 	
 	private WarplaneBoss boss = null;
+	private final BufferedImage backgroundImg;
 	private final List<Warplane> allEnemies;
 	private final List<Bullet> allEnemyBullets;
 	private final List<Bullet> heroBullets;
@@ -52,8 +53,8 @@ public class Game extends JPanel
 	public void paint(Graphics g)
 	{
 		super.paint(g);
-		g.drawImage(ImageManager.BackgroundImg, 0, this.backgroundTop - Program.HEIGHT, Program.WIDTH, Program.HEIGHT, null);
-		g.drawImage(ImageManager.BackgroundImg, 0, this.backgroundTop, Program.WIDTH, Program.HEIGHT, null);
+		g.drawImage(this.backgroundImg, 0, this.backgroundTop - Program.HEIGHT, Program.WIDTH, Program.HEIGHT, null);
+		g.drawImage(this.backgroundImg, 0, this.backgroundTop, Program.WIDTH, Program.HEIGHT, null);
 		this.backgroundTop = this.backgroundTop == Program.HEIGHT ? 0 : this.backgroundTop + 1;
 
 		// 逻辑: 先画子弹和道具, 后画飞机
@@ -92,6 +93,8 @@ public class Game extends JPanel
 
 		this.ScoreP = new Score(difficulty);
 		this.IntervalP = new Interval(fps, difficulty);
+
+		this.backgroundImg = new Background(difficulty).backgroundImg();
 
 		this.allEnemies = new LinkedList<>();
 		this.heroBullets = new LinkedList<>();
@@ -139,6 +142,7 @@ public class Game extends JPanel
 					for (Warplane enemy : this.allEnemies) this.allEnemyBullets.addAll(enemy.GetShots());
 
 				this.heroBullets.addAll(WarplaneHero.Instance.GetShots());
+				MusicPlayer.PlayBulletMusic();
 			}
 
 			// 记住, 你所做的一切都是为了那该死的测试
@@ -201,6 +205,7 @@ public class Game extends JPanel
 
 			if (WarplaneHero.Instance.IsCrash(bullet))
 			{
+				MusicPlayer.PlayBulletHitMusic();
 				WarplaneHero.Instance.ChangeHealth(-bullet.getPower());
 				bullet.SetVanish();
 			}
@@ -219,6 +224,7 @@ public class Game extends JPanel
 
 				if (enemy.IsCrash(bullet))
 				{
+					MusicPlayer.PlayBulletHitMusic();
 					enemy.ChangeHealth(-bullet.getPower());
 					bullet.SetVanish();
 
