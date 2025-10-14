@@ -36,6 +36,7 @@ public class DeadDialog extends JDialog
 	private JLabel plusHS;
 	private JLabel bossLabel;
 	private JLabel bossHS;
+	private JPanel panelStatistics;
 
 	private final WarplaneHero warplaneHero;
 	private final ResourcesBundler rb = new ResourcesBundler();
@@ -69,6 +70,7 @@ public class DeadDialog extends JDialog
 		java.util.List<Record> records = Recorder.ReadBinaryRecord();
 
 		// 难度
+		ResourcesBundler rb = new ResourcesBundler();
 		this.difficultyLabel.setText(rb.GetMessage(switch (hero.Difficulty)
 		{
 			case 0 -> "mode.easy";
@@ -80,7 +82,7 @@ public class DeadDialog extends JDialog
 		String highScoreText = rb.GetMessage("record.high_score");
 
 		// 时间
-		this.timeLabel.setText(String.valueOf(hero.Time));
+		this.timeLabel.setText(String.format("%02d:%02d", hero.Time / 1000 / 60, (hero.Time / 1000) % 60));
 		this.timeHS.setText(hero.Time > records.stream().mapToInt(Record::time).max().orElse(0) ? highScoreText : "");
 
 		// 分数
@@ -147,8 +149,8 @@ public class DeadDialog extends JDialog
 		panel1.setLayout(new GridBagLayout());
 		GridBagConstraints gbc;
 		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 4;
+		gbc.gridx = 1;
+		gbc.gridy = 5;
 		gbc.gridwidth = 4;
 		gbc.weightx = 1.0;
 		gbc.anchor = GridBagConstraints.EAST;
@@ -162,7 +164,8 @@ public class DeadDialog extends JDialog
 		gbc.fill = GridBagConstraints.BOTH;
 		panel1.add(panel2, gbc);
 		buttonCancel = new JButton();
-		buttonCancel.setText("Cancel");
+		this.$$$loadButtonText$$$(buttonCancel, rb.GetMessage("button.cancel"));
+		buttonCancel.setToolTipText(rb.GetMessage("button.cancel"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 0;
@@ -171,7 +174,8 @@ public class DeadDialog extends JDialog
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		panel2.add(buttonCancel, gbc);
 		buttonOK = new JButton();
-		buttonOK.setText("OK");
+		this.$$$loadButtonText$$$(buttonOK, rb.GetMessage("button.ok"));
+		buttonOK.setToolTipText(rb.GetMessage("button.ok"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -183,7 +187,7 @@ public class DeadDialog extends JDialog
 		label1.setHorizontalTextPosition(0);
 		SwingUtilities.LoadLabelText(label1, rb.GetMessage("dead.name"));
 		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
+		gbc.gridx = 1;
 		gbc.gridy = 0;
 		gbc.gridwidth = 4;
 		gbc.weighty = 1.0;
@@ -191,8 +195,8 @@ public class DeadDialog extends JDialog
 		final JLabel label2 = new JLabel();
 		SwingUtilities.LoadLabelText(label2, rb.GetMessage("dead.input_name"));
 		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 2;
+		gbc.gridx = 1;
+		gbc.gridy = 3;
 		gbc.gridwidth = 3;
 		gbc.gridheight = 2;
 		gbc.weighty = 1.0;
@@ -200,253 +204,307 @@ public class DeadDialog extends JDialog
 		contentPane.add(label2, gbc);
 		textField1 = new JTextField();
 		gbc = new GridBagConstraints();
-		gbc.gridx = 3;
-		gbc.gridy = 2;
+		gbc.gridx = 4;
+		gbc.gridy = 3;
 		gbc.gridheight = 2;
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		contentPane.add(textField1, gbc);
-		final JPanel panel3 = new JPanel();
-		panel3.setLayout(new GridBagLayout());
+		panelStatistics = new JPanel();
+		panelStatistics.setLayout(new GridBagLayout());
 		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 1;
+		gbc.gridx = 1;
+		gbc.gridy = 2;
 		gbc.gridwidth = 4;
 		gbc.fill = GridBagConstraints.BOTH;
-		contentPane.add(panel3, gbc);
+		contentPane.add(panelStatistics, gbc);
 		difficultyLabel = new JLabel();
-		difficultyLabel.setText("Label");
+		difficultyLabel.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(difficultyLabel, gbc);
+		panelStatistics.add(difficultyLabel, gbc);
 		final JLabel label3 = new JLabel();
 		SwingUtilities.LoadLabelText(label3, rb.GetMessage("record.difficulty"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(label3, gbc);
+		panelStatistics.add(label3, gbc);
 		final JLabel label4 = new JLabel();
 		SwingUtilities.LoadLabelText(label4, rb.GetMessage("record.time"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(label4, gbc);
+		panelStatistics.add(label4, gbc);
 		timeLabel = new JLabel();
-		timeLabel.setText("Label");
+		timeLabel.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(timeLabel, gbc);
+		panelStatistics.add(timeLabel, gbc);
 		final JLabel label5 = new JLabel();
 		SwingUtilities.LoadLabelText(label5, rb.GetMessage("record.score"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 4;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(label5, gbc);
+		panelStatistics.add(label5, gbc);
 		scoreLabel = new JLabel();
-		scoreLabel.setText("Label");
+		scoreLabel.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 4;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(scoreLabel, gbc);
+		panelStatistics.add(scoreLabel, gbc);
 		final JLabel label6 = new JLabel();
 		SwingUtilities.LoadLabelText(label6, rb.GetMessage("record.damage"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 6;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(label6, gbc);
+		panelStatistics.add(label6, gbc);
 		damageLabel = new JLabel();
-		damageLabel.setText("Label");
+		damageLabel.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 6;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(damageLabel, gbc);
+		panelStatistics.add(damageLabel, gbc);
 		final JLabel label7 = new JLabel();
 		SwingUtilities.LoadLabelText(label7, rb.GetMessage("record.killed.total"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 8;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(label7, gbc);
+		panelStatistics.add(label7, gbc);
 		totalLabel = new JLabel();
-		totalLabel.setText("Label");
+		totalLabel.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 8;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(totalLabel, gbc);
+		panelStatistics.add(totalLabel, gbc);
 		final JLabel label8 = new JLabel();
 		SwingUtilities.LoadLabelText(label8, rb.GetMessage("record.killed.enemy"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 10;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(label8, gbc);
+		panelStatistics.add(label8, gbc);
 		enemyLabel = new JLabel();
-		enemyLabel.setText("Label");
+		enemyLabel.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 10;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(enemyLabel, gbc);
+		panelStatistics.add(enemyLabel, gbc);
 		final JLabel label9 = new JLabel();
 		SwingUtilities.LoadLabelText(label9, rb.GetMessage("record.killed.elite"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 11;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(label9, gbc);
+		panelStatistics.add(label9, gbc);
 		eliteLabel = new JLabel();
-		eliteLabel.setText("Label");
+		eliteLabel.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 11;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(eliteLabel, gbc);
+		panelStatistics.add(eliteLabel, gbc);
 		final JLabel label10 = new JLabel();
 		SwingUtilities.LoadLabelText(label10, rb.GetMessage("record.killed.plus"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 12;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(label10, gbc);
+		panelStatistics.add(label10, gbc);
 		plusLabel = new JLabel();
-		plusLabel.setText("Label");
+		plusLabel.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 12;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(plusLabel, gbc);
+		panelStatistics.add(plusLabel, gbc);
 		scoreHS = new JLabel();
-		scoreHS.setText("Label");
+		scoreHS.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 3;
 		gbc.gridy = 4;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(scoreHS, gbc);
+		panelStatistics.add(scoreHS, gbc);
 		timeHS = new JLabel();
-		timeHS.setText("Label");
+		timeHS.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 3;
 		gbc.gridy = 2;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(timeHS, gbc);
+		panelStatistics.add(timeHS, gbc);
 		damageHS = new JLabel();
-		damageHS.setText("Label");
+		damageHS.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 3;
 		gbc.gridy = 6;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(damageHS, gbc);
+		panelStatistics.add(damageHS, gbc);
 		totalHS = new JLabel();
-		totalHS.setText("Label");
+		totalHS.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 3;
 		gbc.gridy = 8;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(totalHS, gbc);
+		panelStatistics.add(totalHS, gbc);
 		enemyHS = new JLabel();
-		enemyHS.setText("Label");
+		enemyHS.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 3;
 		gbc.gridy = 10;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(enemyHS, gbc);
+		panelStatistics.add(enemyHS, gbc);
 		eliteHS = new JLabel();
-		eliteHS.setText("Label");
+		eliteHS.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 3;
 		gbc.gridy = 11;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(eliteHS, gbc);
+		panelStatistics.add(eliteHS, gbc);
 		plusHS = new JLabel();
-		plusHS.setText("Label");
+		plusHS.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 3;
 		gbc.gridy = 12;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(plusHS, gbc);
+		panelStatistics.add(plusHS, gbc);
 		final JLabel label11 = new JLabel();
 		SwingUtilities.LoadLabelText(label11, rb.GetMessage("record.killed.boss"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 13;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(label11, gbc);
+		panelStatistics.add(label11, gbc);
 		bossLabel = new JLabel();
-		bossLabel.setText("Label");
+		bossLabel.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 13;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(bossLabel, gbc);
+		panelStatistics.add(bossLabel, gbc);
 		bossHS = new JLabel();
-		bossHS.setText("Label");
+		bossHS.setText("");
 		gbc = new GridBagConstraints();
 		gbc.gridx = 3;
 		gbc.gridy = 13;
 		gbc.anchor = GridBagConstraints.WEST;
-		panel3.add(bossHS, gbc);
+		panelStatistics.add(bossHS, gbc);
 		final JPanel spacer1 = new JPanel();
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.gridwidth = 4;
 		gbc.fill = GridBagConstraints.VERTICAL;
-		panel3.add(spacer1, gbc);
+		panelStatistics.add(spacer1, gbc);
 		final JPanel spacer2 = new JPanel();
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 3;
 		gbc.gridwidth = 4;
 		gbc.fill = GridBagConstraints.VERTICAL;
-		panel3.add(spacer2, gbc);
+		panelStatistics.add(spacer2, gbc);
 		final JPanel spacer3 = new JPanel();
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 5;
 		gbc.gridwidth = 4;
 		gbc.fill = GridBagConstraints.VERTICAL;
-		panel3.add(spacer3, gbc);
+		panelStatistics.add(spacer3, gbc);
 		final JPanel spacer4 = new JPanel();
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 7;
 		gbc.gridwidth = 4;
 		gbc.fill = GridBagConstraints.VERTICAL;
-		panel3.add(spacer4, gbc);
+		panelStatistics.add(spacer4, gbc);
 		final JPanel spacer5 = new JPanel();
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 9;
 		gbc.gridwidth = 4;
 		gbc.fill = GridBagConstraints.VERTICAL;
-		panel3.add(spacer5, gbc);
+		panelStatistics.add(spacer5, gbc);
 		final JPanel spacer6 = new JPanel();
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 14;
 		gbc.gridwidth = 4;
 		gbc.fill = GridBagConstraints.VERTICAL;
-		panel3.add(spacer6, gbc);
+		panelStatistics.add(spacer6, gbc);
 		final JPanel spacer7 = new JPanel();
 		gbc = new GridBagConstraints();
 		gbc.gridx = 2;
 		gbc.gridy = 0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-		panel3.add(spacer7, gbc);
+		panelStatistics.add(spacer7, gbc);
+		final JPanel spacer8 = new JPanel();
+		gbc = new GridBagConstraints();
+		gbc.gridx = 5;
+		gbc.gridy = 0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		contentPane.add(spacer8, gbc);
+		final JPanel spacer9 = new JPanel();
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		contentPane.add(spacer9, gbc);
+		final JPanel spacer10 = new JPanel();
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.gridwidth = 5;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		contentPane.add(spacer10, gbc);
+	}
+	
+	/**
+	 * @noinspection ALL
+	 */
+	private void $$$loadButtonText$$$(AbstractButton component, String text)
+	{
+		StringBuffer result = new StringBuffer();
+		boolean haveMnemonic = false;
+		char mnemonic = '\0';
+		int mnemonicIndex = -1;
+		for (int i = 0; i < text.length(); i++)
+		{
+			if (text.charAt(i) == '&')
+			{
+				i++;
+				if (i == text.length()) break;
+				if (!haveMnemonic && text.charAt(i) != '&')
+				{
+					haveMnemonic = true;
+					mnemonic = text.charAt(i);
+					mnemonicIndex = result.length();
+				}
+			}
+			result.append(text.charAt(i));
+		}
+		component.setText(result.toString());
+		if (haveMnemonic)
+		{
+			component.setMnemonic(mnemonic);
+			component.setDisplayedMnemonicIndex(mnemonicIndex);
+		}
 	}
 
+	/**
+	 * @noinspection ALL
+	 */
 	public JComponent $$$getRootComponent$$$()
 	{
 		return contentPane;

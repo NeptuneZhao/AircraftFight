@@ -28,7 +28,6 @@ public class StartsMenu extends JFrame
 
 	public StartsMenu()
 	{
-
 		$$$setupUI$$$();
 
 		this.difficultyEasyButton.addActionListener((ActionEvent ignored) ->
@@ -53,11 +52,7 @@ public class StartsMenu extends JFrame
 		{
 			// TODO: Show Hall of Fame
 			this.setVisible(false);
-			HallOfFameMenu hof = new HallOfFameMenu();
-			hof.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			hof.setTitle("Hall of Fame");
-			hof.setSize(Program.WIDTH, Program.HEIGHT);
-			hof.setVisible(true);
+			HallOfFameMenu.HoFInstance.setVisible(true);
 		});
 	}
 

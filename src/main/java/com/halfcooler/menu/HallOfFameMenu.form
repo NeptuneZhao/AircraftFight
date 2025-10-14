@@ -1,13 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.halfcooler.menu.HallOfFameMenu">
-  <grid id="27dc6" layout-manager="GridBagLayout">
+  <grid id="27dc6" binding="panel" layout-manager="GridBagLayout">
     <constraints>
       <xy x="20" y="20" width="500" height="438"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="fb9e6" layout-manager="GridBagLayout">
+      <scrollpane id="2da38" binding="scroll">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="1.0" weighty="1.0"/>
+        </constraints>
+        <properties>
+          <enabled value="true"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="56eac" class="javax.swing.JTable" binding="table1" custom-create="true" default-binding="true">
+            <constraints/>
+            <properties>
+              <foreground color="-16777216"/>
+              <gridColor color="-11579054"/>
+            </properties>
+          </component>
+        </children>
+      </scrollpane>
+      <grid id="36eeb" binding="buttonPanel" layout-manager="GridBagLayout">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="0.0"/>
@@ -15,40 +34,32 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="70474" class="javax.swing.JButton" binding="backButton" default-binding="true">
+          <component id="c331a" class="javax.swing.JButton" binding="OKButton" default-binding="true">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Back" noi18n="true"/>
+              <text resource-bundle="language" key="button.ok"/>
             </properties>
           </component>
-          <component id="65597" class="javax.swing.JButton" binding="exitButton" default-binding="true">
+          <hspacer id="af3a0">
             <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.0" weighty="0.0"/>
+            </constraints>
+          </hspacer>
+          <component id="56e56" class="javax.swing.JButton" binding="cancelButton" default-binding="true">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Exit" noi18n="true"/>
+              <text resource-bundle="language" key="button.cancel"/>
             </properties>
           </component>
         </children>
       </grid>
-      <scrollpane id="dcce4" binding="scrollPane1" custom-create="true">
-        <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="1.0" weighty="1.0"/>
-        </constraints>
-        <properties/>
-        <border type="none"/>
-        <children>
-          <component id="165c" class="javax.swing.JTable" binding="table1" custom-create="true" default-binding="true">
-            <constraints/>
-            <properties/>
-          </component>
-        </children>
-      </scrollpane>
     </children>
   </grid>
 </form>

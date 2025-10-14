@@ -78,6 +78,7 @@ public record Record(UUID uuid, String name, int difficulty, int time, int score
 				case 2 -> rb.GetMessage("mode.hard");
 				default -> throw new IllegalStateException("Unexpected value: " + difficulty);
 			},
+			String.format("%02d:%02d", this.time / 1000 / 60, (this.time / 1000) % 60),
 			String.valueOf(this.score),
 			String.valueOf(this.damage),
 			String.valueOf(this.total),

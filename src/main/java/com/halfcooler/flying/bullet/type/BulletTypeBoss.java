@@ -8,7 +8,6 @@ import java.util.List;
 
 public class BulletTypeBoss implements BulletType
 {
-	@Override
 	public List<BulletEnemy> Shoots(Warplane enemy)
 	{
 		return BulletEnemy.RingInstance( (WarplaneBoss) enemy );

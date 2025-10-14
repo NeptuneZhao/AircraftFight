@@ -4,20 +4,7 @@ import javax.swing.*;
 
 public final class SwingUtilities
 {
-	private static class TextMnemonic
-	{
-		String text;
-		boolean hasMnemonic;
-		char mnemonic;
-		int mnemonicIndex;
-		TextMnemonic(String text, boolean hasMnemonic, char mnemonic, int mnemonicIndex)
-		{
-			this.text = text;
-			this.hasMnemonic = hasMnemonic;
-			this.mnemonic = mnemonic;
-			this.mnemonicIndex = mnemonicIndex;
-		}
-	}
+	private record TextMnemonic(String text, boolean hasMnemonic, char mnemonic, int mnemonicIndex) { }
 
 	private static TextMnemonic parseTextAndMnemonic(String text)
 	{

@@ -2,14 +2,14 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.halfcooler.menu.DeadDialog">
   <grid id="cbd77" binding="contentPane" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="48" y="54" width="552" height="476"/>
+      <xy x="48" y="54" width="592" height="720"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
       <grid id="94766" layout-manager="GridBagLayout">
         <constraints>
-          <grid row="4" column="0" row-span="1" col-span="4" vsize-policy="1" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="5" column="1" row-span="1" col-span="4" vsize-policy="1" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
           <gridbag weightx="1.0" weighty="0.0"/>
         </constraints>
         <properties/>
@@ -29,7 +29,8 @@
                   <gridbag weightx="1.0" weighty="1.0"/>
                 </constraints>
                 <properties>
-                  <text value="Cancel"/>
+                  <text resource-bundle="language" key="button.cancel"/>
+                  <toolTipText resource-bundle="language" key="button.cancel"/>
                 </properties>
               </component>
               <component id="e7465" class="javax.swing.JButton" binding="buttonOK">
@@ -38,7 +39,8 @@
                   <gridbag weightx="1.0" weighty="1.0"/>
                 </constraints>
                 <properties>
-                  <text value="OK"/>
+                  <text resource-bundle="language" key="button.ok"/>
+                  <toolTipText resource-bundle="language" key="button.ok"/>
                 </properties>
               </component>
             </children>
@@ -47,7 +49,7 @@
       </grid>
       <component id="77043" class="javax.swing.JLabel">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="1.0"/>
         </constraints>
         <properties>
@@ -57,7 +59,7 @@
       </component>
       <component id="2d14b" class="javax.swing.JLabel">
         <constraints>
-          <grid row="2" column="0" row-span="2" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="3" column="1" row-span="2" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="1.0"/>
         </constraints>
         <properties>
@@ -66,16 +68,16 @@
       </component>
       <component id="a4b3a" class="javax.swing.JTextField" binding="textField1" default-binding="true">
         <constraints>
-          <grid row="2" column="3" row-span="2" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+          <grid row="3" column="4" row-span="2" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
           <gridbag weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties/>
       </component>
-      <grid id="738e6" layout-manager="GridBagLayout">
+      <grid id="738e6" binding="panelStatistics" layout-manager="GridBagLayout">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="1" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties/>
@@ -87,7 +89,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="db908" class="javax.swing.JLabel">
@@ -114,7 +116,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="d9fd5" class="javax.swing.JLabel">
@@ -132,7 +134,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="5118b" class="javax.swing.JLabel">
@@ -150,7 +152,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="4b4e1" class="javax.swing.JLabel">
@@ -168,7 +170,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="8abaa" class="javax.swing.JLabel">
@@ -186,7 +188,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="bd3b6" class="javax.swing.JLabel">
@@ -204,7 +206,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="e0605" class="javax.swing.JLabel">
@@ -222,7 +224,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="80ee8" class="javax.swing.JLabel" binding="scoreHS">
@@ -231,7 +233,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="8d82f" class="javax.swing.JLabel" binding="timeHS">
@@ -240,7 +242,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="e2a6" class="javax.swing.JLabel" binding="damageHS">
@@ -249,7 +251,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="a2f8e" class="javax.swing.JLabel" binding="totalHS">
@@ -258,7 +260,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="ce9de" class="javax.swing.JLabel" binding="enemyHS">
@@ -267,7 +269,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="46ba0" class="javax.swing.JLabel" binding="eliteHS">
@@ -276,7 +278,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="43fb8" class="javax.swing.JLabel" binding="plusHS">
@@ -285,7 +287,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="8c87d" class="javax.swing.JLabel">
@@ -303,7 +305,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <component id="53df2" class="javax.swing.JLabel" binding="bossHS">
@@ -312,7 +314,7 @@
               <gridbag weightx="0.0" weighty="0.0"/>
             </constraints>
             <properties>
-              <text value="Label"/>
+              <text value=""/>
             </properties>
           </component>
           <vspacer id="d2218">
@@ -359,6 +361,24 @@
           </hspacer>
         </children>
       </grid>
+      <hspacer id="1b832">
+        <constraints>
+          <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+      </hspacer>
+      <hspacer id="69d08">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+      </hspacer>
+      <hspacer id="ab2b0">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="5" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+      </hspacer>
     </children>
   </grid>
 </form>

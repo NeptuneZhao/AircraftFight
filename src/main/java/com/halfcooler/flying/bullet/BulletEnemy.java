@@ -16,22 +16,22 @@ import java.util.List;
 /// @see com.halfcooler.flying.bullet.Bullet
 public class BulletEnemy extends Bullet
 {
-	private BulletEnemy(int locX, int locY, int speedX, int speedY, int power)
+	private BulletEnemy(int locX, int locY, int speedY, int power)
 	{
-		super(locX, locY, speedX, speedY, power);
+		super(locX, locY, 0, speedY, power);
 	}
 
 	public static List<BulletEnemy> DirectInstance(WarplaneElite elite)
 	{
-		return Collections.singletonList(new BulletEnemy(elite.GetX(), elite.GetY(), 0, elite.GetSpeedY() + 5, Status.GetDamage(elite)));
+		return Collections.singletonList(new BulletEnemy(elite.GetX(), elite.GetY(), elite.GetSpeedY() + 5, Status.GetDamage(elite)));
 	}
 
 	public static List<BulletEnemy> ScatterInstance(WarplanePlus plus)
 	{
 		return List.of(
-			new BulletEnemy(plus.GetX() - 30, plus.GetY(), 0, plus.GetSpeedY() + 5, Status.GetDamage(plus)),
-			new BulletEnemy(plus.GetX(), plus.GetY(), 0, plus.GetSpeedY() + 5, Status.GetDamage(plus)),
-			new BulletEnemy(plus.GetX() + 30, plus.GetY(), 0, plus.GetSpeedY() + 5, Status.GetDamage(plus)));
+			new BulletEnemy(plus.GetX() - 30, plus.GetY(), plus.GetSpeedY() + 5, Status.GetDamage(plus)),
+			new BulletEnemy(plus.GetX(), plus.GetY(), plus.GetSpeedY() + 5, Status.GetDamage(plus)),
+			new BulletEnemy(plus.GetX() + 30, plus.GetY(), plus.GetSpeedY() + 5, Status.GetDamage(plus)));
 	}
 
 	/// 20 个子弹... 就没中间了...<br>
@@ -44,7 +44,6 @@ public class BulletEnemy extends Bullet
 			list.add(new BulletEnemy(
 				boss.GetX() + (int)(180 * Math.sin(i * Math.PI / 18)),
 				boss.GetY() + (int)(180 * Math.cos(i * Math.PI / 18)),
-				0,
 				boss.GetSpeedY() + 5,
 				Status.GetDamage(boss)));
 		}

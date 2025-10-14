@@ -2,25 +2,36 @@ package com.halfcooler.menu;
 
 import com.halfcooler.game.record.Recorder;
 import com.halfcooler.utils.ResourcesBundler;
+import com.halfcooler.utils.SwingUtilities;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
-public class HallOfFameMenu extends JFrame
+public final class HallOfFameMenu extends JFrame
 {
+	public static final HallOfFameMenu HoFInstance = new HallOfFameMenu();
 
+	private JPanel panel;
+	private JScrollPane scroll;
+	private JButton OKButton;
+	private JButton cancelButton;
 	private JTable table1;
-	private JButton backButton;
-	private JButton exitButton;
-	private JScrollPane scrollPane1;
+	private JPanel buttonPanel;
 
 	private final ResourcesBundler rb = new ResourcesBundler();
 
-	public HallOfFameMenu()
+	private HallOfFameMenu()
 	{
 		$$$setupUI$$$();
+
+		this.setContentPane(panel);
+		this.setResizable(false);
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		this.setTitle(rb.GetMessage("record.button"));
+		this.setSize(1280, 720);
 	}
 
 	/**
@@ -33,57 +44,76 @@ public class HallOfFameMenu extends JFrame
 	private void $$$setupUI$$$()
 	{
 		createUIComponents();
-		final JPanel panel1 = new JPanel();
-		panel1.setLayout(new GridBagLayout());
-		final JPanel panel2 = new JPanel();
-		panel2.setLayout(new GridBagLayout());
+		panel = new JPanel();
+		panel.setLayout(new GridBagLayout());
+		scroll = new JScrollPane();
+		scroll.setEnabled(true);
 		GridBagConstraints gbc;
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.fill = GridBagConstraints.BOTH;
-		panel1.add(panel2, gbc);
-		backButton = new JButton();
-		backButton.setText("Back");
-		gbc = new GridBagConstraints();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		panel2.add(backButton, gbc);
-		exitButton = new JButton();
-		exitButton.setText("Exit");
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		panel2.add(exitButton, gbc);
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1.0;
 		gbc.weighty = 1.0;
 		gbc.fill = GridBagConstraints.BOTH;
-		panel1.add(scrollPane1, gbc);
-		scrollPane1.setViewportView(table1);
+		panel.add(scroll, gbc);
+		table1.setForeground(new Color(-16777216));
+		table1.setGridColor(new Color(-11579054));
+		scroll.setViewportView(table1);
+		buttonPanel = new JPanel();
+		buttonPanel.setLayout(new GridBagLayout());
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.fill = GridBagConstraints.BOTH;
+		panel.add(buttonPanel, gbc);
+		OKButton = new JButton();
+		SwingUtilities.LoadButtonText(OKButton, rb.GetMessage("button.ok"));
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		buttonPanel.add(OKButton, gbc);
+		final JPanel spacer1 = new JPanel();
+		gbc = new GridBagConstraints();
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		buttonPanel.add(spacer1, gbc);
+		cancelButton = new JButton();
+		SwingUtilities.LoadButtonText(cancelButton, rb.GetMessage("button.cancel"));
+		gbc = new GridBagConstraints();
+		gbc.gridx = 2;
+		gbc.gridy = 0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		buttonPanel.add(cancelButton, gbc);
+	}
+	
+	/**
+	 * @noinspection ALL
+	 */
+	public JComponent $$$getRootComponent$$$()
+	{
+		return panel;
 	}
 
 	private void createUIComponents()
 	{
 		String[] columnNames =
-		{
-			"UUID",
-			rb.GetMessage("record.name"),
-			rb.GetMessage("record.difficulty"),
-			rb.GetMessage("record.score"),
-			rb.GetMessage("record.damage"),
-			rb.GetMessage("record.killed.total"),
-			rb.GetMessage("record.killed.enemy"),
-			rb.GetMessage("record.killed.elite"),
-			rb.GetMessage("record.killed.plus"),
-			rb.GetMessage("record.killed.boss")
-		};
+			{
+				"UUID",
+				rb.GetMessage("record.name"),
+				rb.GetMessage("record.difficulty"),
+				rb.GetMessage("record.time"),
+				rb.GetMessage("record.score"),
+				rb.GetMessage("record.damage"),
+				rb.GetMessage("record.killed.total"),
+				rb.GetMessage("record.killed.enemy"),
+				rb.GetMessage("record.killed.elite"),
+				rb.GetMessage("record.killed.plus"),
+				rb.GetMessage("record.killed.boss")
+			};
 
-		java.util.List<String[]> data = new ArrayList<>();
+		List<String[]> data = new ArrayList<>();
 		for (var record : Recorder.ReadBinaryRecord())
 			data.add(record.Display());
 
@@ -92,17 +122,31 @@ public class HallOfFameMenu extends JFrame
 			dataArray[i] = data.get(i);
 
 		table1 = new JTable(dataArray, columnNames);
-		table1.setModel(new DefaultTableModel()
+		table1.setModel(new DefaultTableModel(dataArray, columnNames)
 		{
 			@Override
 			public boolean isCellEditable(int row, int column)
 			{
 				return false;
 			}
-		});
 
-		// TODO: 啥必 table 不给我显示
-		table1.setFillsViewportHeight(true);
-		scrollPane1 = new JScrollPane(table1);
+			// 选中时查看本行数据
+			@Override
+			public void setValueAt(Object aValue, int row, int column)
+			{
+				super.setValueAt(aValue, row, column);
+				if (aValue != null)
+					System.out.println("Selected Row Data: " + String.join(", ", (String[]) aValue));
+			}
+
+			// 选中并 delete 键删除本行数据
+			@Override
+			public void removeRow(int row)
+			{
+				super.removeRow(row);
+				// 删除对应的记录文件
+				Recorder.DeleteRecordByIndex(row);
+			}
+		});
 	}
 }

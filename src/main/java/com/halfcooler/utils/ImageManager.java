@@ -5,6 +5,7 @@ import com.halfcooler.flying.bullet.BulletHero;
 import com.halfcooler.flying.prop.PropBomb;
 import com.halfcooler.flying.prop.PropBullet;
 import com.halfcooler.flying.prop.PropHealth;
+import com.halfcooler.flying.prop.PropPlus;
 import com.halfcooler.flying.warplane.*;
 
 import javax.imageio.ImageIO;
@@ -19,8 +20,7 @@ public final class ImageManager
 {
 	private static final Map<String, BufferedImage> Map = new HashMap<>();
 
-	public static final BufferedImage
-		BackgroundImg;
+	public static final BufferedImage BackgroundImg;
 	public static final BufferedImage HeroImg;
 	public static final BufferedImage BulletHeroImg;
 	public static final BufferedImage EnemyImg;
@@ -31,6 +31,7 @@ public final class ImageManager
 	public static final BufferedImage PropBombImg;
 	public static final BufferedImage PropBulletImg;
 	public static final BufferedImage PropHealthImg;
+	public static final BufferedImage PropPlusImg;
 
 	static
 	{
@@ -51,6 +52,7 @@ public final class ImageManager
 			PropBombImg = ImageIO.read(new FileInputStream("src/main/resources/images/prop_bomb.png"));
 			PropBulletImg = ImageIO.read(new FileInputStream("src/main/resources/images/prop_bullet.png"));
 			PropHealthImg = ImageIO.read(new FileInputStream("src/main/resources/images/prop_health.png"));
+			PropPlusImg = ImageIO.read(new FileInputStream("src/main/resources/images/prop_plus.png"));
 
 			Map.put(WarplaneHero.class.getName(), HeroImg);
 			Map.put(BulletHero.class.getName(), BulletHeroImg);
@@ -65,6 +67,7 @@ public final class ImageManager
 			Map.put(PropBomb.class.getName(), PropBombImg);
 			Map.put(PropBullet.class.getName(), PropBulletImg);
 			Map.put(PropHealth.class.getName(), PropHealthImg);
+			Map.put(PropPlus.class.getName(), PropPlusImg);
 
 		}
 		catch (IOException e)

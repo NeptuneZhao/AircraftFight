@@ -48,4 +48,21 @@ public final class Recorder
 			throw new RuntimeException(e);
 		}
 	}
+
+	public static void DeleteRecordByIndex(int index)
+	{
+		List<Record> records = ReadBinaryRecord();
+		if (index < 0 || index >= records.size())
+			return;
+		records.remove(index);
+		try (var out = new FileOutputStream(binaryFile, false))
+		{
+			for (var record : records)
+				out.write(record.Save());
+		}
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
 }
