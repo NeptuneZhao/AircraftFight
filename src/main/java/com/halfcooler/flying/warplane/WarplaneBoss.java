@@ -14,9 +14,9 @@ public class WarplaneBoss extends Warplane
 	public static int LastInterval = 0, LastScore = 0;
 	private static boolean generateFlag = false, isAlive = false;
 
-	private WarplaneBoss(int x, int y, int speedX, int speedY)
+	private WarplaneBoss(int x, int y, int speedY)
 	{
-		super(x, y, speedX, speedY);
+		super(x, y, 0, speedY);
 	}
 
 	@Override
@@ -33,11 +33,8 @@ public class WarplaneBoss extends Warplane
 	}
 
 	/// 需要连续不断挂机 24.855 天才能把 Game.time 搞爆<br>
-	/// 好他妈复杂，脑子有点不够用了，先摆一会
 	public static WarplaneBoss GenerateBoss()
 	{
-		System.out.printf("Time: %d, Score: %d\n", LastInterval, LastScore);
-		// 每次 timeInterval 都调用这个
 		if (!generateFlag && (LastInterval > 1000 * 90 || LastScore > 1500))
 		{
 			MusicPlayer.PlayBossMusic();
@@ -49,7 +46,7 @@ public class WarplaneBoss extends Warplane
 		if (generateFlag && !isAlive)
 		{
 			isAlive = true;
-			return new WarplaneBoss(Program.WIDTH / 2, (int) (Math.random() * Program.HEIGHT / 20) + 90, 0, 5);
+			return new WarplaneBoss(Program.WIDTH / 2, (int) (Math.random() * Program.HEIGHT / 20) + 90, 5);
 		}
 		// 游戏主循环那边添加 null 检查
 		else return null;

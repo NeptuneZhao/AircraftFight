@@ -37,17 +37,21 @@ public abstract class Prop extends Flying
 		{
 			case WarplaneEnemy ignored -> props = Collections.singletonList(rand < 0.1 ? new PropHealth(enemy) : rand < 0.2 ? new PropBullet(enemy) : null);
 			case WarplaneElite ignored -> props = Collections.singletonList(rand < 0.2 ? new PropHealth(enemy) : rand < 0.4 ? new PropBullet(enemy) : null);
-			case WarplanePlus ignored -> props = Collections.singletonList(rand < 0.25 ? new PropHealth(enemy) : rand < 0.5 ? new PropBullet(enemy) : null);
+			case WarplanePlus ignored -> props = Collections.singletonList(rand < 0.25 ? new PropHealth(enemy) : rand < 0.4 ? new PropBullet(enemy) : rand < 0.55 ? new PropPlus(enemy) : null);
 			case WarplaneBoss ignored ->
 			{
 				// 60% 产生, 3 个
-				// 30% 加血, 50% 子弹, 20% 清屏
+				// 30% 加血, 30% 子弹, 20% 超级, 20% 清屏
 				props = new ArrayList<>();
 				for (int i = -1; i < 2; i++)
 				{
 					rand = Math.random();
-					if (Math.random() < 0.6) continue;
-					props.add(rand < 0.3 ? new PropHealth(enemy, enemy.GetX() + 25 * i) : rand < 0.8 ? new PropBullet(enemy, enemy.GetX() + 25 * i) : new PropBomb(enemy, enemy.GetX() + 25 * i));
+					if (Math.random() < 0.4) continue;
+					props.add(
+						rand < 0.3 ? new PropHealth(enemy, enemy.GetX() + 25 * i) :
+						rand < 0.6 ? new PropBullet(enemy, enemy.GetX() + 25 * i) :
+						rand < 0.8 ? new PropPlus(enemy, enemy.GetX() + 25 * i) :
+						new PropBomb(enemy, enemy.GetX() + 25 * i));
 				}
 			}
 			case null, default -> props = Collections.emptyList();

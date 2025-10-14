@@ -4,6 +4,7 @@ import com.halfcooler.flying.warplane.WarplaneHero;
 import com.halfcooler.game.Game;
 import com.halfcooler.menu.DeadDialog;
 import com.halfcooler.menu.StartsMenu;
+import com.halfcooler.utils.Homework;
 
 import javax.swing.*;
 import java.io.FileInputStream;
@@ -18,6 +19,10 @@ public class Program
 
 	public static void main(String[] args)
 	{
+		System.out.println(Homework.containsChar("HELLO WORLD!!!", 'h'));
+		System.out.println(Homework.containsChar("HELLO WORLD!!!", 'H'));
+		System.out.println(Homework.containsChar("HELLO WORLD!!!", 'H', 'w'));
+		System.out.println(Homework.containsChar("HELLO WORLD!!!", 'H', 'W'));
 
 		// Debug 模式下自动更新版本号
 		onBuilding();

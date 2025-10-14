@@ -27,4 +27,21 @@ public class BulletHero extends Bullet
 
 		return bullets;
 	}
+
+	public static List<BulletHero> CirclingInstance(WarplaneHero hero, int parallelCount)
+	{
+		int bulletCount = 10 * parallelCount;
+		List<BulletHero> bullets = new ArrayList<>();
+
+		for (int i = 0; i < bulletCount; i++)
+		{
+			double angle = 2 * Math.PI / bulletCount * i;
+			int speedX = (int)(5 * Math.cos(angle));
+			int speedY = (int)(5 * Math.sin(angle));
+
+			bullets.add(new BulletHero(hero.GetX(), hero.GetY(), speedX, speedY, Status.GetDamage(hero)));
+		}
+
+		return bullets;
+	}
 }
