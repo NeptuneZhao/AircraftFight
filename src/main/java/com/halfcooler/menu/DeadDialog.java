@@ -1,8 +1,8 @@
 package com.halfcooler.menu;
 
+import com.halfcooler.Program;
 import com.halfcooler.flying.warplane.WarplaneHero;
 import com.halfcooler.game.record.Record;
-import com.halfcooler.game.record.Recorder;
 import com.halfcooler.utils.ResourcesBundler;
 import com.halfcooler.utils.SwingUtilities;
 
@@ -67,7 +67,7 @@ public class DeadDialog extends JDialog
 		contentPane.registerKeyboardAction(_ -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
 		// 显示各项数据
-		java.util.List<Record> records = Recorder.ReadBinaryRecord();
+		java.util.List<Record> records = Program.Recorder.LoadRecords();
 
 		// 难度
 		ResourcesBundler rb = new ResourcesBundler();
@@ -124,7 +124,7 @@ public class DeadDialog extends JDialog
 			name = "Anonymous";
 		else if (name.length() > 56)
 			name = name.substring(0, 56);
-		Recorder.SaveBinaryRecord(new Record(UUID.randomUUID(), name, warplaneHero.Difficulty, warplaneHero.Time, warplaneHero.Score, warplaneHero.DamagedTotal, warplaneHero.Total, warplaneHero.Enemy, warplaneHero.Elite, warplaneHero.Plus, warplaneHero.Boss));
+		Program.Recorder.SaveRecord(new Record(UUID.randomUUID(), name, warplaneHero.Difficulty, warplaneHero.Time, warplaneHero.Score, warplaneHero.DamagedTotal, warplaneHero.Total, warplaneHero.Enemy, warplaneHero.Elite, warplaneHero.Plus, warplaneHero.Boss));
 		dispose();
 	}
 

@@ -6,7 +6,7 @@ import com.halfcooler.flying.warplane.WarplaneBoss;
 
 import java.util.List;
 
-public class BulletTypeBoss implements BulletType
+public class BulletTypeBoss implements IBulletType
 {
 	public List<BulletEnemy> Shoots(Warplane enemy)
 	{

@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Game extends JPanel
 {
-	// public final RecordImplement Recorder;
+	// public final RecordImplement BinaryAccessor;
 	private int backgroundTop = 0;
 	private final ScheduledExecutorService gameLoopScheduler, renderScheduler;
 	
@@ -153,8 +153,9 @@ public class Game extends JPanel
 			this.postRemoveEvent();
 			this.gameOverEvent();
 		};
-		this.gameLoopScheduler.scheduleWithFixedDelay(gameTask, IntervalP.TimeInterval, IntervalP.TimeInterval, TimeUnit.MILLISECONDS);
-		this.renderScheduler.scheduleWithFixedDelay(this::repaint, IntervalP.FpsInterval, IntervalP.FpsInterval, TimeUnit.MILLISECONDS);
+
+		this.gameLoopScheduler.scheduleWithFixedDelay(gameTask, this.IntervalP.TimeInterval, this.IntervalP.TimeInterval, TimeUnit.MILLISECONDS);
+		this.renderScheduler.scheduleWithFixedDelay(this::repaint, this.IntervalP.FpsInterval, this.IntervalP.FpsInterval, TimeUnit.MILLISECONDS);
 	}
 
 	/// 0 是产生循环<br>

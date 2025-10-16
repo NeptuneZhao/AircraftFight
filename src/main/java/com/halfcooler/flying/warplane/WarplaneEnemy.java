@@ -16,6 +16,6 @@ public class WarplaneEnemy extends Warplane
 	@Override
 	public List<? extends Bullet> GetShots()
 	{
-		return new BulletTypeEnemy().Shoots();
+		return new BulletTypeEnemy().Shoots(null);
 	}
 }

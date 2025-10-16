@@ -2,9 +2,10 @@ package com.halfcooler;
 
 import com.halfcooler.flying.warplane.WarplaneHero;
 import com.halfcooler.game.Game;
+import com.halfcooler.game.record.BinaryAccessor;
+import com.halfcooler.game.record.IDataAccessor;
 import com.halfcooler.menu.DeadDialog;
 import com.halfcooler.menu.StartsMenu;
-import com.halfcooler.utils.Homework;
 
 import javax.swing.*;
 import java.io.FileInputStream;
@@ -16,15 +17,11 @@ public class Program
 	public static final Object MainLock = new Object();
 	public static final int WIDTH = 480, HEIGHT = 640;
 	public static Game GameInstance = null;
+	public static IDataAccessor Recorder = new BinaryAccessor();
 
 	public static void main(String[] args)
 	{
-		System.out.println(Homework.containsChar("HELLO WORLD!!!", 'h'));
-		System.out.println(Homework.containsChar("HELLO WORLD!!!", 'H'));
-		System.out.println(Homework.containsChar("HELLO WORLD!!!", 'H', 'w'));
-		System.out.println(Homework.containsChar("HELLO WORLD!!!", 'H', 'W'));
-
-		// Debug 模式下自动更新版本号
+				// Debug 模式下自动更新版本号
 		onBuilding();
 
 		// 阶段 1: 开始菜单
@@ -58,8 +55,7 @@ public class Program
 		// 阶段 2: 游戏主循环
 		GameInstance = Game.StartGame(startsMenu.GetDifficulty(), startsMenu.IsMusicOn(), startsMenu.GetFps());
 		frame.setContentPane(GameInstance);
-		// "Game - [Difficulty] - [Music On/Off], Version: a.b.c.d"
-		// 版本号从 version.properties 中读取
+
 		Properties props = new Properties();
 		try (FileInputStream fis = new FileInputStream("version.properties"))
 		{

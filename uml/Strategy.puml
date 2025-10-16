@@ -1,0 +1,62 @@
+@startuml
+
+top to bottom direction
+skinparam linetype ortho
+
+interface BulletType << interface >> {
+  + Shoots(Warplane): List<Bullet>
+}
+class BulletTypeBoss {
+  + Shoots(Warplane): List<BulletEnemy>
+  + BulletTypeBoss():
+}
+class BulletTypeElite {
+  + Shoots(Warplane): List<BulletEnemy>
+  + BulletTypeElite():
+}
+class BulletTypeEnemy {
+  + Shoots(Warplane): List<BulletEnemy>
+  + BulletTypeEnemy():
+}
+class BulletTypePlus {
+  + Shoots(Warplane): List<BulletEnemy>
+  + BulletTypePlus():
+}
+
+BulletTypeBoss   -[#008200,dashed]-^  BulletType
+BulletTypeElite  -[#008200,dashed]-^  BulletType
+BulletTypeEnemy  -[#008200,dashed]-^  BulletType
+BulletTypePlus   -[#008200,dashed]-^  BulletType
+
+class Flying {
+  + GoForward(): void
+  + IsCrash(Flying): boolean
+  + GetHeight(): int
+  + GetY(): int
+  + SetVanish(): void
+  + GetX(): int
+  + GetWidth(): int
+  + GetImage(): BufferedImage
+  + SetLocation(double, double): void
+  + IsDead(): boolean
+  + GetSpeedY(): int
+  + Flying(int, int, int, int):
+}
+class Warplane {
+  + GetShots(): List<Bullet>
+  + GoForward(): void
+  + GetHealth(): int
+  + ChangeHealth(int): void
+  + GenerateWarplane(int, int): Warplane
+  + Warplane(int, int, int, int):
+}
+class WarplanePlus {
+  + GoForward(): void
+  + GetShots(): List<Bullet>
+  + WarplanePlus(int, int, int, int):
+}
+
+Warplane      -[#000082,plain]-^  Flying
+WarplanePlus  -[#000082,plain]-^  Warplane
+
+@enduml

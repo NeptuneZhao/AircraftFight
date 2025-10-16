@@ -1,0 +1,43 @@
+@startuml
+
+top to bottom direction
+skinparam linetype ortho
+
+class BinaryAccessor {
+  + DeleteRecordByIndex(int): void
+  - readThis(byte[]): Record
+  + SaveRecord(Record): void
+  + LoadRecords(): List<Record>
+  - writeThis(Record): byte[]
+  + BinaryAccessor():
+}
+class Converter {
+  + BytesToString(byte[]): String
+  + StringToFixedBytes(String, int): byte[]
+  + IntToBytes(int): byte[]
+  + BytesToInt(byte[]): int
+  + Converter():
+}
+interface IDataAccessor << interface >> {
+  + SaveRecord(Record): void
+  + DeleteRecordByIndex(int): void
+  + LoadRecords(): List<Record>
+}
+entity Record << record >> {
+  + total(): int
+  + name(): String
+  + damage(): int
+  + enemy(): int
+  + plus(): int
+  + uuid(): UUID
+  + difficulty(): int
+  + time(): int
+  + score(): int
+  + Display(): String[]
+  + elite(): int
+  + boss(): int
+  + Record(UUID, String, int, int, int, int, int, int, int, int, int):
+}
+
+BinaryAccessor  -[#008200,dashed]-^  IDataAccessor
+@enduml

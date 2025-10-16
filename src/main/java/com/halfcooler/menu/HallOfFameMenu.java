@@ -1,6 +1,6 @@
 package com.halfcooler.menu;
 
-import com.halfcooler.game.record.Recorder;
+import com.halfcooler.Program;
 import com.halfcooler.utils.ResourcesBundler;
 import com.halfcooler.utils.SwingUtilities;
 
@@ -114,7 +114,7 @@ public final class HallOfFameMenu extends JFrame
 			};
 
 		List<String[]> data = new ArrayList<>();
-		for (var record : Recorder.ReadBinaryRecord())
+		for (var record : Program.Recorder.LoadRecords())
 			data.add(record.Display());
 
 		String[][] dataArray = new String[data.size()][];
@@ -145,7 +145,7 @@ public final class HallOfFameMenu extends JFrame
 			{
 				super.removeRow(row);
 				// 删除对应的记录文件
-				Recorder.DeleteRecordByIndex(row);
+				Program.Recorder.DeleteRecordByIndex(row);
 			}
 		});
 	}
