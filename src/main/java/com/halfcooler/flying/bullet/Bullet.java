@@ -13,7 +13,7 @@ public abstract class Bullet extends Flying
 {
 	private final int power;
 
-	public int getPower()
+	public int GetPower()
 	{
 		return this.power;
 	}

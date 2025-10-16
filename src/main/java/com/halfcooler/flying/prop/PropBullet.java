@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor.DiscardPolicy;
 import java.util.concurrent.TimeUnit;
 
 /// <summary>
@@ -37,7 +38,7 @@ public class PropBullet extends Prop
 	{
 		MusicPlayer.PlayGetSupplyMusic();
 		ActiveType = 0;
-		effect1();
+		this.effect1();
 	}
 
 	private static final int maxActiveThread = 8;
@@ -50,7 +51,7 @@ public class PropBullet extends Prop
 		5001L, // Keep-alive time
 		TimeUnit.MILLISECONDS, // Time unit for keep-alive
 		new ArrayBlockingQueue<>(maxActiveThread), // Work queue with a capacity of 10
-		new ThreadPoolExecutor.DiscardPolicy()); // Rejection policy (discard new tasks when the queue is full)
+		new DiscardPolicy()); // Rejection policy (discard new tasks when the queue is full)
 
 	/// <summary>
 	/// 火力道具备选效果 1<br>

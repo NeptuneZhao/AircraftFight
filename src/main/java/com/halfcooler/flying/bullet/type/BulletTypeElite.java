@@ -10,6 +10,6 @@ public class BulletTypeElite implements IBulletType
 {
 	public List<BulletEnemy> Shoots(Warplane elite)
 	{
-		return BulletEnemy.DirectInstance( (WarplaneElite)elite );
+		return BulletEnemy.DirectInstance( (WarplaneElite) elite );
 	}
 }

@@ -16,19 +16,18 @@ import java.util.Objects;
 /// @see com.halfcooler.flying.Flying
 public abstract class Prop extends Flying
 {
-	/// 之前：由掉落的飞机构造
-	/// 现在：由游戏主循环构造
+	/// 由游戏主循环构造
 	public Prop(Warplane plane)
 	{
 		super(plane.GetX(), plane.GetY(), 0, plane.GetSpeedY());
 	}
 
+	/// 有些产生好多个道具的飞机, 需要指定 x 坐标
 	public Prop(Warplane plane, int x)
 	{
 		super(x, plane.GetY(), 0, plane.GetSpeedY());
 	}
 
-	// 产生的概率以后再调
 	public static List<Prop> GenerateProp(Warplane enemy)
 	{
 		double rand = Math.random();

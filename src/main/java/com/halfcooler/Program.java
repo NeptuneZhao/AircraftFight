@@ -21,7 +21,7 @@ public class Program
 
 	public static void main(String[] args)
 	{
-				// Debug 模式下自动更新版本号
+		// Debug 模式下自动更新版本号
 		onBuilding();
 
 		// 阶段 1: 开始菜单
@@ -35,7 +35,6 @@ public class Program
 		frame.setBounds(100, 100, WIDTH, HEIGHT);
 		frame.setVisible(true);
 
-		// 同步锁借鉴自 https://github.com/ZSTIH/2022_HITSZ_IOSC-Labs
 		synchronized (MainLock)
 		{
 			while (startPanel.isVisible())

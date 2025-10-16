@@ -11,6 +11,6 @@ public class BulletTypePlus implements IBulletType
 {
 	public List<BulletEnemy> Shoots(Warplane plus)
 	{
-		return BulletEnemy.ScatterInstance((WarplanePlus) plus);
+		return BulletEnemy.ScatterInstance( (WarplanePlus) plus );
 	}
 }

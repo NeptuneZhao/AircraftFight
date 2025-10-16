@@ -207,7 +207,7 @@ public class Game extends JPanel
 			if (WarplaneHero.Instance.IsCrash(bullet))
 			{
 				MusicPlayer.PlayBulletHitMusic();
-				WarplaneHero.Instance.ChangeHealth(-bullet.getPower());
+				WarplaneHero.Instance.ChangeHealth(-bullet.GetPower());
 				bullet.SetVanish();
 			}
 		}
@@ -226,7 +226,7 @@ public class Game extends JPanel
 				if (enemy.IsCrash(bullet))
 				{
 					MusicPlayer.PlayBulletHitMusic();
-					enemy.ChangeHealth(-bullet.getPower());
+					enemy.ChangeHealth(-bullet.GetPower());
 					bullet.SetVanish();
 
 					if (enemy.IsDead())
