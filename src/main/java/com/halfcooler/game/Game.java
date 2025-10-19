@@ -1,14 +1,15 @@
 package com.halfcooler.game;
 
-import com.halfcooler.Program;
 import com.halfcooler.flying.Flying;
 import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.flying.prop.Prop;
 import com.halfcooler.flying.warplane.*;
 import com.halfcooler.game.statistics.Interval;
+import com.halfcooler.game.statistics.Resources;
 import com.halfcooler.game.statistics.Score;
+import com.halfcooler.game.utils.MouseController;
+import com.halfcooler.game.utils.SwingUtils;
 import com.halfcooler.music.MusicPlayer;
-import com.halfcooler.utils.MouseController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Game extends JPanel
 {
-	// public final RecordImplement BinaryAccessor;
 	private int backgroundTop = 0;
 	private final ScheduledExecutorService gameLoopScheduler, renderScheduler;
 	
@@ -34,7 +34,9 @@ public class Game extends JPanel
 
 	private int cycleTime, cycleEnemyBulletTime;
 
-	private int score = 0, time = 0;
+	private int score = 0;
+	private int time = 0;
+	private float storeScore = 0f;
 
 	public final Score ScoreP;
 	public final Interval IntervalP;
@@ -53,38 +55,37 @@ public class Game extends JPanel
 	public void paint(Graphics g)
 	{
 		super.paint(g);
-		g.drawImage(this.backgroundImg, 0, this.backgroundTop - Program.HEIGHT, Program.WIDTH, Program.HEIGHT, null);
-		g.drawImage(this.backgroundImg, 0, this.backgroundTop, Program.WIDTH, Program.HEIGHT, null);
-		this.backgroundTop = this.backgroundTop == Program.HEIGHT ? 0 : this.backgroundTop + 1;
+		g.drawImage(this.backgroundImg, 0, this.backgroundTop - Resources.HEIGHT, Resources.WIDTH, Resources.HEIGHT, null);
+		g.drawImage(this.backgroundImg, 0, this.backgroundTop, Resources.WIDTH, Resources.HEIGHT, null);
+		this.backgroundTop = this.backgroundTop == Resources.HEIGHT ? 0 : this.backgroundTop + 1;
 
 		// 逻辑: 先画子弹和道具, 后画飞机
 		synchronized (this.allEnemyBullets)
 		{
-			GameUtilities.DrawImage(g, this.allEnemyBullets);
+			SwingUtils.DrawImage(g, this.allEnemyBullets);
 		}
 		synchronized (this.heroBullets)
 		{
-			GameUtilities.DrawImage(g, this.heroBullets);
+			SwingUtils.DrawImage(g, this.heroBullets);
 		}
 		synchronized (this.props)
 		{
-			GameUtilities.DrawImage(g, this.props);
+			SwingUtils.DrawImage(g, this.props);
 		}
 		synchronized (this.allEnemies)
 		{
-			GameUtilities.DrawImage(g, this.allEnemies);
+			SwingUtils.DrawImage(g, this.allEnemies);
 		}
 
-		GameUtilities.DrawImage(g, List.of(WarplaneHero.Instance));
-
+		SwingUtils.DrawImage(g, List.of(WarplaneHero.Instance));
 		paintScoreHealth(g);
 	}
 
 	private void paintScoreHealth(Graphics g)
 	{
-		Font f = new Font("Segoe UI", Font.ITALIC, 20);
-		GameUtilities.Write(g, "Score: " + this.score, Color.WHITE, f, 10, 25);
-		GameUtilities.Write(g, "Health: " + WarplaneHero.Instance.GetHealth(), Color.WHITE, f, 10, 45);
+		Font f = new Font("Consolas", Font.PLAIN, 20);
+		SwingUtils.Write(g, String.format("Score: %.2f", this.storeScore), Color.WHITE, f, 10, 25);
+		SwingUtils.Write(g, "Health: " + WarplaneHero.Instance.GetHealth(), Color.WHITE, f, 10, 45);
 	}
 
 	public Game(int difficulty, int fps)
@@ -117,8 +118,6 @@ public class Game extends JPanel
 		return new Game(difficulty, fps);
 	}
 
-	/// 游戏的主循环<br>
-	/// 我们所向披靡!
 	public void Loop()
 	{
 		Runnable gameTask = () ->
@@ -138,16 +137,12 @@ public class Game extends JPanel
 				if (this.allEnemies.size() < IntervalP.GetMaxEnemies(this.time, this.score))
 					this.allEnemies.add(Warplane.GenerateWarplane(this.time, this.score));
 				// 射击
-				if (timeCycled(1))
-					for (Warplane enemy : this.allEnemies) this.allEnemyBullets.addAll(enemy.GetShots());
+				if (timeCycled(1)) for (Warplane enemy : this.allEnemies) this.allEnemyBullets.addAll(enemy.GetShots());
 
 				this.heroBullets.addAll(WarplaneHero.Instance.GetShots());
 				MusicPlayer.PlayBulletMusic();
 			}
 
-			// 记住, 你所做的一切都是为了那该死的测试
-			// 如果有 partial, 我愿意这样做
-			// C# 神力, 小子
 			this.moveEvent();
 			this.crashEvent();
 			this.postRemoveEvent();
@@ -190,9 +185,7 @@ public class Game extends JPanel
 		return false;
 	}
 
-	/// 碰撞检测 <br>
-	/// 产生道具 <br>
-	/// Boss 死亡事件
+	/// 碰撞检测、产生道具、Boss 死亡事件
 	private void crashEvent()
 	{
 		// 子弹打自己
@@ -245,9 +238,10 @@ public class Game extends JPanel
 							default -> throw new IllegalArgumentException("Invalid type");
 						}
 
-						int scores = ScoreP.GetScore(enemy, allEnemies.size());
-						score += scores;
-						WarplaneBoss.LastScore += scores;
+						float scores = ScoreP.GetScore(enemy, allEnemies.size());
+						storeScore += scores;
+						score += (int) scores;
+						WarplaneBoss.LastScore += (int) scores;
 						props.addAll(Prop.GenerateProp(enemy));
 					}
 				}
@@ -307,15 +301,15 @@ public class Game extends JPanel
 	{
 		if (WarplaneHero.Instance.IsDead() || WarplaneHero.Instance.GetHealth() <= 0)
 		{
-			WarplaneHero.Instance.Score = this.score;
+			WarplaneHero.Instance.Score = this.storeScore;
 			WarplaneHero.Instance.Time = this.time;
 
 			this.gameLoopScheduler.shutdown();
 			this.renderScheduler.shutdown();
 			MusicPlayer.PlayGameOver();
-			synchronized (Program.MainLock)
+			synchronized (Resources.MainLock)
 			{
-				Program.MainLock.notify();
+				Resources.MainLock.notify();
 			}
 		}
 	}

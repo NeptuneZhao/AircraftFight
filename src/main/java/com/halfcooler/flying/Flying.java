@@ -1,8 +1,8 @@
 package com.halfcooler.flying;
 
-import com.halfcooler.Program;
 import com.halfcooler.flying.warplane.Warplane;
-import com.halfcooler.utils.ImageManager;
+import com.halfcooler.game.statistics.Resources;
+import com.halfcooler.game.utils.ImageManager;
 
 import java.awt.image.BufferedImage;
 import java.security.InvalidParameterException;
@@ -59,7 +59,7 @@ public abstract class Flying
 	/// 飞机移动, 越界反向
 	public void GoForward()
 	{
-		this.locationX += !(this.locationX <= 0 || this.locationX >= Program.WIDTH) ? this.speedX : -this.speedX;
+		this.locationX += !(this.locationX <= 0 || this.locationX >= Resources.WIDTH) ? this.speedX : -this.speedX;
 		this.locationY += this.speedY;
 	}
 
@@ -85,10 +85,10 @@ public abstract class Flying
 			hisY - (hisHeight / factorHe + this.GetHeight() / factorMe) / 2 < this.locationY;
 	}
 
-	public void SetLocation(double x, double y)
+	public void SetLocation(int x, int y)
 	{
-		this.locationX = (int) x;
-		this.locationY = (int) y;
+		this.locationX = x;
+		this.locationY = y;
 	}
 
 	public BufferedImage GetImage()

@@ -1,16 +1,16 @@
 package com.halfcooler.flying.warplane;
 
-import com.halfcooler.Program;
 import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.flying.bullet.BulletHero;
 import com.halfcooler.flying.prop.PropBullet;
-import com.halfcooler.utils.ImageManager;
+import com.halfcooler.game.statistics.Resources;
+import com.halfcooler.game.utils.ImageManager;
 
 import java.util.List;
 
 public class WarplaneHero extends Warplane
 {
-	public static final WarplaneHero Instance = new WarplaneHero(Program.WIDTH / 2, Program.HEIGHT - ImageManager.HeroImg.getHeight());
+	public static final WarplaneHero Instance = new WarplaneHero(Resources.WIDTH / 2, Resources.HEIGHT - ImageManager.HeroImg.getHeight());
 
 	private WarplaneHero(int x, int y)
 	{
@@ -29,5 +29,6 @@ public class WarplaneHero extends Warplane
 	}
 
 	/// To be recorded
-	public int Difficulty = 0, Score = 0, Time = 0, DamagedTotal = 0, Total = 0, Enemy = 0, Elite = 0, Plus = 0, Boss = 0;
+	public int Difficulty = 0, Time = 0, DamagedTotal = 0, Total = 0, Enemy = 0, Elite = 0, Plus = 0, Boss = 0;
+	public float Score = 0f;
 }

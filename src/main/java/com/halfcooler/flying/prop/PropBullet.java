@@ -12,10 +12,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor.DiscardPolicy;
 import java.util.concurrent.TimeUnit;
 
-/// <summary>
-/// 测试通过
-/// </summary>
-
 public class PropBullet extends Prop
 {
 	public static int ActiveThread = 0;

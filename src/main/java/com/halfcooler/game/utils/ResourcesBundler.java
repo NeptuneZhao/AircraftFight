@@ -1,4 +1,4 @@
-package com.halfcooler.utils;
+package com.halfcooler.game.utils;
 
 import java.lang.reflect.Method;
 import java.util.ResourceBundle;

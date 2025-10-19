@@ -1,8 +1,8 @@
 package com.halfcooler.menu;
 
-import com.halfcooler.Program;
-import com.halfcooler.utils.ResourcesBundler;
-import com.halfcooler.utils.SwingUtilities;
+import com.halfcooler.game.statistics.Resources;
+import com.halfcooler.game.utils.ResourcesBundler;
+import com.halfcooler.game.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,12 +48,7 @@ public class StartsMenu extends JFrame
 			this.onButtonClicked();
 		});
 
-		this.hallOfFameButton.addActionListener((ActionEvent ignored) ->
-		{
-			// TODO: Show Hall of Fame
-			this.setVisible(false);
-			HallOfFameMenu.HoFInstance.setVisible(true);
-		});
+		this.hallOfFameButton.addActionListener((ActionEvent ignored) -> HallOfFameMenu.HoFInstance.setVisible(true));
 	}
 
 	public JPanel GetPanel()
@@ -86,9 +81,9 @@ public class StartsMenu extends JFrame
 				GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode().getRefreshRate() :
 				Integer.parseInt((String) Objects.requireNonNull(this.comboBox1.getSelectedItem()));
 
-		synchronized (Program.MainLock)
+		synchronized (Resources.MainLock)
 		{
-			Program.MainLock.notify();
+			Resources.MainLock.notify();
 		}
 	}
 
@@ -97,7 +92,7 @@ public class StartsMenu extends JFrame
 		panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		difficultyEasyButton = new JButton();
-		SwingUtilities.LoadButtonText(difficultyEasyButton, rb.GetMessage("mode.easy"));
+		SwingUtils.LoadButtonText(difficultyEasyButton, rb.GetMessage("mode.easy"));
 		GridBagConstraints gbc;
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
@@ -105,14 +100,14 @@ public class StartsMenu extends JFrame
 		gbc.weighty = 0.5;
 		panel.add(difficultyEasyButton, gbc);
 		difficultyNormalButton = new JButton();
-		SwingUtilities.LoadButtonText(difficultyNormalButton, rb.GetMessage("mode.normal"));
+		SwingUtils.LoadButtonText(difficultyNormalButton, rb.GetMessage("mode.normal"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.weighty = 0.5;
 		panel.add(difficultyNormalButton, gbc);
 		musicCheckBox = new JCheckBox();
-		SwingUtilities.LoadButtonText(musicCheckBox, rb.GetMessage("mode.music"));
+		SwingUtils.LoadButtonText(musicCheckBox, rb.GetMessage("mode.music"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 6;
@@ -120,7 +115,7 @@ public class StartsMenu extends JFrame
 		gbc.weighty = 0.5;
 		panel.add(musicCheckBox, gbc);
 		difficultyHardButton = new JButton();
-		SwingUtilities.LoadButtonText(difficultyHardButton, rb.GetMessage("mode.hard"));
+		SwingUtils.LoadButtonText(difficultyHardButton, rb.GetMessage("mode.hard"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 2;
@@ -141,23 +136,18 @@ public class StartsMenu extends JFrame
 		fpsLabel = new JLabel();
 		fpsLabel.setHorizontalAlignment(0);
 		fpsLabel.setHorizontalTextPosition(0);
-		SwingUtilities.LoadLabelText(fpsLabel, rb.GetMessage("mode.fps"));
+		SwingUtils.LoadLabelText(fpsLabel, rb.GetMessage("mode.fps"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 3;
 		panel.add(fpsLabel, gbc);
 		hallOfFameButton = new JButton();
-		SwingUtilities.LoadButtonText(hallOfFameButton, rb.GetMessage("record.button"));
+		SwingUtils.LoadButtonText(hallOfFameButton, rb.GetMessage("record.button"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 5;
 		gbc.weighty = 0.5;
 		panel.add(hallOfFameButton, gbc);
-	}
-
-	public JComponent $$$getRootComponent$$$()
-	{
-		return panel;
 	}
 
 }

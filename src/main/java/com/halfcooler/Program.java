@@ -2,8 +2,7 @@ package com.halfcooler;
 
 import com.halfcooler.flying.warplane.WarplaneHero;
 import com.halfcooler.game.Game;
-import com.halfcooler.game.record.BinaryAccessor;
-import com.halfcooler.game.record.IDataAccessor;
+import com.halfcooler.game.statistics.Resources;
 import com.halfcooler.menu.DeadDialog;
 import com.halfcooler.menu.StartsMenu;
 
@@ -14,17 +13,12 @@ import java.util.Properties;
 
 public class Program
 {
-	public static final Object MainLock = new Object();
-	public static final int WIDTH = 480, HEIGHT = 640;
-	public static Game GameInstance = null;
-	public static IDataAccessor Recorder = new BinaryAccessor();
-
 	public static void main(String[] args)
 	{
 		// Debug 模式下自动更新版本号
 		onBuilding();
 
-		// 阶段 1: 开始菜单
+		// 开始菜单
 		JFrame frame = new JFrame("StartMenu");
 		frame.setResizable(false);
 
@@ -32,16 +26,16 @@ public class Program
 		JPanel startPanel = startsMenu.GetPanel();
 		frame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		frame.setContentPane(startPanel);
-		frame.setBounds(100, 100, WIDTH, HEIGHT);
+		frame.setBounds(100, 100, Resources.WIDTH, Resources.HEIGHT);
 		frame.setVisible(true);
 
-		synchronized (MainLock)
+		synchronized (Resources.MainLock)
 		{
 			while (startPanel.isVisible())
 			{
 				try
 				{
-					MainLock.wait();
+					Resources.MainLock.wait();
 				}
 				catch (InterruptedException e)
 				{
@@ -51,9 +45,9 @@ public class Program
 		}
 		frame.remove(startPanel);
 
-		// 阶段 2: 游戏主循环
-		GameInstance = Game.StartGame(startsMenu.GetDifficulty(), startsMenu.IsMusicOn(), startsMenu.GetFps());
-		frame.setContentPane(GameInstance);
+		// 游戏主循环
+		Resources.GameInstance = Game.StartGame(startsMenu.GetDifficulty(), startsMenu.IsMusicOn(), startsMenu.GetFps());
+		frame.setContentPane(Resources.GameInstance);
 
 		Properties props = new Properties();
 		try (FileInputStream fis = new FileInputStream("version.properties"))
@@ -67,15 +61,15 @@ public class Program
 		String version = props.getProperty("major") + "." + props.getProperty("minor") + "." + props.getProperty("build") + "." + props.getProperty("patch");
 		frame.setTitle(String.format("Game [%s], Music %s, Ver: %s", startsMenu.GetDifficulty(), startsMenu.IsMusicOn() ? "On" : "Off", version));
 		frame.setVisible(true);
-		GameInstance.Loop();
+		Resources.GameInstance.Loop();
 
 		// 退出阶段
-		synchronized (MainLock)
+		synchronized (Resources.MainLock)
 		{
 			// 等待英雄机死
 			try
 			{
-				MainLock.wait();
+				Resources.MainLock.wait();
 			}
 			catch (InterruptedException e)
 			{

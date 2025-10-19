@@ -1,9 +1,9 @@
 package com.halfcooler.flying.prop;
 
-import com.halfcooler.Program;
 import com.halfcooler.flying.Flying;
 import com.halfcooler.flying.bullet.Bullet;
 import com.halfcooler.flying.warplane.*;
+import com.halfcooler.game.statistics.Resources;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,7 +67,7 @@ public abstract class Prop extends Flying
 	{
 		super.GoForward();
 
-		if (locationY >= Program.HEIGHT)
+		if (locationY >= Resources.HEIGHT)
 			this.SetVanish();
 	}
 

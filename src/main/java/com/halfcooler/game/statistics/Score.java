@@ -14,13 +14,12 @@ public class Score
 		this.eliteScore = (df + 1) * 3;
 		this.plusScore = (df + 1) * 5;
 		this.bossScore = (df + 1) * 80;
-
 	}
 
 	/// 根据存活敌机数判定得分, 只在困难模式生效. 每多存活 1 敌机, 分数增加 1%。
 	/// @param currentAlive 当前存活敌机数
 	/// @return 得分
-	public int GetScore(Warplane plane, int currentAlive)
+	public float GetScore(Warplane plane, int currentAlive)
 	{
 		return switch (plane)
 		{
@@ -29,7 +28,7 @@ public class Score
 			case WarplanePlus _ -> this.plusScore;
 			case WarplaneBoss _ -> this.bossScore;
 			default -> 0;
-		} * (this.difficulty == 300 ? (100 + currentAlive) / 100 : 1);
+		} * (this.difficulty == 300 ? 1 + currentAlive / 100f : 1);
 	}
 
 }

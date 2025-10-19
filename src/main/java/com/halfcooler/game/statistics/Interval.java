@@ -1,9 +1,7 @@
 package com.halfcooler.game.statistics;
 
-/// 基本软件包 com.halfcooler.game.statistics
 public class Interval
 {
-
 	/// 渲染间隔
 	public final int FpsInterval;
 

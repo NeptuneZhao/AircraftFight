@@ -1,12 +1,14 @@
 package com.halfcooler.menu;
 
-import com.halfcooler.Program;
-import com.halfcooler.utils.ResourcesBundler;
-import com.halfcooler.utils.SwingUtilities;
+import com.halfcooler.game.statistics.Resources;
+import com.halfcooler.game.utils.ResourcesBundler;
+import com.halfcooler.game.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +69,7 @@ public final class HallOfFameMenu extends JFrame
 		gbc.fill = GridBagConstraints.BOTH;
 		panel.add(buttonPanel, gbc);
 		OKButton = new JButton();
-		SwingUtilities.LoadButtonText(OKButton, rb.GetMessage("button.ok"));
+		SwingUtils.LoadButtonText(OKButton, rb.GetMessage("button.ok"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -80,7 +82,7 @@ public final class HallOfFameMenu extends JFrame
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		buttonPanel.add(spacer1, gbc);
 		cancelButton = new JButton();
-		SwingUtilities.LoadButtonText(cancelButton, rb.GetMessage("button.cancel"));
+		SwingUtils.LoadButtonText(cancelButton, rb.GetMessage("button.cancel"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 2;
 		gbc.gridy = 0;
@@ -114,8 +116,8 @@ public final class HallOfFameMenu extends JFrame
 			};
 
 		List<String[]> data = new ArrayList<>();
-		for (var record : Program.Recorder.LoadRecords())
-			data.add(record.Display());
+		for (var record : Resources.Recorder.LoadRecords())
+			data.add(record.ToString());
 
 		String[][] dataArray = new String[data.size()][];
 		for (int i = 0; i < data.size(); i++)
@@ -139,13 +141,23 @@ public final class HallOfFameMenu extends JFrame
 					System.out.println("Selected Row Data: " + String.join(", ", (String[]) aValue));
 			}
 
-			// 选中并 delete 键删除本行数据
 			@Override
 			public void removeRow(int row)
 			{
 				super.removeRow(row);
 				// 删除对应的记录文件
-				Program.Recorder.DeleteRecordByIndex(row);
+				Resources.Recorder.DeleteRecordByIndex(row);
+			}
+		});
+
+		table1.getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "deleteRow");
+		table1.getActionMap().put("deleteRow", new AbstractAction()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				int selectedRow = table1.getSelectedRow();
+				if (selectedRow != -1) ((DefaultTableModel) table1.getModel()).removeRow(selectedRow);
 			}
 		});
 	}

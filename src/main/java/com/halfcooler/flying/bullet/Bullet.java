@@ -1,13 +1,8 @@
 package com.halfcooler.flying.bullet;
 
-import com.halfcooler.Program;
 import com.halfcooler.flying.Flying;
+import com.halfcooler.game.statistics.Resources;
 
-/// <summary>
-/// 你好，欢迎来的抽象的子弹 <br>
-/// 子弹是飞行物的一种 <br>
-/// 其实，加血道具是伤害为负的子弹 <br>
-/// </summary>
 /// @see com.halfcooler.flying.Flying
 public abstract class Bullet extends Flying
 {
@@ -29,10 +24,10 @@ public abstract class Bullet extends Flying
 	{
 		super.GoForward();
 
-		if (this.locationX <= 0 || this.locationX >= Program.WIDTH)
+		if (this.locationX <= 0 || this.locationX >= Resources.WIDTH)
 			this.SetVanish();
 
-		if ( (this.speedY > 0 && this.locationY >= Program.HEIGHT) || this.locationY <= 0)
+		if ( (this.speedY > 0 && this.locationY >= Resources.HEIGHT) || this.locationY <= 0)
 			this.SetVanish();
 	}
 

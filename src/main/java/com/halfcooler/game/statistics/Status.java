@@ -12,7 +12,6 @@ public final class Status
 
 	/// 根据飞机类型获取子弹伤害, 英雄机子弹有 20% 概率造成双倍伤害, 5% 概率造成暴击伤害(5 倍), 0.01% 概率造成 2147483647 点伤害。<br>
 	/// 模式匹配, 仅 >JDK21
-	///
 	/// @param plane 飞机类型
 	/// @return 伤害值
 	public static int GetDamage(Warplane plane)

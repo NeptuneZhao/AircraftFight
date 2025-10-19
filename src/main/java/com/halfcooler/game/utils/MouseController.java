@@ -1,8 +1,8 @@
-package com.halfcooler.utils;
+package com.halfcooler.game.utils;
 
-import com.halfcooler.Program;
 import com.halfcooler.flying.warplane.WarplaneHero;
 import com.halfcooler.game.Game;
+import com.halfcooler.game.statistics.Resources;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -20,9 +20,8 @@ public final class MouseController
 				int x = e.getX();
 				int y = e.getY();
 
-				if (x < 0 || x > Program.WIDTH || y < 0 || y > Program.HEIGHT)
+				if (x < 0 || x > Resources.WIDTH || y < 0 || y > Resources.HEIGHT)
 					return;
-
 				warplaneHero.SetLocation(x, y);
 			}
 		};

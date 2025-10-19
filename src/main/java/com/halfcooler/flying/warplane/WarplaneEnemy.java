@@ -1,8 +1,7 @@
 package com.halfcooler.flying.warplane;
 
-import com.halfcooler.Program;
 import com.halfcooler.flying.bullet.Bullet;
-import com.halfcooler.flying.bullet.type.BulletTypeEnemy;
+import com.halfcooler.game.statistics.Resources;
 
 import java.util.List;
 
@@ -10,12 +9,12 @@ public class WarplaneEnemy extends Warplane
 {
 	public WarplaneEnemy(int x, int y)
 	{
-		super(x, y, 0, Program.GameInstance.IntervalP.GetSpeedY(WarplaneEnemy.class, Program.GameInstance.GetMillisecond(), Program.GameInstance.GetScore()));
+		super(x, y, 0, Resources.GameInstance.IntervalP.GetSpeedY(WarplaneEnemy.class, Resources.GameInstance.GetMillisecond(), Resources.GameInstance.GetScore()));
 	}
 
 	@Override
 	public List<? extends Bullet> GetShots()
 	{
-		return new BulletTypeEnemy().Shoots(null);
+		return List.of();
 	}
 }

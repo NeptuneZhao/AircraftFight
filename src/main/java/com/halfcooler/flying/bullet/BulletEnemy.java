@@ -34,8 +34,7 @@ public class BulletEnemy extends Bullet
 			new BulletEnemy(plus.GetX() + 30, plus.GetY(), plus.GetSpeedY() + 5, Status.GetDamage(plus)));
 	}
 
-	/// 20 个子弹... 就没中间了...<br>
-	/// 这是 19 个
+	/// 19 个
 	public static List<BulletEnemy> RingInstance(WarplaneBoss boss)
 	{
 		var list = new ArrayList<BulletEnemy>();

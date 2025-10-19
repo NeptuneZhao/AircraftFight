@@ -1,10 +1,10 @@
 package com.halfcooler.flying.warplane;
 
-import com.halfcooler.Program;
 import com.halfcooler.flying.Flying;
 import com.halfcooler.flying.bullet.Bullet;
+import com.halfcooler.game.statistics.Resources;
 import com.halfcooler.game.statistics.Status;
-import com.halfcooler.utils.ImageManager;
+import com.halfcooler.game.utils.ImageManager;
 
 import java.util.List;
 import java.util.Random;
@@ -47,10 +47,10 @@ public abstract class Warplane extends Flying
 	@Override
 	public void GoForward()
 	{
-		this.locationX += !(this.locationX <= ImageManager.GetImage(this).getWidth() || this.locationX >= Program.WIDTH - ImageManager.GetImage(this).getWidth()) ? this.speedX : -this.speedX;
+		this.locationX += !(this.locationX <= ImageManager.GetImage(this).getWidth() || this.locationX >= Resources.WIDTH - ImageManager.GetImage(this).getWidth()) ? this.speedX : -this.speedX;
 		this.locationY += this.speedY;
 
-		if (locationY >= Program.HEIGHT)
+		if (locationY >= Resources.HEIGHT)
 			this.SetVanish();
 	}
 
@@ -61,9 +61,9 @@ public abstract class Warplane extends Flying
 	{
 		double rand = Math.random();
 		Random randGen = new Random();
-		if (rand < 0.7) return new WarplaneEnemy(randGen.nextInt(Program.WIDTH - ImageManager.EnemyImg.getWidth() / 2), 0);
-		else if (rand < 0.85) return new WarplaneElite(randGen.nextInt(Program.WIDTH - ImageManager.EliteImg.getWidth() / 2), 0, time, score);
-		else return new WarplanePlus(randGen.nextInt(Program.WIDTH - ImageManager.PlusImg.getWidth() / 2), 0, time, score);
+		if (rand < 0.7) return new WarplaneEnemy(randGen.nextInt(Resources.WIDTH - ImageManager.EnemyImg.getWidth() / 2), 0);
+		else if (rand < 0.85) return new WarplaneElite(randGen.nextInt(Resources.WIDTH - ImageManager.EliteImg.getWidth() / 2), 0, time, score);
+		else return new WarplanePlus(randGen.nextInt(Resources.WIDTH - ImageManager.PlusImg.getWidth() / 2), 0, time, score);
 	}
 
 }

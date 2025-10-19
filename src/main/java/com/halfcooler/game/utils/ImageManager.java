@@ -1,4 +1,4 @@
-package com.halfcooler.utils;
+package com.halfcooler.game.utils;
 
 import com.halfcooler.flying.bullet.BulletEnemy;
 import com.halfcooler.flying.bullet.BulletHero;
@@ -15,12 +15,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-// 写完了!
 public final class ImageManager
 {
 	private static final Map<String, BufferedImage> Map = new HashMap<>();
 
-	public static final BufferedImage BackgroundImg, BgEasyImg, BgNormalIMg, BgHardImg;
+	public static final BufferedImage BgEasyImg, BgNormalIMg, BgHardImg;
 	public static final BufferedImage HeroImg;
 	public static final BufferedImage BulletHeroImg;
 	public static final BufferedImage EnemyImg;
@@ -37,7 +36,6 @@ public final class ImageManager
 	{
 		try
 		{
-			BackgroundImg = ImageIO.read(new FileInputStream("src/main/resources/images/bg.jpg"));
 			BgEasyImg = ImageIO.read(new FileInputStream("src/main/resources/images/bg.jpg"));
 			BgNormalIMg = ImageIO.read(new FileInputStream("src/main/resources/images/bg_normal.jpg"));
 			BgHardImg = ImageIO.read(new FileInputStream("src/main/resources/images/bg_hard.jpg"));

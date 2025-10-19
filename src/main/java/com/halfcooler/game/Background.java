@@ -1,8 +1,8 @@
 package com.halfcooler.game;
 
-import java.awt.image.BufferedImage;
+import com.halfcooler.game.utils.ImageManager;
 
-import com.halfcooler.utils.ImageManager;
+import java.awt.image.BufferedImage;
 
 public record Background(BufferedImage backgroundImg)
 {

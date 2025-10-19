@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
-/// Debug Pass on 2025/09/10
 public class MusicThread extends Thread
 {
     private final File music;
@@ -32,7 +31,7 @@ public class MusicThread extends Thread
             ais = AudioSystem.getAudioInputStream(music);
             AudioFormat baseFormat = ais.getFormat();
 
-			// 可能有用 转换为 PCM
+			// 转换为 PCM
             AudioFormat targetFormat = new AudioFormat(
 				AudioFormat.Encoding.PCM_SIGNED,
                 baseFormat.getSampleRate(),
@@ -40,10 +39,9 @@ public class MusicThread extends Thread
                 baseFormat.getChannels(),
                 baseFormat.getChannels() * 2,
                 baseFormat.getSampleRate(),
-                false
-            );
+                false);
 			
-            clip = (Clip)AudioSystem.getLine( new DataLine.Info(Clip.class, targetFormat) );
+            clip = (Clip) AudioSystem.getLine( new DataLine.Info(Clip.class, targetFormat) );
             clip.open( AudioSystem.getAudioInputStream(targetFormat, ais) );
 
             final CountDownLatch finishedLatch = new CountDownLatch(1);
@@ -78,7 +76,7 @@ public class MusicThread extends Thread
         }
 		finally
         {
-            cleanUp();
+            this.cleanUp();
             try
             {
                 if (ais != null) ais.close();

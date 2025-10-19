@@ -2,7 +2,7 @@ package com.halfcooler.music;
 
 import java.io.File;
 
-/// 所有音乐播放均由 {@link MusicPlayer#IsMusicOn} 控制。
+/// 所有音乐播放均由 {@link MusicPlayer#IsMusicOn} 控制。<br>
 public final class MusicPlayer
 {
 	private MusicPlayer() { }
@@ -11,7 +11,6 @@ public final class MusicPlayer
 	private static MusicThread CurrentBgm, CurrentBossBgm;
 	private static boolean playingBgmFlag, playingBossFlag;
 
-	/// 嗨, 大家好! 嗨, 家人们! 如果你需要我, 咱们只是隔着一个屏幕而已<br>
 	/// 播放背景音乐。<br>
 	/// 状态由 {@link MusicPlayer#playingBgmFlag} 控制。<br>
 	/// 类中停止播放的方案: 先将标志位置 false, 然后调用 {@link MusicThread#musicOff()}。<br>
@@ -112,7 +111,6 @@ public final class MusicPlayer
 		CurrentBossBgm.start();
 		try
 		{
-
 			CurrentBossBgm.join();
 		}
 		catch (InterruptedException ie)

@@ -1,10 +1,10 @@
 package com.halfcooler.menu;
 
-import com.halfcooler.Program;
 import com.halfcooler.flying.warplane.WarplaneHero;
 import com.halfcooler.game.record.Record;
-import com.halfcooler.utils.ResourcesBundler;
-import com.halfcooler.utils.SwingUtilities;
+import com.halfcooler.game.statistics.Resources;
+import com.halfcooler.game.utils.ResourcesBundler;
+import com.halfcooler.game.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.UUID;
 
+// TODO: 死后询问打不打开排行榜, 打开后关闭当前对话框, 等待排行榜关闭后再打开当前对话框
 public class DeadDialog extends JDialog
 {
 	private JPanel contentPane;
@@ -53,7 +54,6 @@ public class DeadDialog extends JDialog
 
 		buttonCancel.addActionListener(_ -> onCancel());
 
-		// 点击 X 时调用 onCancel()
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter()
 		{
@@ -67,7 +67,7 @@ public class DeadDialog extends JDialog
 		contentPane.registerKeyboardAction(_ -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
 		// 显示各项数据
-		java.util.List<Record> records = Program.Recorder.LoadRecords();
+		java.util.List<Record> records = Resources.Recorder.LoadRecords();
 
 		// 难度
 		ResourcesBundler rb = new ResourcesBundler();
@@ -87,7 +87,7 @@ public class DeadDialog extends JDialog
 
 		// 分数
 		this.scoreLabel.setText(String.valueOf(hero.Score));
-		this.scoreHS.setText(hero.Score > records.stream().mapToInt(Record::score).max().orElse(0) ? highScoreText : "");
+		this.scoreHS.setText(hero.Score > records.stream().mapToDouble(Record::score).max().orElse(0) ? highScoreText : "");
 
 		// 伤害
 		this.damageLabel.setText(String.valueOf(hero.DamagedTotal));
@@ -124,14 +124,16 @@ public class DeadDialog extends JDialog
 			name = "Anonymous";
 		else if (name.length() > 56)
 			name = name.substring(0, 56);
-		Program.Recorder.SaveRecord(new Record(UUID.randomUUID(), name, warplaneHero.Difficulty, warplaneHero.Time, warplaneHero.Score, warplaneHero.DamagedTotal, warplaneHero.Total, warplaneHero.Enemy, warplaneHero.Elite, warplaneHero.Plus, warplaneHero.Boss));
-		dispose();
+		Resources.Recorder.SaveRecord(new Record(UUID.randomUUID(), name, warplaneHero.Difficulty, warplaneHero.Time, warplaneHero.Score, warplaneHero.DamagedTotal, warplaneHero.Total, warplaneHero.Enemy, warplaneHero.Elite, warplaneHero.Plus, warplaneHero.Boss));
+		this.dispose();
+		HallOfFameMenu.HoFInstance.setVisible(true);
 	}
 
 	private void onCancel()
 	{
 		// 必要时在此处添加您的代码
-		dispose();
+		HallOfFameMenu.HoFInstance.setVisible(true);
+		this.dispose();
 	}
 
 	/**
@@ -164,7 +166,7 @@ public class DeadDialog extends JDialog
 		gbc.fill = GridBagConstraints.BOTH;
 		panel1.add(panel2, gbc);
 		buttonCancel = new JButton();
-		this.$$$loadButtonText$$$(buttonCancel, rb.GetMessage("button.cancel"));
+		SwingUtils.LoadButtonText(buttonCancel, rb.GetMessage("button.cancel"));
 		buttonCancel.setToolTipText(rb.GetMessage("button.cancel"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
@@ -174,7 +176,7 @@ public class DeadDialog extends JDialog
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		panel2.add(buttonCancel, gbc);
 		buttonOK = new JButton();
-		this.$$$loadButtonText$$$(buttonOK, rb.GetMessage("button.ok"));
+		SwingUtils.LoadButtonText(buttonOK, rb.GetMessage("button.ok"));
 		buttonOK.setToolTipText(rb.GetMessage("button.ok"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
@@ -185,7 +187,7 @@ public class DeadDialog extends JDialog
 		panel2.add(buttonOK, gbc);
 		final JLabel label1 = new JLabel();
 		label1.setHorizontalTextPosition(0);
-		SwingUtilities.LoadLabelText(label1, rb.GetMessage("dead.name"));
+		SwingUtils.LoadLabelText(label1, rb.GetMessage("dead.name"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 0;
@@ -193,7 +195,7 @@ public class DeadDialog extends JDialog
 		gbc.weighty = 1.0;
 		contentPane.add(label1, gbc);
 		final JLabel label2 = new JLabel();
-		SwingUtilities.LoadLabelText(label2, rb.GetMessage("dead.input_name"));
+		SwingUtils.LoadLabelText(label2, rb.GetMessage("dead.input_name"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
 		gbc.gridy = 3;
@@ -227,14 +229,14 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panelStatistics.add(difficultyLabel, gbc);
 		final JLabel label3 = new JLabel();
-		SwingUtilities.LoadLabelText(label3, rb.GetMessage("record.difficulty"));
+		SwingUtils.LoadLabelText(label3, rb.GetMessage("record.difficulty"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.WEST;
 		panelStatistics.add(label3, gbc);
 		final JLabel label4 = new JLabel();
-		SwingUtilities.LoadLabelText(label4, rb.GetMessage("record.time"));
+		SwingUtils.LoadLabelText(label4, rb.GetMessage("record.time"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 2;
@@ -248,7 +250,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panelStatistics.add(timeLabel, gbc);
 		final JLabel label5 = new JLabel();
-		SwingUtilities.LoadLabelText(label5, rb.GetMessage("record.score"));
+		SwingUtils.LoadLabelText(label5, rb.GetMessage("record.score"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 4;
@@ -262,7 +264,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panelStatistics.add(scoreLabel, gbc);
 		final JLabel label6 = new JLabel();
-		SwingUtilities.LoadLabelText(label6, rb.GetMessage("record.damage"));
+		SwingUtils.LoadLabelText(label6, rb.GetMessage("record.damage"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 6;
@@ -276,7 +278,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panelStatistics.add(damageLabel, gbc);
 		final JLabel label7 = new JLabel();
-		SwingUtilities.LoadLabelText(label7, rb.GetMessage("record.killed.total"));
+		SwingUtils.LoadLabelText(label7, rb.GetMessage("record.killed.total"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 8;
@@ -290,7 +292,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panelStatistics.add(totalLabel, gbc);
 		final JLabel label8 = new JLabel();
-		SwingUtilities.LoadLabelText(label8, rb.GetMessage("record.killed.enemy"));
+		SwingUtils.LoadLabelText(label8, rb.GetMessage("record.killed.enemy"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 10;
@@ -304,7 +306,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panelStatistics.add(enemyLabel, gbc);
 		final JLabel label9 = new JLabel();
-		SwingUtilities.LoadLabelText(label9, rb.GetMessage("record.killed.elite"));
+		SwingUtils.LoadLabelText(label9, rb.GetMessage("record.killed.elite"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 11;
@@ -318,7 +320,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panelStatistics.add(eliteLabel, gbc);
 		final JLabel label10 = new JLabel();
-		SwingUtilities.LoadLabelText(label10, rb.GetMessage("record.killed.plus"));
+		SwingUtils.LoadLabelText(label10, rb.GetMessage("record.killed.plus"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 12;
@@ -381,7 +383,7 @@ public class DeadDialog extends JDialog
 		gbc.anchor = GridBagConstraints.WEST;
 		panelStatistics.add(plusHS, gbc);
 		final JLabel label11 = new JLabel();
-		SwingUtilities.LoadLabelText(label11, rb.GetMessage("record.killed.boss"));
+		SwingUtils.LoadLabelText(label11, rb.GetMessage("record.killed.boss"));
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 13;
@@ -468,38 +470,6 @@ public class DeadDialog extends JDialog
 		gbc.gridwidth = 5;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		contentPane.add(spacer10, gbc);
-	}
-	
-	/**
-	 * @noinspection ALL
-	 */
-	private void $$$loadButtonText$$$(AbstractButton component, String text)
-	{
-		StringBuffer result = new StringBuffer();
-		boolean haveMnemonic = false;
-		char mnemonic = '\0';
-		int mnemonicIndex = -1;
-		for (int i = 0; i < text.length(); i++)
-		{
-			if (text.charAt(i) == '&')
-			{
-				i++;
-				if (i == text.length()) break;
-				if (!haveMnemonic && text.charAt(i) != '&')
-				{
-					haveMnemonic = true;
-					mnemonic = text.charAt(i);
-					mnemonicIndex = result.length();
-				}
-			}
-			result.append(text.charAt(i));
-		}
-		component.setText(result.toString());
-		if (haveMnemonic)
-		{
-			component.setMnemonic(mnemonic);
-			component.setDisplayedMnemonicIndex(mnemonicIndex);
-		}
 	}
 
 	/**
